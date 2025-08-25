@@ -1,24 +1,53 @@
-# README
+# FHIR Patient Index
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A [master patient index](https://en.wikipedia.org/wiki/Enterprise_master_patient_index)
+in Rails 8 with a conformant FHIR API.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- Built-in [MCP](https://modelcontextprotocol.io/about) server for LLM integration
+- Built-in minimalistic [FHIR](https://www.hl7.org/fhir/summary.html) server
+- Create, read, update, and destroy patients
+- User friendly and customizable UI
 
-* System dependencies
+**This app has is not ready for real-patient data out of the box. For real-world use,
+you must [regenerate credentials](https://guides.rubyonrails.org/security.html#custom-credentials),
+and do a secure deployment with SOC-II compliance.** 
 
-* Configuration
+## Dependencies
 
-* Database creation
+For running:
 
-* Database initialization
+- [Docker](https://www.docker.com/)
 
-* How to run the test suite
+For developing:
 
-* Services (job queues, cache servers, search engines, etc.)
+- [Yarn](https://classic.yarnpkg.com/en/docs) 1.x
+- [Ruby](https://www.ruby-lang.org/en/) 3.3
 
-* Deployment instructions
+## Quick Start
 
-* ...
+**wip**
+
+1. Ensure you have Docker running
+2. `docker compose up`
+
+## Developer Start
+
+1. `yarn install`
+2. `bundle`
+3. `rails db:migrate`
+4. `rails server`
+
+## Documentation
+
+### Dev Tools
+
+- `rails t`: run tests
+- `bundle exec rubocop`: run linter
+- `./bin/brakeman`: run security scan
+
+### Tech Stack
+
+Rails 8 with SQLite3, ESBuild, Bootstrap 5.3. Action Mailbox, and Turbo.
+JBuilder and ActionMailbox were excluded.
