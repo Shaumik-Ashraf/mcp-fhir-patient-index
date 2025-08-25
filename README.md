@@ -1,12 +1,16 @@
-# FHIR Patient Index
+# MCP FHIR Patient Index
+
+> ⚠️  Development in progress
 
 A [master patient index](https://en.wikipedia.org/wiki/Enterprise_master_patient_index)
-in Rails 8 with a conformant FHIR API.
+in Rails 8 with a conformant [FHIR](https://www.hl7.org/fhir/summary.html)
+API and [Model Context Protocol (MCP)](https://modelcontextprotocol.io/about) for LLM
+integration.
 
-## Features
+## FEATURES
 
-- Built-in [MCP](https://modelcontextprotocol.io/about) server for LLM integration
-- Built-in minimalistic [FHIR](https://www.hl7.org/fhir/summary.html) server
+- Built-in MCP server
+- Built-in minimalistic FHIR server
 - Create, read, update, and destroy patients
 - User friendly and customizable UI
 
