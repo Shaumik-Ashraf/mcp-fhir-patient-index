@@ -44,7 +44,7 @@ without any edits and the master key will be automatically created.
 
 ### Dev Tools
 
-- `rails t`: run tests
+- `bundle exec rspec`: run tests
 - `bundle exec rubocop`: run linter
 - `./bin/brakeman`: run security scan
 

@@ -35,5 +35,9 @@ module FhirPatientIndex
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.generators do |g|
+      g.factory_bot dir: "factories" if g.respond_to? :factory_bot
+    end
   end
 end

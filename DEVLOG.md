@@ -2,7 +2,7 @@
 
 Developer log and backlog of tasks.
 
-- [ ] Install FactoryBot and RSpec
+- [x] Install FactoryBot and RSpec
 - [ ] Customize Bootstrap via SCSS pipeline
 - [ ] Draft initial Patient schema
 - [ ] Implement Patient index view and read
