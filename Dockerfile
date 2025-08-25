@@ -2,8 +2,8 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t fhir_patient_index .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name fhir_patient_index fhir_patient_index
+# docker build -t mcp_fhir_patient_index .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name mcp_fhir_patient_index mcp_fhir_patient_index
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
