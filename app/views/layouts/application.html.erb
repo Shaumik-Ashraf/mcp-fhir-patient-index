@@ -1,28 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Fhir Patient Index" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= @title %> | Master Patient Index</title>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= yield :head %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload'  %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <% @metas&.each do |meta| %>
+    <meta <%= tag.attributes meta %>>
+    <% end %>
   </head>
+  <body class="wrapper">
+		<div id="top" class="content">
+      <!-------------------------------------------------------->
+      <!--                  NAVIGATION BAR                    -->
+      <!-------------------------------------------------------->
+      <%= render "shared/navbar" %>
+  
+      <!-------------------------------------------------------->
+      <!--                  NOTIFICATIONS                     -->
+      <!-------------------------------------------------------->
+      <div id="alerts">
+        <% if alert %>
+          <%= render "shared/alert", title: "Error:", body: alert, color: 'danger' %>
+        <% end %>
+        <% if notice %>
+          <%= render "shared/alert", title: "Notice:", body: notice, color: 'success' %>
+        <% end %>
+        <% if flash[:info] %>
+          <%= render "shared/alert", title: "Info:", body: flash[:info], color: 'info' %>
+        <% end %>
+        <% if flash[:debug] %>
+          <%= render "shared/alert", title: "Debug:", body: flash[:debug], color: 'warning' %>
+        <% end %>
+        <noscript>
+          <%= render "shared/alert", title: "Warning:", body: "JavaScript could not be detected on your web browser, some website functionality may be broken.", color: 'warning' %>
+        </noscript>
+      </div>
+  
+      <!-------------------------------------------------------->
+      <!--                       MAIN                         -->
+      <!-------------------------------------------------------->
+      <main class="container pt-md-4 pt-2">
+        <%= yield %>
+      </main>
+    </div>
 
-  <body>
-    <%= yield %>
+    <!-------------------------------------------------------->
+    <!--                      FOOTER                        -->
+    <!-------------------------------------------------------->
+    <%= render 'shared/footer' %>
   </body>
 </html>

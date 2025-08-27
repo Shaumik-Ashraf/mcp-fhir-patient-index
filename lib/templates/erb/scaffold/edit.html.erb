@@ -1,0 +1,15 @@
+<div class="container">
+
+  <div class="row justify-content-between">
+	<div class="col">
+	  <h1>Editing <%= human_name.titleize %>#<%%= @<%= model_resource_name %>.id %></h1>
+	<div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col" id="<%%= dom_id @<%= singular_name %> %>">
+	  <%%= render "form", <%= singular_name %>: @<%= singular_name %> %>
+	</div>
+  </div>
+
+</div>

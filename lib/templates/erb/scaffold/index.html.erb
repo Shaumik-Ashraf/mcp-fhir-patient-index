@@ -1,0 +1,15 @@
+<%%# <%= plural_table_name %>/index.html.erb %>
+<div class="container-fluid">
+  <div class="row justify-content-between p-3">
+	<h1 class="col"><%= plural_table_name.titleize %></h1>
+	<div class="col text-end">
+	  <%%= link_to "New <%= human_name %>", main_app.new_<%= singular_name %>_path, class: "btn btn-lg btn-outline-primary rounded", role: "link" %>
+	</div>
+  </div>
+
+  <div class="row-cols-xl-4 row-cols-lg-3 row-cols-1" id="<%= plural_table_name %>">
+    <%% @<%= plural_table_name %>.each do |<%= singular_name %>| %>
+	  <%%= render "<%= plural_table_name %>/<%= singular_name %>", <%= singular_name %>: <%= singular_name %> %>
+    <%% end %>
+  </div>
+</div>

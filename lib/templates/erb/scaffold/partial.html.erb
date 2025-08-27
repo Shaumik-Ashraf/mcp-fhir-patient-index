@@ -1,0 +1,40 @@
+  <div id="<%%= dom_id <%= singular_name %> %>" class="col">
+	<div class="card">
+	  <h3 class="card-header"><%= human_name %>#<%%= <%= singular_name %>.id %></h3>
+	  <div class="card-body">
+		<div class="list-group list-group-flush">
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+  		  <div class="list-group-item" id="<%%= dom_id <%= singular_name %>, :<%= attribute.column_name %> %>">
+<% if attribute.attachment? -%>
+    	    <b><%= attribute.human_name %>:</b> <%%= link_to <%= singular_name %>.<%= attribute.column_name %>.filename, <%= singular_name %>.<%= attribute.column_name %> if <%= singular_name %>.<%= attribute.column_name %>.attached? %>
+<% elsif attribute.attachments? -%>
+    	    <b><%= attribute.human_name %>:</b>
+		    <%% <%= singular_name %>.<%= attribute.column_name %>.each_with_index do |<%= attribute.singular_name %>, idx| %>
+	  	      <%% if idx > 0 %>| <%% end %><%%= link_to <%= attribute.singular_name %>.filename, <%= attribute.singular_name %> %>
+		    <%% end %>
+<% elsif %w(id created_at updated_at discarded_at).any? attribute.column_name -%>
+<%# skip %>
+<% elsif attribute.column_name.ends_with? '_at' -%>
+    	    <b><%= attribute.column_name.chomp('_at').humanize %>:</b> <%%= <%= singular_name %>.<%= attribute.column_name %>&.strftime('%r %x') %>
+<% elsif attribute.column_name == 'user_id' -%>
+		    <b>User:</b> <%%= <%= singular_name %>.user&.email %>
+<% elsif attribute.column_name.ends_with? '_id' -%>
+		    <b><%= attribute.human_name %>:</b> <%%= <%= singular_name %>.<%= attribute.column_name.chomp('_id') %>.to_s %>
+<% else -%>
+    	    <b><%= attribute.human_name %>:</b> <%%= <%= singular_name %>.<%= attribute.column_name %> %>
+<% end -%>
+  		  </div>
+<% end -%>
+<%# TODO figure out how to capture has_many, has_one, and enums %>
+		<div class="list-group list-group-horizontal flex-fill" id="<%%= dom_id <%= singular_name %>, 'actions' %>">
+			<div><%%= link_to 'Open', main_app.<%= singular_name %>_path(<%= singular_name %>), class: "text-success mx-1", style: "line-height:1;vertical-align:middle;" %></div>
+			<div><%%= link_to 'Edit', main_app.edit_<%= singular_name %>_path(<%= singular_name %>), class: "text-primary mx-1", style: "line-height:1;vertical-align:middle;" %></div>
+			<%%= button_to 'Delete', main_app.<%= singular_route_name %>_path(<%= singular_name %>),
+			 	        	method: :delete, class: "btn btn-link text-danger p-0", form_class: "d-inline mx-1",
+			 	            data: {confirm: "Delete <%= singular_name %>##{<%= singular_name %>.id}?"}
+			%>
+		</div>
+		</div><!-- /.list-group -->
+	  </div><!-- /.card-body -->
+	</div><!-- /.card -->
+  </div><!-- /.col -->
