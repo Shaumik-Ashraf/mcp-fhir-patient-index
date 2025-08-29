@@ -65,4 +65,5 @@ jobs:
           # REDIS_URL: redis://localhost:6379/0
         run: |
           bin/rails db:test:prepare
+          bin/rails assets:precompile
           bundle exec rspec
