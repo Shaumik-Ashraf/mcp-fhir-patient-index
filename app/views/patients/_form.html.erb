@@ -1,0 +1,28 @@
+
+<%= simple_form_for(@patient) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.input :uuid %>
+    <%= f.input :first_name %>
+    <%= f.input :last_name %>
+    <%= f.input :administrative_gender %>
+    <%= f.input :birth_date %>
+    <%= f.input :email %>
+    <%= f.input :phone_number %>
+    <%= f.input :social_security_number %>
+    <%= f.input :address_line1 %>
+    <%= f.input :address_line2 %>
+    <%= f.input :address_city %>
+    <%= f.input :address_state %>
+    <%= f.input :address_zip_code %>
+    <%= f.input :social_security_number %>
+    <%= f.input :passport_number %>
+    <%= f.input :drivers_license_number %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

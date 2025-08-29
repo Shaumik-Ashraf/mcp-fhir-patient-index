@@ -1,0 +1,15 @@
+<%# patients/index.html.erb %>
+<div class="container-fluid">
+  <div class="row justify-content-between p-3">
+	<h1 class="col">Patients</h1>
+	  <div class="col text-end">
+	    <%= link_to "New Patient", main_app.new_patient_path, class: "btn btn-lg btn-outline-primary rounded", role: "link" %>
+	  </div>
+  </div>
+
+  <div class="row-cols-xl-4 row-cols-lg-3 row-cols-1" id="patients">
+    <% @patients.each do |patient| %>
+	    <%= render "patients/patient", patient: patient %>
+    <% end %>
+  </div>
+</div>

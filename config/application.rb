@@ -37,7 +37,7 @@ module FhirPatientIndex
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.generators do |g|
-      g.factory_bot dir: "factories" if g.respond_to? :factory_bot
+      g.factory_bot dir: Rails.root.join("factories") if g.respond_to? :factory_bot
     end
   end
 end
