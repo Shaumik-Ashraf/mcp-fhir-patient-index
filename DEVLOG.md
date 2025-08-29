@@ -3,7 +3,7 @@
 Developer log and backlog of tasks.
 
 - [x] Install FactoryBot and RSpec
-- [ ] Customize Bootstrap via SCSS pipeline
+- [x] Customize Bootstrap via SCSS pipeline
 - [x] Draft initial Patient schema
 - [ ] Implement Patient index view and read
 - [ ] Implement Patient create
@@ -24,3 +24,5 @@ Developer log and backlog of tasks.
 - [ ] Integrate Synthea for patient seeding
 
 ## Notes
+
+ - TODO: beautify views

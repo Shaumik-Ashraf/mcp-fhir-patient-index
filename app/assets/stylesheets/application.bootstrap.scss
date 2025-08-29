@@ -4,31 +4,19 @@
 @import "bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-$primary: #215D91;
-$secondary: #06373A;
-$tertiary: #1F5F5B;
-$success: #159947;
-$info: #49B265;
-$debug: shade-color($info, 50);
-$warning: #AB7827;
-$danger: #912621;
-$dark: #061A23;
-$light: shift-color($dark, -90);
-
-$enable-shadows: true;
-$enable-gradients: true;
+@import "./mint_variables.scss";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
 
 // 4. Include any default map overrides here
-$custom-colors: (
-	"tertiary": $tertiary,
-	"debug": $debug
-);
+// $custom-colors: (
+// 	"tertiary": $tertiary,
+// 	"debug": $debug
+// );
 
-$theme-colors: map-merge($theme-colors, $custom-colors);
+// $theme-colors: map-merge($theme-colors, $custom-colors);
 
 // 5. Include remainder of required parts
 @import "bootstrap/scss/maps";
@@ -73,9 +61,11 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 @import "bootstrap/scss/utilities/api";
 
 // 8. Add additional custom code here
-.navbar-dark .dropdown-menu {
-	background-color: --bg-dark !important;
-}
+@import "./mint_bootswatch.scss";
+
+// .navbar-dark .dropdown-menu {
+// 	background-color: --bg-dark !important;
+// }
 
 html {
 	height: 100%;
@@ -99,3 +89,7 @@ footer {
   width: 100%;
   height: $footer-height;
 }
+
+// Local Variables:
+// jinx-local-words: "scss"
+// End:
