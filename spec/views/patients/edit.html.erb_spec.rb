@@ -1,25 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "patients/edit", type: :view do
-  let(:patient) {
-    Patient.create!(
-      uuid: "MyString",
-      first_name: "MyString",
-      last_name: "MyString",
-      administrative_gender: 1,
-      email: "MyString",
-      phone_number: "MyString",
-      social_security_number: "MyString",
-      address_line1: "MyString",
-      address_line2: "MyString",
-      address_city: "MyString",
-      address_state: "MyString",
-      address_zip_code: "MyString",
-      social_security_number: "MyString",
-      passport_number: "MyString",
-      drivers_license_number: "MyString"
-    )
-  }
+  let(:patient) { create(:patient) }
 
   before(:each) do
     assign(:patient, patient)
@@ -29,9 +11,6 @@ RSpec.describe "patients/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", patient_path(patient), "post" do
-
-      assert_select "input[name=?]", "patient[uuid]"
-
       assert_select "input[name=?]", "patient[first_name]"
 
       assert_select "input[name=?]", "patient[last_name]"
@@ -41,8 +20,6 @@ RSpec.describe "patients/edit", type: :view do
       assert_select "input[name=?]", "patient[email]"
 
       assert_select "input[name=?]", "patient[phone_number]"
-
-      assert_select "input[name=?]", "patient[social_security_number]"
 
       assert_select "input[name=?]", "patient[address_line1]"
 

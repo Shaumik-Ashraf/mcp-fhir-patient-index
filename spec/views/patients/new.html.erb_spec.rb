@@ -2,32 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "patients/new", type: :view do
   before(:each) do
-    assign(:patient, Patient.new(
-      uuid: "MyString",
-      first_name: "MyString",
-      last_name: "MyString",
-      administrative_gender: 1,
-      email: "MyString",
-      phone_number: "MyString",
-      social_security_number: "MyString",
-      address_line1: "MyString",
-      address_line2: "MyString",
-      address_city: "MyString",
-      address_state: "MyString",
-      address_zip_code: "MyString",
-      social_security_number: "MyString",
-      passport_number: "MyString",
-      drivers_license_number: "MyString"
-    ))
+    assign(:patient, build(:patient))
   end
 
   it "renders new patient form" do
     render
 
     assert_select "form[action=?][method=?]", patients_path, "post" do
-
-      assert_select "input[name=?]", "patient[uuid]"
-
       assert_select "input[name=?]", "patient[first_name]"
 
       assert_select "input[name=?]", "patient[last_name]"

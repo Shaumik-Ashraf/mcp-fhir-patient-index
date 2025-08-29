@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :patient do
-    administrative_gender { Patient::ADMINISTRATIVE_GENDERS.sample }
+    administrative_gender { Patient.administrative_genders.keys.sample }
     first_name do
       case administrative_gender
       when :male
@@ -16,7 +16,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     phone_number { Faker::PhoneNumber.phone_number }
     address_line1 { Faker::Address.street_address }
-    address_line2 { Random.random(2) == 1 ? Faker::Address.secondary_address : nil }
+    address_line2 { Random.rand(2) == 1 ? Faker::Address.secondary_address : nil }
     address_city { Faker::Address.city }
     address_state { Faker::Address.state }
     address_zip_code { Faker::Address.zip }

@@ -1,5 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Patient, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:patient) { create(:patient) }
+
+  it "can instantiate" do
+    expect(patient).not_to be_nil
+    expect(patient).to be_instance_of Patient
+  end
 end

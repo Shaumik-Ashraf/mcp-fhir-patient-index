@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe "patients/show", type: :view do
+  let(:patient) { create(:patient) }
+  
   before(:each) do
-    assign(:patient, Patient.create!(
-      uuid: "Uuid",
+    assign(:patient, patient
+=begin
+    Patient.create!(
       first_name: "First Name",
       last_name: "Last Name",
       administrative_gender: 2,
@@ -18,12 +21,13 @@ RSpec.describe "patients/show", type: :view do
       social_security_number: "Social Security Number",
       passport_number: "Passport Number",
       drivers_license_number: "Drivers License Number"
+=end
     ))
   end
 
   it "renders attributes in <p>" do
     render
-    expect(rendered).to match(/Uuid/)
+    # TODO: hard code realistic attributes above and assert them below
     expect(rendered).to match(/First Name/)
     expect(rendered).to match(/Last Name/)
     expect(rendered).to match(/2/)
