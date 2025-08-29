@@ -1,5 +1,7 @@
 # MCP FHIR Patient Index
 
+[![CI](https://github.com/Shaumik-Ashraf/mcp-fhir-patient-index/actions/workflows/ci.yml/badge.svg)](https://github.com/Shaumik-Ashraf/mcp-fhir-patient-index/actions/workflows/ci.yml)
+
 > ⚠️  Development in progress
 
 A [master patient index](https://en.wikipedia.org/wiki/Enterprise_master_patient_index)
