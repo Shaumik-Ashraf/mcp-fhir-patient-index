@@ -9,7 +9,7 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload'  %>
+		<%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
     <% @metas&.each do |meta| %>
     <meta <%= tag.attributes meta %>>
@@ -46,9 +46,9 @@
       <!-------------------------------------------------------->
       <!--                       MAIN                         -->
       <!-------------------------------------------------------->
-      <main class="container pt-md-4 pt-2">
+      <div class="pt-md-4 pt-2">
         <%= yield %>
-      </main>
+      </div>
     </div>
 
     <!-------------------------------------------------------->
