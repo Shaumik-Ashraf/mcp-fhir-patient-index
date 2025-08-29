@@ -38,7 +38,8 @@ without any edits and the master key will be automatically created.
 1. `yarn install`
 2. `bundle`
 3. `rails db:migrate`
-4. `rails server`
+4. `rails assets:precompile`
+5. `rails server`
 
 ## Documentation
 

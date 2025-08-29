@@ -4,7 +4,7 @@ Developer log and backlog of tasks.
 
 - [x] Install FactoryBot and RSpec
 - [ ] Customize Bootstrap via SCSS pipeline
-- [ ] Draft initial Patient schema
+- [x] Draft initial Patient schema
 - [ ] Implement Patient index view and read
 - [ ] Implement Patient create
 - [ ] Implement Patient edit and update
@@ -21,5 +21,6 @@ Developer log and backlog of tasks.
 - [ ] Implement patient matching/linkage engine
 - [ ] Implement FHIR `$match`
 - [ ] Implement MCP patient match tool
+- [ ] Integrate Synthea for patient seeding
 
 ## Notes
