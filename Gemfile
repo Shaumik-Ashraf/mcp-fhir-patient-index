@@ -53,7 +53,6 @@ group :development, :test do
   # Use RSpec+ testing suite
   gem "rspec-rails", "~> 8.0.0"
   gem "factory_bot_rails", "~> 6.5.0"
-  gem "faker", "~> 3.5.2"
 end
 
 group :development do
@@ -66,6 +65,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "faker", "~> 3.5.2"
 
 gem "simple_form", "~> 5.3"
 

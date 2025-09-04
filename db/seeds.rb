@@ -10,22 +10,5 @@
 
 # Seed 10 random patients with full data
 10.times do
-  Patient.create!(
-    {
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
-      administrative_gender: Patient.administrative_genders.keys.sample,
-      birth_date: Faker::Date.birthday(min_age: 18, max_age: 129),
-      email: Faker::Internet.email,
-      phone_number: Faker::PhoneNumber.phone_number,
-      address_line1: Faker::Address.street_address,
-      address_line2: Faker::Address.secondary_address,
-      address_city: Faker::Address.city,
-      address_state: Faker::Address.state,
-      address_zip_code: Faker::Address.zip,
-      social_security_number: Faker::IdNumber.valid,
-      passport_number: Faker::DrivingLicence.usa_driving_licence + Faker::Number.number(digits: 2).to_s,
-      drivers_license_number: Faker::DrivingLicence.usa_driving_licence
-    }
-  )
+  Patient.create_random!
 end

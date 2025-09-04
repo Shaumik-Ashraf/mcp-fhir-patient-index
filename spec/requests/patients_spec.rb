@@ -17,11 +17,11 @@ RSpec.describe "/patients", type: :request do
   # Patient. As you add validations to Patient, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    build(:patient).clinical_attributes
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { uuid: SecureRandom.uuid }
   }
 
   describe "GET /index" do

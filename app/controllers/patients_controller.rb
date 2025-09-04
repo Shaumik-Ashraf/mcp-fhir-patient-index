@@ -48,11 +48,11 @@ class PatientsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_patient
-      @patient = Patient.find(params.expect(:id))
+      @patient = Patient.find_by_uuid(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def patient_params
-      params.expect(patient: [ :uuid, :first_name, :last_name, :administrative_gender, :birth_date, :email, :phone_number, :social_security_number, :address_line1, :address_line2, :address_city, :address_state, :address_zip_code, :social_security_number, :passport_number, :drivers_license_number ])
+      params.expect(patient: [ :first_name, :last_name, :administrative_gender, :birth_date, :email, :phone_number, :social_security_number, :address_line1, :address_line2, :address_city, :address_state, :address_zip_code, :social_security_number, :passport_number, :drivers_license_number ])
     end
 end
