@@ -53,5 +53,5 @@ without any edits and the master key will be automatically created.
 
 ### Tech Stack
 
-Rails 8 with SQLite3, ESBuild, Bootstrap 5.3. Action Mailbox, and Turbo.
-JBuilder and ActionMailbox were excluded.
+Rails 8 with SQLite3, ESBuild, Bootstrap 5.3, and all other default options,
+except JBuilder and ActionMailbox which were excluded.
