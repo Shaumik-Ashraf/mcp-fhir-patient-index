@@ -10,7 +10,7 @@ Developer log and backlog of tasks.
 - [ ] Implement Patient edit and update
 - [ ] Implement Patient snapshots and versioning
 - [ ] Implement Patient hard-destroy
-- [ ] Implement skeleton FHIR server
+- [x] Implement skeleton FHIR server
 - [ ] Implement FHIR patient read API
 - [ ] Implement FHIR Capability Statement
 - [ ] Add Inferno end-to-end tests
