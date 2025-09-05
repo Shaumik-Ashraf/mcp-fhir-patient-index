@@ -34,7 +34,7 @@ class Patient < ApplicationRecord
 
   # @return [Hash] - Patient attributes from clinical setting only (not code infrastructure)
   def clinical_attributes
-    attributes.slice(Patient.clinical_attributes)
+    attributes.symbolize_keys.slice(*Patient.clinical_attributes)
   end
 
   # @return [String] - override URL ID

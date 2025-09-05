@@ -76,9 +76,9 @@ RSpec.describe "/patients", type: :request do
         }.to change(Patient, :count).by(0)
       end
 
-      it "renders a response with 422 status (i.e. to display the 'new' template)" do
+      it "renders a response with 400 status (i.e. to display the 'new' template)" do
         post patients_url, params: { patient: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_content)
+        expect(response).to have_http_status(:bad_request) # new behavior for rails parameters `expect`
       end
     end
   end
@@ -105,10 +105,10 @@ RSpec.describe "/patients", type: :request do
     end
 
     context "with invalid parameters" do
-      it "renders a response with 422 status (i.e. to display the 'edit' template)" do
+      it "renders a response with 400 status (i.e. to display the 'edit' template)" do
         patient = Patient.create! valid_attributes
         patch patient_url(patient), params: { patient: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_content)
+        expect(response).to have_http_status(:bad_request) # new behavior for rails parameters `expect`
       end
     end
   end
