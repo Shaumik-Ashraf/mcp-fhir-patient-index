@@ -9,7 +9,7 @@ in Rails 8 with a conformant [FHIR](https://www.hl7.org/fhir/summary.html)
 API and [Model Context Protocol (MCP)](https://modelcontextprotocol.io/about) for LLM
 integration.
 
-## FEATURES
+## Features
 
 - Built-in MCP server
 - Built-in minimalistic FHIR server
@@ -31,9 +31,17 @@ and do a secure deployment with SOC-II compliance.**
 1. Ensure you have Docker running
 2. If it's your first time, create a master key with `bin/rails credentials:edit`. Exit the editor
 without any edits and the master key will be automatically created.
-3. Build image: `docker build -t mcp_fhir_patient_index .`
+3. Build image:
+
+```
+docker build -t mcp_fhir_patient_index .
+```
+
 4. Run container:
-`docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name mcp_fhir_patient_index mcp_fhir_patient_index`
+
+```
+docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name mcp_fhir_patient_index mcp_fhir_patient_index
+```
 
 ## Developer Start
 
