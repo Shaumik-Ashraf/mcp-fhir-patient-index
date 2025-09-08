@@ -42,6 +42,59 @@ class Patient < ApplicationRecord
     uuid
   end
 
+  # @return [FHIR::Patient]
+  # @example
+  #   Patient.first.to_fhir.to_json # => get FHIR JSON
+  #   Patient.first.to_fhir.to_xml  # => get FHIR XML
+  def to_fhir
+    FHIR::Patient.new(
+      {
+        name: FHIR::HumanName.new(
+          {
+            family: self.last_name,
+            given: [ self.first_name ]
+          }
+        ),
+        gender: self.administrative_gender,
+        birthDate: self.birth_date.strftime("%Y-%m-%d"),
+        address: [FHIR::Address.new(
+          {
+            line: [ self.address_line1, self.address_line2 ].compact,
+            city: self.address_city,
+            state: self.address_state,
+            postalCode: self.address_zip_code,
+            country: "US" # constraint
+          }
+        )],
+        telecom: [
+          FHIR::ContactPoint.new({ system: "email", value: self.email }),
+          FHIR::ContactPoint.new({ system: "phone", value: self.phone_number })
+        ],
+        identifier: [
+          FHIR::Identifier.new(
+            {
+              type:
+                {
+                  coding:
+                    [
+                      FHIR::Coding.new(
+                        {
+                          system: "http://terminology.hl7.org/CodeSystem/v2-0203",
+                          code: "DL" # DL # PPN # SS # MR
+                        }
+                      )
+                    ]
+                },
+              value: self.drivers_license_number
+            }
+          ),
+          # TODO: passport number (PPN) and social (SS) and uuid (MR)
+        ]
+      }
+    )
+  end
+
+
   private
 
   def self.random_attributes

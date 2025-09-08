@@ -16,6 +16,12 @@ integration.
 - Create, read, update, and destroy patients
 - User friendly and customizable UI
 
+## Constraints
+
+- Supports US (en-speaking) patients only (no I18n)
+- Supports FHIR R4 only
+
+
 **This app has is not ready for real-patient data out of the box. For real-world use,
 you must [regenerate credentials](https://guides.rubyonrails.org/security.html#custom-credentials),
 and do a secure deployment with SOC-II compliance.** 
