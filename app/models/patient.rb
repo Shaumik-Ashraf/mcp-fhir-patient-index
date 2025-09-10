@@ -126,7 +126,7 @@ class Patient < ApplicationRecord
 
     # FHIR encourages having a text representation built into resources as a fail safe,
     # although due to the risk of injection attacks I'm not sure how many FHIR vendors support it.
-    fhir_patient.text = FHIR::Narrative.new({ status: "generated", div: %Q[<div xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">#{self.to_text}</div>] })
+    fhir_patient.text = FHIR::Narrative.new({ status: "generated", div: %Q(<div xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">#{self.to_text}</div>) })
     fhir_patient
   end
 
