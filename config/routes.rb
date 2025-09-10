@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   namespace :fhir do
     namespace :r4 do
       get "metadata", { controller: :metadata, action: :index }
+
+      get "Patient/:uuid", to: "patients#show", as: :patient
+      get "Patient", to: "patients#index", as: :patients
     end
   end
 
