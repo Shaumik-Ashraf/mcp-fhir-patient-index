@@ -417,6 +417,7 @@ DEPENDENCIES
   fhir_models (~> 5.0)
   jsbundling-rails
   kamal
+  nokogiri
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)
