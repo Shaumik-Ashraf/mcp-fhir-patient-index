@@ -9,8 +9,8 @@ module FHIR
                  FHIR::Bundle.new(
                  {
                    type: "searchset",
-                   total: Patient.count,
-                   entry: Patient.all.map do |patient|
+                   total: ::Patient.count,
+                   entry: ::Patient.all.map do |patient|
                      FHIR::BackboneElement.new(
                        {
                          fullUrl: Rails.application.routes.url_helpers.fhir_r4_patient_url(patient),
@@ -24,7 +24,7 @@ module FHIR
 
       # GET /fhir/r4/Patient/123
       def show
-        render json: Patient.find_by_uuid!(params[:uuid]).to_fhir
+        render json: ::Patient.find_by_uuid!(params[:uuid]).to_fhir
       end
     end
   end
