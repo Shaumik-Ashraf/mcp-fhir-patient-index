@@ -69,3 +69,15 @@ docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name
 
 Rails 8 with SQLite3, ESBuild, Bootstrap 5.3, and all other default options,
 except JBuilder and ActionMailbox which were excluded.
+
+## License
+
+Copyright &copy; 2025 Shaumik Ashraf
+
+This project is under the MIT License. You can view the license at
+[LICENSE.txt](https://github.com/Shaumik-Ashraf/mcp-fhir-patient-index/blob/main/LICENSE.txt).
+
+## Trademark Notice
+
+HL7, FHIR and the FHIR [FLAME DESIGN] are the registered trademarks of Health
+Level Seven International and their use does not constitute endorsement by HL7.
