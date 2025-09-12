@@ -6,6 +6,11 @@ plugins: rubocop-rspec
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
+AllCops:
+  Exclude:
+    - "inferno-tests/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
 RSpec/ExampleLength:
   Enabled: false
 RSpec/IncludeExamples:
