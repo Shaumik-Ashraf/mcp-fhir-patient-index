@@ -52,7 +52,7 @@ group :development, :test do
 
   # Use RSpec+ testing suite
   gem "rspec-rails", "~> 8.0.0"
-  gem "factory_bot_rails", "~> 6.5.0"
+  gem "factory_bot_rails", "~> 6.5.1"
   gem "rubocop-rspec", require: false
 
   gem "nokogiri"
