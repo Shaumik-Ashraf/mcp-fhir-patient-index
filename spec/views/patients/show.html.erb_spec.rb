@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "patients/show", type: :view do
   let(:patient) { create(:patient) }
 
-  before(:each) do
+  before do
     assign(:patient, Patient.create!(
       first_name: "First Name",
       last_name: "Last Name",
@@ -21,6 +21,8 @@ RSpec.describe "patients/show", type: :view do
     ))
   end
 
+  # TODO: redo spec when views are improved
+  # rubocop:disable RSpec/MultipleExpectations
   it "renders attributes" do
     render
 
@@ -38,4 +40,5 @@ RSpec.describe "patients/show", type: :view do
     expect(rendered).to match(/P88888888/)
     expect(rendered).to match(/D7777777/)
   end
+  # rubocop:enable RSpec/MultipleExpectations
 end

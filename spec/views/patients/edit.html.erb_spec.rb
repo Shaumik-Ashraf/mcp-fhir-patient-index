@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "patients/edit", type: :view do
   let(:patient) { create(:patient) }
 
-  before(:each) do
+  before do
     assign(:patient, patient)
   end
 

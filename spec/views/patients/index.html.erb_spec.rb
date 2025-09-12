@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "patients/index", type: :view do
-  before(:each) do
+  before do
     assign(:patients, create_list(:patient, 2))
   end
 

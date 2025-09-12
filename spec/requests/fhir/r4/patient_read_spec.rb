@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "/fhir/r4/Patient/:uuid", type: :request do
-  before(:each) do
+  before do
     create(:patient, first_name: "PATIENT_READ_TEST")
   end
 

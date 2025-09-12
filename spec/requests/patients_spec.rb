@@ -73,7 +73,7 @@ RSpec.describe "/patients", type: :request do
       it "does not create a new Patient" do
         expect {
           post patients_url, params: { patient: invalid_attributes }
-        }.to change(Patient, :count).by(0)
+        }.not_to change(Patient, :count)
       end
 
       it "renders a response with 400 status (i.e. to display the 'new' template)" do

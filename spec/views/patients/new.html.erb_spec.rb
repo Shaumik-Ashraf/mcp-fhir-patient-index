@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "patients/new", type: :view do
-  before(:each) do
+  before do
     assign(:patient, build(:patient))
   end
 

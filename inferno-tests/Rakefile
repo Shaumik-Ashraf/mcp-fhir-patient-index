@@ -7,7 +7,7 @@ end
 
 namespace :db do
   desc 'Apply changes to the database'
-  task :migrate do
+  task migrate: :environment do
     require 'inferno/config/application'
     require 'inferno/utils/migration'
     Inferno::Utils::Migration.new.run
