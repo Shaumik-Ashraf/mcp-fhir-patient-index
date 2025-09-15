@@ -1,25 +1,37 @@
 require_relative 'metadata'
-require_relative 'patient_group'
+require_relative 'server_suite/patient_group'
 
 module InfernoTests
-  class Suite < Inferno::TestSuite
+  class ServerSuite < Inferno::TestSuite
     id :inferno_tests
-    title 'Inferno Tests Test Suite'
-    description 'Inferno tests test suite.'
+    title 'Inferno Tests'
+    description <<~DESCRIPTION
+      This Inferno Test Suite houses tests for MCP FHIR Patient Index project's
+      FHIR interface.
 
-    # These inputs will be available to all tests in this suite
+      See the [Github repository](https://github.com/Shaumik-Ashraf/mcp-fhir-patient-index)
+      for more information on the project.
+
+      See the [Inferno Framework](https://inferno-framework.github.io/) for instructions
+      on running and developing these tests.
+
+      See the [FHIR R4 index](https://hl7.org/fhir/R4/index.html) for the FHIR
+      specification.
+    DESCRIPTION
+
     input :url,
           title: 'FHIR Server Base Url'
 
-    input :credentials,
-          title: 'OAuth Credentials',
-          type: :auth_info,
-          optional: true
+    # TODO: uncomment once authorization is impl on the server
+    # input :credentials,
+    #       title: 'OAuth Credentials',
+    #       type: :auth_info,
+    #       optional: true
 
     # All FHIR requests in this suite will use this FHIR client
     fhir_client do
       url :url
-      auth_info :credentials
+      # auth_info :credentials
     end
 
     # All FHIR validation requests will use this FHIR validator
