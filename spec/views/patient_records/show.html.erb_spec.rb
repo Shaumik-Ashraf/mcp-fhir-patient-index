@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "patients/show", type: :view do
+RSpec.describe "patient_records/show", type: :view do
   let(:patient) { create(:patient) }
 
   before do
-    assign(:patient, Patient.create!(
+    assign(:patient_record, PatientRecord.create!(
       first_name: "First Name",
       last_name: "Last Name",
       administrative_gender: 2,

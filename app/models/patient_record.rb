@@ -1,4 +1,4 @@
-class Patient < ApplicationRecord
+class PatientRecord < ApplicationRecord
   enum :administrative_gender, %i[male female other unknown]
 
   before_create do
@@ -6,19 +6,19 @@ class Patient < ApplicationRecord
   end
 
   # @param [Hash] attributes - specify certain patient attributes
-  # @return [Patient] unsaved instance
+  # @return [PatientRecord] unsaved instance
   def self.build_random(**attributes)
     self.build(random_attributes.merge(attributes))
   end
 
   # @param [Hash] attributes - specify certain patient attributes
-  # @return [Patient]
+  # @return [PatientRecord]
   def self.create_random(**attributes)
     self.create(random_attributes.merge(attributes))
   end
 
   # @param [Hash] attributes - specify certain patient attributes
-  # @return [Patient]
+  # @return [PatientRecord]
   # @raises [ActiveRecord::RecordInvalid]
   def self.create_random!(**attributes)
     patient = self.create_random(attributes)
@@ -34,7 +34,7 @@ class Patient < ApplicationRecord
 
   # @return [Hash] - Patient attributes from clinical setting only (not code infrastructure)
   def clinical_attributes
-    attributes.symbolize_keys.slice(*Patient.clinical_attributes)
+    attributes.symbolize_keys.slice(*PatientRecord.clinical_attributes)
   end
 
   # @return [String] - override URL ID
@@ -61,8 +61,8 @@ class Patient < ApplicationRecord
 
   # @return [FHIR::Patient]
   # @example
-  #   Patient.first.to_fhir.to_json # => get FHIR JSON
-  #   Patient.first.to_fhir.to_xml  # => get FHIR XML
+  #   PatientRecord.first.to_fhir.to_json # => get FHIR JSON
+  #   PatientRecord.first.to_fhir.to_xml  # => get FHIR XML
   def to_fhir
     fhir_patient = FHIR::Patient.new(
       {
@@ -172,7 +172,7 @@ class Patient < ApplicationRecord
     {
       first_name: Faker::Name.first_name,
       last_name: Faker::Name.last_name,
-      administrative_gender: Patient.administrative_genders.keys.sample,
+      administrative_gender: PatientRecord.administrative_genders.keys.sample,
       birth_date: Faker::Date.birthday(min_age: 18, max_age: 129),
       email: Faker::Internet.email,
       phone_number: Faker::PhoneNumber.phone_number,
@@ -214,3 +214,4 @@ class Patient < ApplicationRecord
     [ address_line1, address_line2, address_city, address_state, address_zip_code ].map(&:presence).compact.join(", ")
   end
 end
+

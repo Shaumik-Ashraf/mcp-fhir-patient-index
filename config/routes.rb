@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :patients
+  # Alias patients resource to patient_records
+  resources :patients, controller: "patient_records"
+  resources :patient_records
+
   get "pages/index"
   root to: "pages#index"
 

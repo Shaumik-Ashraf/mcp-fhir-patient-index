@@ -14,7 +14,7 @@ require 'rails_helper'
 
 RSpec.describe "/patients", type: :request do
   # This should return the minimal set of attributes required to create a valid
-  # Patient. As you add validations to Patient, be sure to
+  # PatientRecord. As you add validations to PatientRecord, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     build(:patient).clinical_attributes
@@ -26,7 +26,7 @@ RSpec.describe "/patients", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Patient.create! valid_attributes
+      PatientRecord.create! valid_attributes
       get patients_url
       expect(response).to be_successful
     end
@@ -34,7 +34,7 @@ RSpec.describe "/patients", type: :request do
 
   describe "GET /show" do
     it "renders a successful response" do
-      patient = Patient.create! valid_attributes
+      patient = PatientRecord.create! valid_attributes
       get patient_url(patient)
       expect(response).to be_successful
     end
@@ -49,7 +49,7 @@ RSpec.describe "/patients", type: :request do
 
   describe "GET /edit" do
     it "renders a successful response" do
-      patient = Patient.create! valid_attributes
+      patient = PatientRecord.create! valid_attributes
       get edit_patient_url(patient)
       expect(response).to be_successful
     end
@@ -57,27 +57,27 @@ RSpec.describe "/patients", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Patient" do
+      it "creates a new Patient Record" do
         expect {
-          post patients_url, params: { patient: valid_attributes }
-        }.to change(Patient, :count).by(1)
+          post patients_url, params: { patient_record: valid_attributes }
+        }.to change(PatientRecord, :count).by(1)
       end
 
       it "redirects to the created patient" do
-        post patients_url, params: { patient: valid_attributes }
-        expect(response).to redirect_to(patient_url(Patient.last))
+        post patients_url, params: { patient_record: valid_attributes }
+        expect(response).to redirect_to(patient_record_url(PatientRecord.last))
       end
     end
 
     context "with invalid parameters" do
-      it "does not create a new Patient" do
+      it "does not create a new Patient Record" do
         expect {
-          post patients_url, params: { patient: invalid_attributes }
-        }.not_to change(Patient, :count)
+          post patients_url, params: { patient_record: invalid_attributes }
+        }.not_to change(PatientRecord, :count)
       end
 
       it "renders a response with 400 status (i.e. to display the 'new' template)" do
-        post patients_url, params: { patient: invalid_attributes }
+        post patients_url, params: { patient_record: invalid_attributes }
         expect(response).to have_http_status(:bad_request) # new behavior for rails parameters `expect`
       end
     end
@@ -86,28 +86,28 @@ RSpec.describe "/patients", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+         { last_name: "TEST UPDATE" }
       }
 
       it "updates the requested patient" do
-        patient = Patient.create! valid_attributes
-        patch patient_url(patient), params: { patient: new_attributes }
+        patient = PatientRecord.create! valid_attributes
+        patch patient_url(patient), params: { patient_record: new_attributes }
         patient.reload
-        skip("Add assertions for updated state")
+        expect(patient.last_name).to eq("TEST UPDATE")
       end
 
       it "redirects to the patient" do
-        patient = Patient.create! valid_attributes
-        patch patient_url(patient), params: { patient: new_attributes }
+        patient = PatientRecord.create! valid_attributes
+        patch patient_url(patient), params: { patient_record: new_attributes }
         patient.reload
-        expect(response).to redirect_to(patient_url(patient))
+        expect(response).to redirect_to(patient_record_url(patient))
       end
     end
 
     context "with invalid parameters" do
       it "renders a response with 400 status (i.e. to display the 'edit' template)" do
-        patient = Patient.create! valid_attributes
-        patch patient_url(patient), params: { patient: invalid_attributes }
+        patient = PatientRecord.create! valid_attributes
+        patch patient_url(patient), params: { patient_record: invalid_attributes }
         expect(response).to have_http_status(:bad_request) # new behavior for rails parameters `expect`
       end
     end
@@ -115,14 +115,14 @@ RSpec.describe "/patients", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the requested patient" do
-      patient = Patient.create! valid_attributes
+      patient = PatientRecord.create! valid_attributes
       expect {
         delete patient_url(patient)
-      }.to change(Patient, :count).by(-1)
+      }.to change(PatientRecord, :count).by(-1)
     end
 
     it "redirects to the patients list" do
-      patient = Patient.create! valid_attributes
+      patient = PatientRecord.create! valid_attributes
       delete patient_url(patient)
       expect(response).to redirect_to(patients_url)
     end

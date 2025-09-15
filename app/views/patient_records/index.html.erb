@@ -8,8 +8,8 @@
   </div>
 
   <div class="row row-cols-4" id="patients">
-    <% @patients.each do |patient| %>
-	    <%= render "patients/patient", patient: patient %>
+    <% @patient_records.each do |patient_record| %>
+	    <%= render "patient_records/patient_record", patient: patient_record %>
     <% end %>
   </div>
 </div>

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Patient, type: :model do
+RSpec.describe PatientRecord, type: :model do
   let(:patient) { create(:patient) }
 
   it "can instantiate random patient" do

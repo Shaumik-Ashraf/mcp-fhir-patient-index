@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row justify-content-between">
   	<div class="col">
-	    <h1>Editing Patient#<%= @patient.id %></h1>
+	    <h1>Editing Patient Record <%= @patient_record.uuid %></h1>
 	  <div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col" id="<%= dom_id @patient %>">
-	    <%= render "form", patient: @patient %>
+    <div class="col" id="<%= dom_id @patient_record %>">
+	    <%= render "form", patient: @patient_record %>
 	  </div>
   </div>
 </div>

@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_29_032327) do
-  create_table "patients", force: :cascade do |t|
+ActiveRecord::Schema[8.0].define(version: 2025_09_15_215712) do
+  create_table "patient_records", force: :cascade do |t|
     t.string "uuid", null: false
     t.string "first_name"
     t.string "last_name"
@@ -29,6 +29,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_032327) do
     t.string "drivers_license_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["uuid"], name: "index_patients_on_uuid", unique: true
+    t.index ["uuid"], name: "index_patient_records_on_uuid", unique: true
   end
 end

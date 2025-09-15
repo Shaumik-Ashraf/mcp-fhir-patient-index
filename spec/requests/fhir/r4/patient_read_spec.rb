@@ -5,7 +5,7 @@ RSpec.describe "/fhir/r4/Patient/:uuid", type: :request do
     create(:patient, first_name: "PATIENT_READ_TEST")
   end
 
-  let(:patient) { Patient.find_by!(first_name: "PATIENT_READ_TEST") }
+  let(:patient) { PatientRecord.find_by!(first_name: "PATIENT_READ_TEST") }
 
   it "returns 200 ok" do
     get fhir_r4_patient_url(patient)
