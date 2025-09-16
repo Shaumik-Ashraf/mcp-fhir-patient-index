@@ -1,0 +1,13 @@
+{
+  "title": "Dev",
+  "id": "development_preset",
+  "test_suite_id": "inferno_tests",
+  "inputs": [
+    {
+      "name": "url",
+		  "value": "http://127.0.0.1:3000/fhir/r4",
+      "_title": "FHIR Server Base Url",
+      "_type": "text"
+    }
+  ]
+}
