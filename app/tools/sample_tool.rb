@@ -9,7 +9,7 @@ class SampleTool < ApplicationTool
   end
 
   def call(id:, prefix: 'Hey')
-    user = User.find(id)
+    user = PatientRecord.find(id)
 
     "#{prefix} #{user.first_name} !"
   end
