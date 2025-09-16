@@ -11,6 +11,7 @@ AllCops:
     - "inferno-tests/**/*"
     - "tmp/**/*"
     - "vendor/**/*"
+    - "mock_mcp_server.rb"
 RSpec/ExampleLength:
   Enabled: false
 RSpec/IncludeExamples:
