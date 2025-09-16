@@ -28,7 +28,7 @@ module InfernoTests
                "Bundle response must contain at least 1 Patient resource"
         assert_valid_bundle_entries(resource_types: 'Patient')
 
-        output patient_id: resource.entry.find { |entry| entry.resource.resourceType == 'Patient' }.resource
+        output patient_id: resource.entry.find { |entry| entry.resource.resourceType == 'Patient' }.resource.id
       end
     end
 
