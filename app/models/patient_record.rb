@@ -214,4 +214,3 @@ class PatientRecord < ApplicationRecord
     [ address_line1, address_line2, address_city, address_state, address_zip_code ].map(&:presence).compact.join(", ")
   end
 end
-
