@@ -1,6 +1,6 @@
 module MCP # NOTE: namespace collision with MCP gem
   module V20250618
-    class ApplicationController < ::ApplicationController
+    class ApplicationController < ::ActionController::Base
       skip_forgery_protection
 
       def index
