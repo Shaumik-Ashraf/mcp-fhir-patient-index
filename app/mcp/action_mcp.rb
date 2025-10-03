@@ -15,13 +15,13 @@ class ActionMCP
     tools: [],
     prompts: [],
     resources: [
-      ApplicationResource.new(
-        uri: "http://example.com/info",
-        name: "patient_resource",
-        title: "Patient Resource",
-        description: "MCP server resource for Patient Records.",
-        mime_type: "text/plain"
-      )
+      # ApplicationResource.new(
+      #   uri: "http://example.com/info",
+      #   name: "patient_resource",
+      #   title: "Patient Resource",
+      #   description: "MCP server resource for Patient Records.",
+      #   mime_type: "text/plain"
+      # )
     ],
     resource_templates: [
       ApplicationResourceTemplate.new(
@@ -36,13 +36,14 @@ class ActionMCP
   )
 
   @@server.resources_read_handler do |params|
+    pp params
     case params[:uri]
     when "http://example.com/info"
       { uri: "http://example.com/patient", mimeType: "text/plain", text: "This is a master patient index server that supports MCP." }
     when %r[http://example.com/patient]
       { uri: "http://example.com/patient", mimeType: "text/plain", text: PatientRecord.find_by!(uuid: params[:uuid]).to_text }
     else
-
+      # TODO
     end
   end
 
@@ -54,6 +55,7 @@ class ActionMCP
     Rails.logger.warn "ActionMCP Error: #{e}"
     { jsonrpc: "2.0", id: request.params[:id], error: { code: -32002, message: "Resource not found" } }
   rescue StandardError => e
+    pp e
     Rails.logger.error "ActionMCP Error: #{e}"
     { jsonrpc: "2.0", id: request.params[:id], error: { code: -32603, message: e.full_message, data: e.to_hash } }
   end
