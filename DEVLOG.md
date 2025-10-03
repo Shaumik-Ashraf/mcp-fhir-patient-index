@@ -7,9 +7,9 @@ Developer log and backlog of tasks.
 - [x] Draft initial Patient schema
 - [x] Implement Patient index view and read
 - [x] Implement Patient create
-- [ ] Implement Patient edit and update
+- [~] Implement Patient edit and update
 - [ ] Implement Patient snapshots and versioning
-- [ ] Implement Patient hard-destroy
+- [~] Implement Patient hard-destroy and soft-delete
 - [x] Implement skeleton FHIR server
 - [x] Implement FHIR patient read API
 - [x] Implement FHIR Capability Statement
