@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       post "/", { controller: :application, action: :index }
     end
   end
-  
+
   namespace :fhir do
     namespace :r4 do
       get "metadata", { controller: :metadata, action: :index }

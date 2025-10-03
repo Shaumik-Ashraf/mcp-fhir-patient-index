@@ -76,3 +76,5 @@ gem "simple_form", "~> 5.3"
 gem "fhir_models", "~> 5.0"
 
 gem "mcp", "~> 0.3.0"
+
+gem "rack-cors", "~> 3.0"
