@@ -1,0 +1,3 @@
+class PatientResourceTemplate < ApplicationResourceTemplate
+
+end

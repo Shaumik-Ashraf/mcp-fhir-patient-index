@@ -1,0 +1,2 @@
+class PatientResource
+end
