@@ -8,7 +8,7 @@ Dir.glob("**/*", base: __dir__).each { |dependency| require_relative dependency 
 #   end
 class ActionMCP
   SCHEME = "master-patient-index"
-  
+
   @@server = MCP::Server.new(
     name: "master_patient_index_mcp_server",
     title: "Master Patient Index",
@@ -45,14 +45,13 @@ class ActionMCP
   )
 
   @@server.resources_read_handler do |params|
-    pp params
     case params[:uri]
     when "#{SCHEME}://info"
-      { uri: "#{SCHEME}://info", mimeType: "text/plain", text: "This is a master patient index server that supports MCP." }
+      [{ uri: "#{SCHEME}://info", mimeType: "text/plain", text: "This is a master patient index server that supports MCP." }]
     when "#{SCHEME}://all"
-      { uri: "#{SCHEME}://all", mimeType: "text/plain", text: PatientRecord.all.map(&:to_text).join("\n\n") }
+      [{ uri: "#{SCHEME}://all", mimeType: "text/plain", text: PatientRecord.all.map(&:to_text).join("\n\n") }]
     when %r[#{Regexp.escape(SCHEME)}://patient]
-      { uri: "#{SCHEME}://patient", mimeType: "text/plain", text: PatientRecord.find_by!(uuid: params[:uuid]).to_text }
+      [{ uri: "#{SCHEME}://patient", mimeType: "text/plain", text: PatientRecord.find_by!(uuid: params[:uuid]).to_text }]
     else
       # TODO
     end
@@ -66,7 +65,6 @@ class ActionMCP
     Rails.logger.warn "ActionMCP Error: #{e}"
     { jsonrpc: "2.0", id: request.params[:id], error: { code: -32002, message: "Resource not found" } }
   rescue StandardError => e
-    pp e
     Rails.logger.error "ActionMCP Error: #{e}"
     { jsonrpc: "2.0", id: request.params[:id], error: { code: -32603, message: e.full_message, data: e.to_hash } }
   end
