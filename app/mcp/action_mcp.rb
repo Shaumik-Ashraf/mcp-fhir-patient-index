@@ -7,6 +7,8 @@ Dir.glob("**/*", base: __dir__).each { |dependency| require_relative dependency 
 #     end
 #   end
 class ActionMCP
+  SCHEME = "master-patient-index"
+  
   @@server = MCP::Server.new(
     name: "master_patient_index_mcp_server",
     title: "Master Patient Index",
@@ -15,17 +17,24 @@ class ActionMCP
     tools: [],
     prompts: [],
     resources: [
-      # ApplicationResource.new(
-      #   uri: "http://example.com/info",
-      #   name: "patient_resource",
-      #   title: "Patient Resource",
-      #   description: "MCP server resource for Patient Records.",
-      #   mime_type: "text/plain"
-      # )
+      ApplicationResource.new(
+        uri: "#{SCHEME}://info",
+        name: "info_resource",
+        title: "Patient Resource",
+        description: "MCP server resource for Patient Records.",
+        mime_type: "text/plain"
+      ),
+      ApplicationResource.new(
+        uri: "#{SCHEME}://all",
+        name: "all_patients_resource",
+        title: "All Patient Resources",
+        description: "All patient resources returned at once. This resource will not require pagination.",
+        mime_type: "text/plain"
+      )
     ],
     resource_templates: [
       ApplicationResourceTemplate.new(
-        uri_template: "http://example.com/patient/{uuid}",
+        uri_template: "#{SCHEME}://patient/{uuid}",
         name: "patient_resource_template",
         title: "Patient Resource parameterized by UUID",
         description: "Patient resource by primary id (UUID)",
@@ -38,10 +47,12 @@ class ActionMCP
   @@server.resources_read_handler do |params|
     pp params
     case params[:uri]
-    when "http://example.com/info"
-      { uri: "http://example.com/patient", mimeType: "text/plain", text: "This is a master patient index server that supports MCP." }
-    when %r[http://example.com/patient]
-      { uri: "http://example.com/patient", mimeType: "text/plain", text: PatientRecord.find_by!(uuid: params[:uuid]).to_text }
+    when "#{SCHEME}://info"
+      { uri: "#{SCHEME}://info", mimeType: "text/plain", text: "This is a master patient index server that supports MCP." }
+    when "#{SCHEME}://all"
+      { uri: "#{SCHEME}://all", mimeType: "text/plain", text: PatientRecord.all.map(&:to_text).join("\n\n") }
+    when %r[#{Regexp.escape(SCHEME)}://patient]
+      { uri: "#{SCHEME}://patient", mimeType: "text/plain", text: PatientRecord.find_by!(uuid: params[:uuid]).to_text }
     else
       # TODO
     end
