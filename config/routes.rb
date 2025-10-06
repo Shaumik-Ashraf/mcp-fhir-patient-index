@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
       get "Patient/:uuid", to: "patients#show", as: :patient
       get "Patient", to: "patients#index", as: :patients
+
+      get "/", to: -> { { status: 400 } }, as: :base
     end
   end
 
