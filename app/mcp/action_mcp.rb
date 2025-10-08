@@ -23,13 +23,17 @@ module ActionMCP
   INSTRUCTIONS = <<~EOT
     See https://github.com/Shaumik-Ashraf/mcp-fhir-patient-index/README.md
   EOT
-  ID_REGEX = "[A-Za-z0-9_-]+"
 
   @tools = []
   @prompts = []
-  @resources = []
-  @resource_templates = []
+  @resources = [] # Array<Hash<MCP::Resource, block>>
+  @resource_templates = [] # Array<ResourceTemplatewrapper>
 
+  # @param [String] endpoint - the mcp base name from which url and name are derived
+  # @param [String] mime_type
+  # @param [String] title - optional human friendly title. DRAFT item for MCP v20250618,
+  # @param [String] description - optional human friendly description
+  # @yield block that is called when MCP resource is queried
   def define_resource(endpoint, mime_type, title=nil, description=nil, &block)
     @resources ||= []
     @resources << {
@@ -39,41 +43,77 @@ module ActionMCP
         title:,
         description:,
         mime_type:
-      ) => block
+      ) => block # TODO: should this be a Proc/lambda instead (which have closure)?
     }
   end
 
-  def load_application_records_as_resource_templates(*klasses)
-    klasses.each do |klass|
-      @resource_templates << Struct.new(
-        mcp_resource_template: MCP::ResourceTemplate.new(
-          uri: "#{SCHEME}://#{klass.underscore.singularize}/{id}",
-          name: klass.to_s.underscore.singularize,
-          title: klass.to_s.humanize,
-          # omit description
-          mime_type: case klass
-                     when ->(k) { k.instance_methods.include? :to_text }
-                       "text/plain"
-                     when ->(k) { k.instance_methods.include? :to_json }
-                       "text/json"
-                     else
-                       raise StandardError, "ApplicationRecord #{klass} does not respond to #to_text or #to_json"
-                     end
-        ),
-        uri_regex: %r{#{Regexp.escape(klass.underscore.singularize)}/(#{ID_REGEX})},
-        blk: ->(params) { klass.find(params[:id]) }
+  # @private
+  class ResourceTemplateWrapper
+    ID_REGEX = "[A-Za-z0-9_-]+"
+
+    attr_reader :klass
+
+    def initialize(klass)
+      @klass = klass
+    end
+
+    def mcp_resource_template
+      @mcp_resource_template ||= MCP::ResourceTemplate.new(
+        uri_template: resource_template_uri(klass),
+        name: klass.to_s.underscore.singularize,
+        title: klass.to_s.humanize,
+        # omit description
+        mime_type: case klass
+                   when ->(k) { k.instance_methods.include? :to_text }
+                     "text/plain"
+                   when ->(k) { k.instance_methods.include? :to_json }
+                     "text/json"
+                   else
+                     raise StandardError, "#{klass} does not respond to #to_text or #to_json"
+                   end
       )
+    end
+
+    def name
+      mcp_resource_template.name
+    end
+
+    def uri_regex
+      resource_template_uri_regex(klass)
+    end
+
+    def blk
+      ->(params) { klass.find(params[:id]) }
+    end
+
+    private
+
+    def resource_template_uri(klass)
+      "#{resource_template_uri_prefix(klass)}/{id}"
+    end
+
+    def resource_template_uri_regex(klass)
+      %r{#{Regexp.escape(resource_template_uri_prefix(klass))}/(#{ID_REGEX})}
+    end
+
+    def resource_template_uri_prefix(klass)
+      "#{SCHEME}://#{klass.to_s.underscore.singularize}"
     end
   end
 
-  def resource_template_uri(klass)
-    "#{reource_template_uri_prefix}/{id}"
+  # Treat an ActiveRecord as an MCP resource template searchable by id
+  # @example
+  #   load_application_records_as_resource_templates(Post, Comment)
+  # @param [Array<Constants>] klasses
+  def load_application_records_as_resource_templates(*klasses)
+    @resource_templates ||= []
+    klasses.each do |klass|
+      @resource_templates << ResourceTemplateWrapper.new(klass)
+    end
   end
 
-  def resource_template_uri_prefix(klass)
-    "#{SCHEME}://#{klass.underscore.singularize}"
-  end
-
+  # Build server at run time
+  # @return [MCP::Server]
   def server
     define_resource "info", "text/plain", "MCP Server Information" do
       <<~EOT
@@ -89,7 +129,10 @@ module ActionMCP
 
     load_application_records_as_resource_templates(PatientRecord)
 
-    # TODO: create patient tool
+    # TODO: create patient too
+    puts "DEBUG: MCP Name: #{NAME}"
+    puts "DEBUG: MCP Resources: #{@resources.map(&:keys).flatten.map(&:name).join(', ')}"
+    puts "DEBUG: MCP Resource Templates: #{@resource_templates.map(&:name).join(', ')}"
 
     srv = MCP::Server.new(
       name: NAME,
@@ -98,16 +141,8 @@ module ActionMCP
       instructions: INSTRUCTIONS,
       tools: [],
       prompts: [],
-      resources: @resources.keys,
-      resource_templates: [
-        ApplicationResourceTemplate.new(
-          uri_template: "#{SCHEME}://patient/{uuid}",
-          name: "patient_resource_template",
-          title: "Patient Resource parameterized by UUID",
-          description: "Patient resource by primary id (UUID)",
-          mime_type: "text/plain"
-        )
-      ],
+      resources: @resources.map(&:keys).flatten,
+      resource_templates: @resource_templates.map(&:mcp_resource_template),
       server_context: {} # TODO https://github.com/modelcontextprotocol/ruby-sdk?tab=readme-ov-file#server_context
     )
 
@@ -136,12 +171,16 @@ module ActionMCP
         id: request.params[:id],
         error: { code: -32603, message: e.full_message, data: e.to_hash } }
     end
+
+    srv
   end
 
+  # @return [MCP::Server] for HTTP Streamable transport
   def mcp_streamable_http
     server
   end
 
+  # @return [MCP::Server::Transports::StdioTransport] server for stdio transport
   def mcp_stdio
     MCP::Server::Transports::StdioTransport.new(server)
   end
