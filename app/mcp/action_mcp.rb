@@ -129,10 +129,9 @@ module ActionMCP
 
     load_application_records_as_resource_templates(PatientRecord)
 
-    # TODO: create patient too
-    puts "DEBUG: MCP Name: #{NAME}"
-    puts "DEBUG: MCP Resources: #{@resources.map(&:keys).flatten.map(&:name).join(', ')}"
-    puts "DEBUG: MCP Resource Templates: #{@resource_templates.map(&:name).join(', ')}"
+    #puts "DEBUG: MCP Name: #{NAME}"
+    #puts "DEBUG: MCP Resources: #{@resources.map(&:keys).flatten.map(&:name).join(', ')}"
+    #puts "DEBUG: MCP Resource Templates: #{@resource_templates.map(&:name).join(', ')}"
 
     srv = MCP::Server.new(
       name: NAME,
