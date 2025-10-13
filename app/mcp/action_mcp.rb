@@ -24,8 +24,8 @@ module ActionMCP
 
   @tools = []
   @prompts = []
-  @resources = [] # Array<Hash<MCP::Resource, block>>
-  @resource_templates = [] # Array<ResourceTemplatewrapper>
+  @resources = [] # Array<ResourceWrapper>
+  @resource_templates = [] # Array<ResourceTemplateWrapper>
 
   # @param [String] endpoint - the mcp base name from which url and name are derived
   # @param [String] mime_type
@@ -60,12 +60,18 @@ module ActionMCP
     end
 
     def call
-      @callable.call
+      [{
+         uri: uri,
+         mimeType: mime_type,
+         text: @callable.call
+       }]
     end
   end
 
   # @private
   class ResourceTemplateWrapper
+    extend Forwardable
+
     ID_REGEX = "[A-Za-z0-9_-]+"
 
     attr_reader :klass
@@ -79,28 +85,34 @@ module ActionMCP
         uri_template: resource_template_uri(klass),
         name: klass.to_s.underscore.singularize,
         title: klass.to_s.humanize,
-        # omit description
+        description: "#{klass.to_s.humanize} resource parameterized by id",
         mime_type: case klass
                    when ->(k) { k.instance_methods.include? :to_text }
                      "text/plain"
-                   when ->(k) { k.instance_methods.include? :to_json }
-                     "text/json"
                    else
-                     raise StandardError, "#{klass} does not respond to #to_text or #to_json"
+                     raise StandardError, "#{klass} does not respond to #to_text"
                    end
       )
-    end
-
-    def name
-      mcp_resource_template.name
     end
 
     def uri_regex
       resource_template_uri_regex(klass)
     end
 
-    def blk
-      ->(params) { klass.find(params[:id]) }
+    def match?(params)
+      uri_regex.match? params[:uri]
+    end
+
+    def callable
+      Proc.new() { |params| klass.find_by!(id: params[:id])&.to_text }
+    end
+
+    def call(params)
+      [{
+         uri: params[:uri],
+         mimeType: mcp_resource_template.mime_type,
+         text: callable.call(params)
+       }]
     end
 
     private
@@ -146,10 +158,6 @@ module ActionMCP
 
     load_application_records_as_resource_templates(PatientRecord)
 
-    #puts "DEBUG: MCP Name: #{NAME}"
-    #puts "DEBUG: MCP Resources: #{@resources.map(&:keys).flatten.map(&:name).join(', ')}"
-    #puts "DEBUG: MCP Resource Templates: #{@resource_templates.map(&:name).join(', ')}"
-
     srv = MCP::Server.new(
       name: NAME,
       title: TITLE,
@@ -165,31 +173,33 @@ module ActionMCP
     srv.resources_read_handler do |params|
       if (resource_wrapper = @resources.find { |x| x.match? params })
         resource_wrapper.call
-      elsif (template_wrapper = @resource_templates.find { |x| x.uri_regex.match? params[:uri] })
-        template_wrapper.blk.call
-      # TODO: prompts, tools
+      elsif (template_wrapper = @resource_templates.find { |x| x.match? params }) # TODO: are resource templates also handled here? no documentation...
+        template_wrapper.call(params)
       else
-        $stderr.puts "ActionMCP Error 1: #{e}"
-        {
+        $stderr.puts "ActionMCP Error 1"
+        [{
           jsonrpc: "2.0",
-          id: request.params[:id],
+          id: params[:id],
+          #uri: params[:uri], 
           error: { code: -32002, message: "Resource not found" }
-        }
+        }]
       end
-    rescue ActiveRecord::RecordNotFound => e
-      $stderr.puts "ActionMCP Error 2: #{e}"
-      {
+    rescue ActiveRecord::RecordNotFound
+      $stderr.puts "ActionMCP Error 2: #{$!}"
+      [{
         jsonrpc: "2.0",
         id: request.params[:id],
+        #uri: params[:uri],
         error: { code: -32002, message: "Resource not found" }
-      }
-    rescue StandardError => e
-      $stderr.puts "ActionMCP Error 3: #{e}"
-      {
+      }]
+    rescue StandardError
+      $stderr.puts "ActionMCP Error 3: #{$!}"
+      [{
         jsonrpc: "2.0",
         id: request.params[:id],
-        error: { code: -32603, message: e.full_message, data: e.to_hash }
-      }
+        #uri: params[:uri],
+        error: { code: -32603, message: $!.full_message, data: $!.to_hash }
+      }]
     end
 
     srv
@@ -205,4 +215,3 @@ module ActionMCP
     MCP::Server::Transports::StdioTransport.new(server)
   end
 end
-
