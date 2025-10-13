@@ -1,5 +1,3 @@
-Dir.glob("**/*", base: __dir__).each { |dependency| require_relative dependency }
-
 # @example
 #   class MyController < ApplicationController
 #     include ActionMCP
@@ -19,7 +17,7 @@ module ActionMCP
   SCHEME = "master-patient-index"
   NAME = Rails.application.name.underscore
   TITLE = Rails.application.name.humanize
-  VERSION = "0.0.0" # TODO: consolidate versions across app, fhir, and mcp
+  VERSION = "0.1.0" # TODO: consolidate versions across app, fhir, and mcp
   INSTRUCTIONS = <<~EOT
     See https://github.com/Shaumik-Ashraf/mcp-fhir-patient-index/README.md
   EOT
@@ -31,20 +29,39 @@ module ActionMCP
 
   # @param [String] endpoint - the mcp base name from which url and name are derived
   # @param [String] mime_type
-  # @param [String] title - optional human friendly title. DRAFT item for MCP v20250618,
-  # @param [String] description - optional human friendly description
   # @yield block that is called when MCP resource is queried
-  def define_resource(endpoint, mime_type, title=nil, description=nil, &block)
+  def define_resource(endpoint, mime_type, title, description, callable)
     @resources ||= []
-    @resources << {
-      MCP::Resource.new(
+    @resources << ResourceWrapper.new(endpoint, mime_type, title, description, callable)
+  end
+
+  # @private
+  class ResourceWrapper
+    extend Forwardable
+
+    attr_reader :mcp_resource
+    attr_reader :callable
+
+    def_delegators :@mcp_resource, :uri, :name, :title, :description, :mime_type
+
+    def initialize(endpoint, mime_type, title, description, callable)
+      @mcp_resource = MCP::Resource.new(
         uri: "#{SCHEME}://#{endpoint}",
         name: endpoint.to_s.underscore,
         title:,
         description:,
         mime_type:
-      ) => block # TODO: should this be a Proc/lambda instead (which have closure)?
-    }
+      )
+      @callable = callable
+    end
+
+    def match?(params)
+      self.uri == params[:uri]
+    end
+
+    def call
+      @callable.call
+    end
   end
 
   # @private
@@ -115,17 +132,17 @@ module ActionMCP
   # Build server at run time
   # @return [MCP::Server]
   def server
-    define_resource "info", "text/plain", "MCP Server Information" do
+    define_resource "info", "text/plain", "Retrieve MCP Server Info", "...", (lambda do
       <<~EOT
         This is a master patient index server that supports model context
         protocol (MCP). It contains patient records of demographic information
         for retrieval, matching, and de-duplication.
       EOT
-    end
+    end)
 
-    define_resource "all", "text/plain", "All", "Retrieve all patient records" do
+    define_resource "all", "text/plain", "Retrieve all Patient Records", "...", (lambda do
       PatientRecord.all.map(&:to_text).join("\n")
-    end
+    end)
 
     load_application_records_as_resource_templates(PatientRecord)
 
@@ -140,35 +157,39 @@ module ActionMCP
       instructions: INSTRUCTIONS,
       tools: [],
       prompts: [],
-      resources: @resources.map(&:keys).flatten,
+      resources: @resources.map(&:mcp_resource),
       resource_templates: @resource_templates.map(&:mcp_resource_template),
       server_context: {} # TODO https://github.com/modelcontextprotocol/ruby-sdk?tab=readme-ov-file#server_context
     )
 
     srv.resources_read_handler do |params|
-      @resources.each do |mcp_resource, blk|
-        if mcp_resource.uri == params[:uri]
-          return blk.call
-        end
+      if (resource_wrapper = @resources.find { |x| x.match? params })
+        resource_wrapper.call
+      elsif (template_wrapper = @resource_templates.find { |x| x.uri_regex.match? params[:uri] })
+        template_wrapper.blk.call
+      # TODO: prompts, tools
+      else
+        $stderr.puts "ActionMCP Error 1: #{e}"
+        {
+          jsonrpc: "2.0",
+          id: request.params[:id],
+          error: { code: -32002, message: "Resource not found" }
+        }
       end
-
-      @resource_templates.each do |struct|
-        if struct.uri_regex.match? params[:uri]
-          return struct.blk.call
-        end
-      end
-
-      raise StandardError, "MCP Parameters did not map to a tool, prompt, resource, or resource template: #{params}"
     rescue ActiveRecord::RecordNotFound => e
-      $stderr.puts "ActionMCP Error 1: #{e}"
-      { jsonrpc: "2.0",
-        id: request.params[:id],
-        error: { code: -32002, message: "Resource not found" } }
-    rescue StandardError => e
       $stderr.puts "ActionMCP Error 2: #{e}"
-      { jsonrpc: "2.0",
+      {
+        jsonrpc: "2.0",
         id: request.params[:id],
-        error: { code: -32603, message: e.full_message, data: e.to_hash } }
+        error: { code: -32002, message: "Resource not found" }
+      }
+    rescue StandardError => e
+      $stderr.puts "ActionMCP Error 3: #{e}"
+      {
+        jsonrpc: "2.0",
+        id: request.params[:id],
+        error: { code: -32603, message: e.full_message, data: e.to_hash }
+      }
     end
 
     srv
@@ -184,3 +205,4 @@ module ActionMCP
     MCP::Server::Transports::StdioTransport.new(server)
   end
 end
+
