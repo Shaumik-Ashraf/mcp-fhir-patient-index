@@ -160,12 +160,12 @@ module ActionMCP
 
       raise StandardError, "MCP Parameters did not map to a tool, prompt, resource, or resource template: #{params}"
     rescue ActiveRecord::RecordNotFound => e
-      Rails.logger.warn "ActionMCP Error: #{e}"
+      $stderr.puts "ActionMCP Error 1: #{e}"
       { jsonrpc: "2.0",
         id: request.params[:id],
         error: { code: -32002, message: "Resource not found" } }
     rescue StandardError => e
-      Rails.logger.error "ActionMCP Error: #{e}"
+      $stderr.puts "ActionMCP Error 2: #{e}"
       { jsonrpc: "2.0",
         id: request.params[:id],
         error: { code: -32603, message: e.full_message, data: e.to_hash } }
