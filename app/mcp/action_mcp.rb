@@ -158,7 +158,7 @@ module ActionMCP
 
     load_application_records_as_resource_templates(PatientRecord)
 
-    configuration = MCP::Configuration.new
+    configuration = MCP::Configuration.new(protocol_version: "2025-06-18")
     configuration.exception_reporter = ->(exception, server_context) do
       $stderr.puts "Exception Reported: #{exception}"
       $stderr.puts "Context: #{server_context}"
@@ -184,19 +184,15 @@ module ActionMCP
     srv.resources_read_handler do |params|
       if (resource_wrapper = @resources.find { |x| x.match? params })
         resource_wrapper.call
-      elsif (template_wrapper = @resource_templates.find { |x| x.match? params }) # TODO: are resource templates also handled here? no documentation...
+      elsif (template_wrapper = @resource_templates.find { |x| x.match? params })
         template_wrapper.call(params)
       else
-        [{ error: { code: -32002, message: "Resource not found." } }] # TODO: figure out how to make this NO-OP/Not Found
+        raise StandardError, "Resource #{params[:uri]} not found"
+        # TODO: Get MCP Ruby SDK to return a -32002 code which is a SHOULD under mcp spec
+        # Returning the error JSON payload directly causes it to get wrapped in a
+        # "positive response" payload creating an erroneous response. Raising
+        # any exception only causes -32603 internal error response.
       end
-    rescue StandardError
-      $stderr.puts "ActionMCP Error 3: #{$!}"
-      [{
-        #jsonrpc: "2.0",
-        #id: request.params[:id],
-        #uri: params[:uri],
-        error: { code: -32603, message: $!.full_message }
-      }]
     end
 
     srv
