@@ -1,5 +1,5 @@
 namespace :mcp do
-  task :load => [:environment] do
+  task load: [ :environment ] do
     include ApplicationMCP
   end
 

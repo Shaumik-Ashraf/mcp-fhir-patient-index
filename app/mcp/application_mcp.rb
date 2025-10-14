@@ -62,11 +62,11 @@ module ApplicationMCP
     end
 
     def call
-      [{
+      [ {
          uri: uri,
          mimeType: mime_type,
          text: @callable.call
-       }]
+       } ]
     end
   end
 
@@ -113,11 +113,11 @@ module ApplicationMCP
     end
 
     def call(params)
-      [{
+      [ {
          uri: params[:uri],
          mimeType: mcp_resource_template.mime_type,
          text: callable.call(params)
-       }]
+       } ]
     end
 
     private

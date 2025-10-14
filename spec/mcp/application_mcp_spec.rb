@@ -7,7 +7,7 @@ RSpec.describe ApplicationMCP do
   let(:initialize_request) { mcp_request_base.merge({ method: :initialize }) }
   let(:list_resource_request) { mcp_request_base.merge({ method: "resources/list" }) }
   let(:read_resource_request) { mcp_request_base.merge({ method: "resources/read", params: { uri: "master-patient-index://info" } }) }
-  #let(:list_resource_template_request) { mcp_request_base.merge({ method: "resources/templates/list" }) }
+  # let(:list_resource_template_request) { mcp_request_base.merge({ method: "resources/templates/list" }) }
 
   let :mcp_server do
     Class.new do
@@ -27,8 +27,8 @@ RSpec.describe ApplicationMCP do
     end
 
     it "handles ping request" do
-      payload = send_to_server(initialize_request)
-      expect(payload["result"]).to be_truthy
+      payload = send_to_server(ping_request)
+      expect(payload["result"]).to eq({})
     end
 
     it "handles resources list request" do
