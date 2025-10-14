@@ -1,6 +1,6 @@
 namespace :mcp do
   task :load => [:environment] do
-    include ActionMCP
+    include ApplicationMCP
   end
 
   desc "Run MCP Server in STDIO mode"

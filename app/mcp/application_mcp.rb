@@ -171,7 +171,7 @@ module ApplicationMCP
     end
 
     configuration.instrumentation_callback = ->(data) do
-      $stderr.puts "Instrumentation callback: #{data}"
+      # $stderr.puts "Instrumentation callback: #{data}"
     end
 
     srv = MCP::Server.new(
