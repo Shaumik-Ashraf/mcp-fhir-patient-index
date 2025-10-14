@@ -16,9 +16,7 @@ Developer log and backlog of tasks.
 - [x] Add Inferno end-to-end tests
 - [ ] Implement FHIR patient write API
 - [x] Implement skeleton MCP server
-- [~] Implement MCP resource server
-  + Add stdio mode for debugging
-  + Debug patient mcp read resource template via uuid
+- [x] Implement MCP resource server
 - [ ] Implement MCP tools server
 - [ ] Implement settings to customize UI
 - [ ] Implement patient data grid
@@ -30,5 +28,3 @@ Developer log and backlog of tasks.
 ## Notes
 
 - `~` means partially complete
-- should beautify views
-- should add fhir operation outcome error cases and negative specs
