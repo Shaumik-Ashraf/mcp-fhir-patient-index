@@ -65,6 +65,34 @@ docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name
 - `bundle exec rubocop`: run linter
 - `./bin/brakeman`: run security scan
 
+### Testing FHIR with Inferno
+
+See [inferno-tests/README.md](inferno-tests/README.md)
+
+### Testing MCP
+
+I'm testing MCP with the official [inspector](https://github.com/modelcontextprotocol/inspector):
+
+1. If you have npm installed run:
+
+```
+npx @modelcontextprotocol/inspector
+```
+
+OR if you have docker run:
+
+```
+docker run --rm --network host -p 6274:6274 -p 6277:6277 ghcr.io/modelcontextprotocol/inspector:latest
+```
+
+2. Open its web UI and use settings:
+
+Transport Type: SSE
+
+URL: http://localhost:3000/mcp/sse
+
+and press Connect.
+
 ### Tech Stack
 
 Rails 8 with SQLite3, ESBuild, Bootstrap 5.3, and all other default options,

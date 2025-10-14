@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
+  namespace :mcp do
+    namespace :v20250618 do
+      get "/", { controller: :application, action: :index }
+      post "/", { controller: :application, action: :index }
+    end
+  end
+
   namespace :fhir do
     namespace :r4 do
       get "metadata", { controller: :metadata, action: :index }
 
       get "Patient/:uuid", to: "patients#show", as: :patient
       get "Patient", to: "patients#index", as: :patients
+
+      get "/", to: -> { { status: 400 } }, as: :base
     end
   end
 
