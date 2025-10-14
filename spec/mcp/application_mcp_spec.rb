@@ -41,7 +41,7 @@ RSpec.describe ApplicationMCP do
       expect(payload["result"]).to have_key "contents"
     end
 
-    # TODO: more thorough tests
+    # TODO: more tests
   end
 end
 # rubocop:enable RSpec/MultipleMemoizedHelpers
