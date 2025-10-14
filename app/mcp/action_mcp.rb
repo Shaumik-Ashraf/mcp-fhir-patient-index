@@ -104,7 +104,7 @@ module ActionMCP
     end
 
     def callable
-      Proc.new() { |params| klass.find_by!(id: params[:id])&.to_text }
+      Proc.new() { |params| klass.find_by!(id: File.basename(params[:uri]))&.to_text }
     end
 
     def call(params)
@@ -158,6 +158,16 @@ module ActionMCP
 
     load_application_records_as_resource_templates(PatientRecord)
 
+    configuration = MCP::Configuration.new
+    configuration.exception_reporter = ->(exception, server_context) do
+      $stderr.puts "Exception Reported: #{exception}"
+      $stderr.puts "Context: #{server_context}"
+    end
+
+    configuration.instrumentation_callback = ->(data) do
+      $stderr.puts "Instrumentation callback: #{data}"
+    end
+
     srv = MCP::Server.new(
       name: NAME,
       title: TITLE,
@@ -167,7 +177,8 @@ module ActionMCP
       prompts: [],
       resources: @resources.map(&:mcp_resource),
       resource_templates: @resource_templates.map(&:mcp_resource_template),
-      server_context: {} # TODO https://github.com/modelcontextprotocol/ruby-sdk?tab=readme-ov-file#server_context
+      server_context: {}, # TODO
+      configuration:
     )
 
     srv.resources_read_handler do |params|
@@ -176,29 +187,15 @@ module ActionMCP
       elsif (template_wrapper = @resource_templates.find { |x| x.match? params }) # TODO: are resource templates also handled here? no documentation...
         template_wrapper.call(params)
       else
-        $stderr.puts "ActionMCP Error 1"
-        [{
-          jsonrpc: "2.0",
-          id: params[:id],
-          #uri: params[:uri], 
-          error: { code: -32002, message: "Resource not found" }
-        }]
+        [{ error: { code: -32002, message: "Resource not found." } }] # TODO: figure out how to make this NO-OP/Not Found
       end
-    rescue ActiveRecord::RecordNotFound
-      $stderr.puts "ActionMCP Error 2: #{$!}"
-      [{
-        jsonrpc: "2.0",
-        id: request.params[:id],
-        #uri: params[:uri],
-        error: { code: -32002, message: "Resource not found" }
-      }]
     rescue StandardError
       $stderr.puts "ActionMCP Error 3: #{$!}"
       [{
-        jsonrpc: "2.0",
-        id: request.params[:id],
+        #jsonrpc: "2.0",
+        #id: request.params[:id],
         #uri: params[:uri],
-        error: { code: -32603, message: $!.full_message, data: $!.to_hash }
+        error: { code: -32603, message: $!.full_message }
       }]
     end
 
