@@ -107,8 +107,9 @@ module ApplicationMCP
       uri_regex.match? params[:uri]
     end
 
+    # TODO: parameterize callable
     def callable
-      Proc.new() { |params| klass.find_by!(id: File.basename(params[:uri]))&.to_text }
+      Proc.new() { |params| klass.find_by!(uuid: File.basename(params[:uri]))&.to_text }
     end
 
     def call(params)
