@@ -1,6 +1,6 @@
 # @example
 #   class MyController < ApplicationController
-#     include ActionMCP
+#     include ApplicationMCP
 #     def index
 #       render json: mcp_streamable_http.handle_json(request.body.read)
 #     end
@@ -8,12 +8,12 @@
 #
 # @example
 #   class CLI
-#     include ActionMCP
+#     include ApplicationMCP
 #     def run
 #       mcp_stdio.open
 #     end
 #   end
-module ActionMCP
+module ApplicationMCP
   SCHEME = "master-patient-index"
   NAME = Rails.application.name.underscore
   TITLE = Rails.application.name.humanize
