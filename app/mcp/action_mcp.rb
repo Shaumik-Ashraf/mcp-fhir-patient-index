@@ -29,7 +29,9 @@ module ActionMCP
 
   # @param [String] endpoint - the mcp base name from which url and name are derived
   # @param [String] mime_type
-  # @yield block that is called when MCP resource is queried
+  # @param [String] title - this property is in DRAFT in the MCP v20250618 spec
+  # @param [String] description
+  # @param [#call] callable - lambda that returns an array of hash with uri, mimeType, and text
   def define_resource(endpoint, mime_type, title, description, callable)
     @resources ||= []
     @resources << ResourceWrapper.new(endpoint, mime_type, title, description, callable)
@@ -99,6 +101,8 @@ module ActionMCP
       resource_template_uri_regex(klass)
     end
 
+    # TODO: A better DX would probably be replacing regex match with string starts with
+    # and stipulate that all mcp endpoints must have different starting urls
     def match?(params)
       uri_regex.match? params[:uri]
     end
@@ -144,6 +148,8 @@ module ActionMCP
   # Build server at run time
   # @return [MCP::Server]
   def server
+    # TODO: app-specific logic is defined here, but this module could be made into
+    # an abstracted MCP class
     define_resource "info", "text/plain", "Retrieve MCP Server Info", "...", (lambda do
       <<~EOT
         This is a master patient index server that supports model context
