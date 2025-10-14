@@ -2,7 +2,6 @@
   "name": "app",
   "private": true,
   "devDependencies": {
-    "@modelcontextprotocol/inspector": "^0.17.0",
     "esbuild": "^0.25.9"
   },
   "scripts": {
