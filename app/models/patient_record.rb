@@ -1,4 +1,6 @@
 class PatientRecord < ApplicationRecord
+  include ActiveSnapshot
+
   enum :administrative_gender, %i[male female other unknown]
 
   before_create do

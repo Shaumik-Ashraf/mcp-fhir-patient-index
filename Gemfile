@@ -78,3 +78,5 @@ gem "fhir_models", "~> 5.0"
 gem "mcp", "~> 0.3.0"
 
 gem "rack-cors", "~> 3.0"
+
+gem "active_snapshot", "~> 1.0"

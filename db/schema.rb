@@ -10,7 +10,75 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_15_215712) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_17_220948) do
+  create_table "action_mcp_session_messages", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.string "direction", default: "client", null: false
+    t.string "message_type", null: false
+    t.string "jsonrpc_id"
+    t.json "message_json"
+    t.boolean "is_ping", default: false, null: false
+    t.boolean "request_acknowledged", default: false, null: false
+    t.boolean "request_cancelled", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_action_mcp_session_messages_on_session_id"
+  end
+
+  create_table "action_mcp_session_resources", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.string "uri", null: false
+    t.string "name"
+    t.text "description"
+    t.string "mime_type", null: false
+    t.boolean "created_by_tool", default: false
+    t.datetime "last_accessed_at"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_action_mcp_session_resources_on_session_id"
+  end
+
+  create_table "action_mcp_session_subscriptions", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.string "uri", null: false
+    t.datetime "last_notification_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_action_mcp_session_subscriptions_on_session_id"
+  end
+
+  create_table "action_mcp_sessions", id: :string, force: :cascade do |t|
+    t.string "role", default: "server", null: false
+    t.string "status", default: "pre_initialize", null: false
+    t.datetime "ended_at"
+    t.string "protocol_version"
+    t.json "server_capabilities"
+    t.json "client_capabilities"
+    t.json "server_info"
+    t.json "client_info"
+    t.boolean "initialized", default: false, null: false
+    t.integer "messages_count", default: 0, null: false
+    t.integer "sse_event_counter", default: 0, null: false
+    t.json "tool_registry", default: []
+    t.json "prompt_registry", default: []
+    t.json "resource_registry", default: []
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.json "consents", default: {}, null: false
+  end
+
+  create_table "action_mcp_sse_events", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.integer "event_id", null: false
+    t.text "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_action_mcp_sse_events_on_created_at"
+    t.index ["session_id", "event_id"], name: "index_action_mcp_sse_events_on_session_id_and_event_id", unique: true
+    t.index ["session_id"], name: "index_action_mcp_sse_events_on_session_id"
+  end
+
   create_table "patient_records", force: :cascade do |t|
     t.string "uuid", null: false
     t.string "first_name"
@@ -31,4 +99,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_15_215712) do
     t.datetime "updated_at", null: false
     t.index ["uuid"], name: "index_patient_records_on_uuid", unique: true
   end
+
+  create_table "snapshot_items", force: :cascade do |t|
+    t.integer "snapshot_id", null: false
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.json "object", null: false
+    t.datetime "created_at", null: false
+    t.string "child_group_name"
+    t.index ["item_type", "item_id"], name: "index_snapshot_items_on_item"
+    t.index ["snapshot_id", "item_id", "item_type"], name: "index_snapshot_items_on_snapshot_id_and_item_id_and_item_type", unique: true
+    t.index ["snapshot_id"], name: "index_snapshot_items_on_snapshot_id"
+  end
+
+  create_table "snapshots", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.string "user_type"
+    t.integer "user_id"
+    t.string "identifier"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.index ["identifier", "item_id", "item_type"], name: "index_snapshots_on_identifier_and_item_id_and_item_type", unique: true
+    t.index ["identifier"], name: "index_snapshots_on_identifier"
+    t.index ["item_type", "item_id"], name: "index_snapshots_on_item"
+    t.index ["user_type", "user_id"], name: "index_snapshots_on_user"
+  end
+
+  add_foreign_key "action_mcp_session_messages", "action_mcp_sessions", column: "session_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "action_mcp_session_resources", "action_mcp_sessions", column: "session_id", on_delete: :cascade
+  add_foreign_key "action_mcp_session_subscriptions", "action_mcp_sessions", column: "session_id", on_delete: :cascade
+  add_foreign_key "action_mcp_sse_events", "action_mcp_sessions", column: "session_id"
 end
