@@ -39,6 +39,11 @@ class PatientRecord < ApplicationRecord
     attributes.symbolize_keys.slice(*PatientRecord.clinical_attributes)
   end
 
+  # @return [String] - unique active snapshot identifier
+  def generate_snapshot_identifier
+    "patient_record_snapshot_#{self.uuid}_#{self.snapshots.count}"
+  end
+
   # @return [String] - override URL ID
   def to_param
     uuid

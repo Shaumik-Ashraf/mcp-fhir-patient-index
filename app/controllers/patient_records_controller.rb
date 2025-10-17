@@ -32,15 +32,33 @@ class PatientRecordsController < ApplicationController
 
   # PATCH/PUT /patients/1
   def update
+    snapshot = @patient_record.create_snapshot!(
+      identifier: "patient_record_snapshot_#{@patient_record.uuid}",
+      metadata: {
+        controller: params[:controller],
+        action: params[:action]
+      }
+    )
+
     if @patient_record.update(patient_record_params)
       redirect_to @patient_record, notice: "Patient Record #{@patient_record.saved_changes.keys.join(',')} updated.", status: :see_other
     else
+      # undo snapshot since save was unsuccessful
+      snapshot.destroy!
       render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /patients/1
   def destroy
+    @patient_record.create_snapshot!(
+      identifier: "patient_record_snapshot_#{@patient_record.uuid}",
+      metadata: {
+        controller: params[:controller],
+        action: params[:action]
+      }
+    )
+
     @patient_record.destroy!
     redirect_to patients_path, notice: "Patient Record #{@patient_record.uuid} permanently destroyed.", status: :see_other
   end
