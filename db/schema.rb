@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_17_220948) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_17_230332) do
   create_table "action_mcp_session_messages", force: :cascade do |t|
     t.string "session_id", null: false
     t.string "direction", default: "client", null: false
@@ -79,6 +79,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_220948) do
     t.index ["session_id"], name: "index_action_mcp_sse_events_on_session_id"
   end
 
+  create_table "patient_joins", force: :cascade do |t|
+    t.integer "from_patient_record_id", null: false
+    t.integer "to_patient_record_id", null: false
+    t.integer "qualifier"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_patient_record_id"], name: "index_patient_joins_on_from_patient_record_id"
+    t.index ["to_patient_record_id"], name: "index_patient_joins_on_to_patient_record_id"
+  end
+
   create_table "patient_records", force: :cascade do |t|
     t.string "uuid", null: false
     t.string "first_name"
@@ -130,4 +141,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_220948) do
   add_foreign_key "action_mcp_session_resources", "action_mcp_sessions", column: "session_id", on_delete: :cascade
   add_foreign_key "action_mcp_session_subscriptions", "action_mcp_sessions", column: "session_id", on_delete: :cascade
   add_foreign_key "action_mcp_sse_events", "action_mcp_sessions", column: "session_id"
+  add_foreign_key "patient_joins", "from_patient_records"
+  add_foreign_key "patient_joins", "to_patient_records"
 end

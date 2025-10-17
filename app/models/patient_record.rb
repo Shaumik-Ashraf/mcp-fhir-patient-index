@@ -1,6 +1,20 @@
 class PatientRecord < ApplicationRecord
   include ActiveSnapshot
 
+  has_many :patient_joins, dependent: :destroy
+  has_many :patients, through: :patient_joins
+
+  has_snapshot_children do
+    # Executed in the context of the instance / self
+
+    # Reload record to ensure a clean state
+    instance = self.class.includes(:patient_joins).find(id)
+
+    {
+      patient_joins: instance.patient_joins
+    }
+  end
+
   enum :administrative_gender, %i[male female other unknown]
 
   before_create do
