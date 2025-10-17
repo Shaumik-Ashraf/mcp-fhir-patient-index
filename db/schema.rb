@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_17_230332) do
+ActiveRecord::Schema[8.0].define(version: 0) do
   create_table "action_mcp_session_messages", force: :cascade do |t|
     t.string "session_id", null: false
     t.string "direction", default: "client", null: false
@@ -141,6 +141,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_230332) do
   add_foreign_key "action_mcp_session_resources", "action_mcp_sessions", column: "session_id", on_delete: :cascade
   add_foreign_key "action_mcp_session_subscriptions", "action_mcp_sessions", column: "session_id", on_delete: :cascade
   add_foreign_key "action_mcp_sse_events", "action_mcp_sessions", column: "session_id"
-  add_foreign_key "patient_joins", "from_patient_records"
-  add_foreign_key "patient_joins", "to_patient_records"
 end
