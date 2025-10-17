@@ -10,75 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 0) do
-  create_table "action_mcp_session_messages", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.string "direction", default: "client", null: false
-    t.string "message_type", null: false
-    t.string "jsonrpc_id"
-    t.json "message_json"
-    t.boolean "is_ping", default: false, null: false
-    t.boolean "request_acknowledged", default: false, null: false
-    t.boolean "request_cancelled", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_action_mcp_session_messages_on_session_id"
-  end
-
-  create_table "action_mcp_session_resources", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.string "uri", null: false
-    t.string "name"
-    t.text "description"
-    t.string "mime_type", null: false
-    t.boolean "created_by_tool", default: false
-    t.datetime "last_accessed_at"
-    t.json "metadata"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_action_mcp_session_resources_on_session_id"
-  end
-
-  create_table "action_mcp_session_subscriptions", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.string "uri", null: false
-    t.datetime "last_notification_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_action_mcp_session_subscriptions_on_session_id"
-  end
-
-  create_table "action_mcp_sessions", id: :string, force: :cascade do |t|
-    t.string "role", default: "server", null: false
-    t.string "status", default: "pre_initialize", null: false
-    t.datetime "ended_at"
-    t.string "protocol_version"
-    t.json "server_capabilities"
-    t.json "client_capabilities"
-    t.json "server_info"
-    t.json "client_info"
-    t.boolean "initialized", default: false, null: false
-    t.integer "messages_count", default: 0, null: false
-    t.integer "sse_event_counter", default: 0, null: false
-    t.json "tool_registry", default: []
-    t.json "prompt_registry", default: []
-    t.json "resource_registry", default: []
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.json "consents", default: {}, null: false
-  end
-
-  create_table "action_mcp_sse_events", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.integer "event_id", null: false
-    t.text "data", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["created_at"], name: "index_action_mcp_sse_events_on_created_at"
-    t.index ["session_id", "event_id"], name: "index_action_mcp_sse_events_on_session_id_and_event_id", unique: true
-    t.index ["session_id"], name: "index_action_mcp_sse_events_on_session_id"
-  end
-
+ActiveRecord::Schema[8.0].define(version: 2025_10_17_230332) do
   create_table "patient_joins", force: :cascade do |t|
     t.integer "from_patient_record_id", null: false
     t.integer "to_patient_record_id", null: false
@@ -137,8 +69,6 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["user_type", "user_id"], name: "index_snapshots_on_user"
   end
 
-  add_foreign_key "action_mcp_session_messages", "action_mcp_sessions", column: "session_id", on_update: :cascade, on_delete: :cascade
-  add_foreign_key "action_mcp_session_resources", "action_mcp_sessions", column: "session_id", on_delete: :cascade
-  add_foreign_key "action_mcp_session_subscriptions", "action_mcp_sessions", column: "session_id", on_delete: :cascade
-  add_foreign_key "action_mcp_sse_events", "action_mcp_sessions", column: "session_id"
+  add_foreign_key "patient_joins", "patient_records", column: "from_patient_record_id"
+  add_foreign_key "patient_joins", "patient_records", column: "to_patient_record_id"
 end

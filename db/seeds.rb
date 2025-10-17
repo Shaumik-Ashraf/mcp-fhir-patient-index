@@ -10,5 +10,5 @@
 
 # Seed 10 random patients with full data
 10.times do
-  Patient.create_random!
+  PatientRecord.create_random!
 end

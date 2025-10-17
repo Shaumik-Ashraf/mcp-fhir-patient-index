@@ -37,7 +37,7 @@ class PatientRecord < ApplicationRecord
   # @return [PatientRecord]
   # @raises [ActiveRecord::RecordInvalid]
   def self.create_random!(**attributes)
-    patient = self.create_random(attributes)
+    patient = self.create_random(**attributes)
     raise ActiveRecord::RecordInvalid unless patient.errors.empty?
 
     patient
