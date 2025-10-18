@@ -1,14 +1,14 @@
 class PatientRecord < ApplicationRecord
   include ActiveSnapshot
 
-  has_many :patient_joins, dependent: :destroy
-  has_many :patients, through: :patient_joins
+  has_many :patient_joins, dependent: :destroy, inverse_of: :from_patient_record
+  has_many :patients, through: :patient_joins, source: :to_patient_record
 
   has_snapshot_children do
     # Executed in the context of the instance / self
 
     # Reload record to ensure a clean state
-    instance = self.class.includes(:patient_joins).find(id)
+    instance = self.reload
 
     {
       patient_joins: instance.patient_joins
