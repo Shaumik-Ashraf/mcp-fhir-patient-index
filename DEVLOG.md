@@ -24,6 +24,7 @@ Developer log and backlog of tasks.
 - [ ] Implement FHIR `$match`
 - [ ] Implement MCP patient match tool
 - [ ] Integrate Synthea for patient seeding
+- [ ] Create docker compose for cleaner docker setup
 
 ## Notes
 
