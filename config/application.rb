@@ -42,5 +42,7 @@ module McpFhirPatientIndex
     config.generators do |g|
       g.factory_bot dir: Rails.root.join("factories") if g.respond_to? :factory_bot
     end
+
+    config.x.version = "0.1.0".freeze
   end
 end

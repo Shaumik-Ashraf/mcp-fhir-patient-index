@@ -17,7 +17,6 @@ module ApplicationMCP
   SCHEME = "master-patient-index"
   NAME = Rails.application.name.underscore
   TITLE = Rails.application.name.humanize
-  VERSION = "0.1.0" # TODO: consolidate versions across app, fhir, and mcp
   INSTRUCTIONS = <<~EOT
     See https://github.com/Shaumik-Ashraf/mcp-fhir-patient-index/README.md
   EOT
@@ -178,7 +177,7 @@ module ApplicationMCP
     srv = MCP::Server.new(
       name: NAME,
       title: TITLE,
-      version: VERSION,
+      version: Rails.application.config.x.version,
       instructions: INSTRUCTIONS,
       tools: [],
       prompts: [],
