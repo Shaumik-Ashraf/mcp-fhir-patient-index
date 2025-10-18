@@ -87,9 +87,9 @@ docker run --rm --network host -p 6274:6274 -p 6277:6277 ghcr.io/modelcontextpro
 
 2. Open its web UI and use settings:
 
-Transport Type: SSE
+Transport Type: Streamable HTTP
 
-URL: http://localhost:3000/mcp/sse
+URL: http://localhost:3000/mcp/v20250618
 
 and press Connect.
 
