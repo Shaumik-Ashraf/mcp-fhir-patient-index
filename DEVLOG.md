@@ -17,6 +17,8 @@ Developer log and backlog of tasks.
 - [x] Implement skeleton MCP server
 - [x] Implement MCP resource server
 - [ ] Implement MCP tools server
+- [ ] Implement FHIR Log with showcase
+- [ ] Implement MCP Log with showcase
 - [ ] Implement settings to customize UI
 - [ ] Implement patient data grid
 - [ ] Implement patient matching/linkage engine
