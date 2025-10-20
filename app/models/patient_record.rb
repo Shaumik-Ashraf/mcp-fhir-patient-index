@@ -21,6 +21,17 @@ class PatientRecord < ApplicationRecord
     self.uuid = SecureRandom.uuid
   end
 
+  # Takes a patient record and creates other duplicate records
+  # but modifies random attributes with typos.
+  #
+  # @param [PatientRecord] patient_record - original truth
+  # @option [Integer] records_to_generate - number of corrupted records to make
+  # @option [Float] randomness - value from 0 to 1; 0 for minimal corruption 1 for maximum
+  # @return [Array<PatientRecord>] - array of corrupted duplicates
+  def self.simulate_corruption(patient_record, records_to_generate: 1, randomness: 0.2)
+    raise StandardError, "TODO"
+  end
+  
   # @param [Hash] attributes - specify certain patient attributes
   # @return [PatientRecord] unsaved instance
   def self.build_random(**attributes)
