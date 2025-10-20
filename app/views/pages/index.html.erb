@@ -1,14 +1,26 @@
-<h1>
-  Master Patient Index
-  <span class="badge bg-warning text-dark">Work in Progress</span>
-</h1>
+<div class="container-fluid">
+  <div class="row">
+    <h1 class="p-3">
+      Master Patient Index
+      <span class="badge bg-warning text-dark ms-3">Work in Progress</span>
+    </h1>
+  </div>
 
-<p class="lead">
-  FHIR R4 Base URL:
-  <pre><code><%= fhir_r4_base_url %></code></pre>
-</p>
+  <div class="row justify-content-center">
+    <div class="card w-50">
+      <div class="card-body">
+      <p class="lead">
+        FHIR R4 Base URL:
+        <pre><code><%= fhir_r4_base_url %></code></pre>
+      </p>
 
-<p class="lead">
-  MCP Server Streamable HTTP URL:
-  <pre><code><%= mcp_v20250618_url %></code></pre>
-</p>
+      <hr />
+      
+      <p class="lead">
+        MCP Server Streamable HTTP URL:
+        <pre><code><%= mcp_v20250618_url %></code></pre>
+      </p>
+      </div>
+    </div>  
+  </div>
+</div>
