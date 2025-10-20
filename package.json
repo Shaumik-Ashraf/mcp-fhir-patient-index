@@ -3,6 +3,7 @@
   "private": true,
   "devDependencies": {
     "@herb-tools/formatter": "^0.7.5",
+    "@herb-tools/linter": "^0.7.5",
     "esbuild": "^0.25.9"
   },
   "scripts": {
@@ -12,7 +13,8 @@
     "build:css": "yarn build:css:compile && yarn build:css:prefix",
     "watch:css": "nodemon --watch ./app/assets/stylesheets/ --ext scss --exec \"yarn build:css\"",
     "herb:format": "herb-format",
-    "herb:format:check": "herb-format --check"
+    "herb:format:check": "herb-format --check",
+    "herb:lint": "herb-lint"
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
