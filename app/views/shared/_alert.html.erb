@@ -1,11 +1,24 @@
 <%# _alert.html.erb %>
+
 <%# param title %>
+
 <%# param body %>
+
 <%# param color (bootstrap alert colors) default: primary %>
 
 <% color ||= 'primary' %>
 
-<div class="alert alert-<%= color %> alert-dismissible fade show mb-0" role="alert">
-  <strong><%= title %></strong> <%= body %>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div
+  class="alert alert-<%= color %> alert-dismissible fade show mb-0"
+  role="alert"
+>
+  <strong><%= title %></strong>
+
+  <%= body %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
 </div>

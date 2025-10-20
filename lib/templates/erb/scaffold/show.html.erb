@@ -1,58 +1,124 @@
 <div class="container">
   <div class="row justify-content-between my-lg-5 my-sm-3 my-2">
-	<div class="col-md-6 text-start">
-  	  <h1><%= human_name.titleize %>#<%%= @<%= model_resource_name %>.id %></h1>
-	</div>
+    <div class="col-md-6 text-start">
+      <h1><%= human_name.titleize %>#<%%= @<%= model_resource_name %>.id %></h1>
+    </div>
 
-	<div class="col-md-6 btn-toolbar d-flex justify-content-end">
-	  <div class="btn-group mx-lg-3 mx-md-1" role="group" aria-label="action-buttons">
-		<div><%%= link_to 'Back', :back, class: "btn btn-outline btn-outline-tertiary" %></div>
-		<div><%%= link_to 'Edit', main_app.edit_<%= singular_route_name %>_path(@<%= singular_name %>), class: "btn btn-outline btn-outline-primary mx-2" %></div>
-		<%%= button_to 'Delete', main_app.<%= singular_route_name %>_path(@<%= singular_name %>),
-			 method: :delete, class: "btn btn-outline btn-outline-danger", data: {confirm: "Delete @<%= singular_name %>##{@<%= singular_name %>.id}?"}
-			 %>
-	  </div>
-	</div>
+    <div class="col-md-6 btn-toolbar d-flex justify-content-end">
+      <div
+        class="btn-group mx-lg-3 mx-md-1"
+        role="group"
+        aria-label="action-buttons"
+      >
+        <div>
+          <%%= link_to 'Back', :back, class: "btn btn-outline btn-outline-tertiary" %>
+        </div>
+        <div>
+          <%%= link_to 'Edit', main_app.edit_<%= singular_route_name %>
+          _path(@
+          <%= singular_name %>
+          ), class: "btn btn-outline btn-outline-primary mx-2" %>
+        </div>
+        <%%= button_to 'Delete', main_app.<%= singular_route_name %>
+        _path(@
+        <%= singular_name %>
+        ), method: :delete, class: "btn btn-outline btn-outline-danger", data:
+        {confirm: "Delete @
+        <%= singular_name %>
+        ##{@
+        <%= singular_name %>
+        .id}?"} %>
+      </div>
+    </div>
   </div>
 
-<% attributes.reject(&:password_digest?).each do |attribute| -%>
-  <div class="row" id="<%%= dom_id @<%= singular_name %>, :<%= attribute.column_name %> %>">
-  <% if attribute.attachment? -%>
-    <div class="col-sm-3"><h4><%= attribute.human_name %>:</h4></div>
-	<div class="col-sm-9"><%%= link_to @<%= singular_name %>.<%= attribute.column_name %>.filename, @<%= singular_name %>.<%= attribute.column_name %> if @<%= singular_name %>.<%= attribute.column_name %>.attached? %></div>
-  <% elsif attribute.attachments? -%>
-    <div class="col-sm-3"><h4><%= attribute.human_name %>:</h4></div>
-	<div class="col-sm-9">
-	<%% @<%= singular_name %>.<%= attribute.column_name %>.each_with_index do |<%= attribute.singular_name %>, idx| %>
-	  <%% if idx > 0 %>| <%% end %><%%= link_to <%= attribute.singular_name %>.filename, <%= attribute.singular_name %> %>
-	<%% end %>
-	</div>
-  <% elsif attribute.column_name == 'updated_at' -%>
-    <div class="col-sm-3"><h4>Last updated:</h4></div>
-	<div class="col-sm-9"><%%= @<%= singular_name %>.updated_at&.strftime('%r %x') %></div>
-  <% elsif attribute.column_name.ends_with? '_at' -%>
-    <div class="col-sm-3"><h4><%= attribute.human_name.chomp(' at') %>:</h4></div>
-	<div class="col-sm-9"><%%= @<%= singular_name %>.<%= attribute.column_name %>&.strftime('%r %x') %></div>
-  <% elsif attribute.column_name == 'user_id' -%>
-	<div class="col-sm-3"><h4>Belongs to User:</h4></div>
-	<div class="col-sm-9"><%%= @<%= singular_name %>.user&.email %></div>
-  <% elsif attribute.column_name.ends_with? '_id' -%>
-	<div class="col-sm-3"><h4><%= attribute.human_name %>:</h4></div>
-	<div class="col-sm-9"><%%= @<%= singular_name %>.<%= attribute.column_name.chomp('_id') %>.to_s %></div>
-  <% elsif attribute.column_name == 'id' -%>
-  	<%# skip %>
-  <% else -%>
-    <div class="col-sm-3"><h4><%= attribute.human_name %>:</h4></div>
-	<div class="col-sm-9"><%%= @<%= singular_name %>.<%= attribute.column_name %> %></div>
+  <% attributes.reject(&:password_digest?).each do |attribute| -%>
+    <div
+      class="row"
+      id="<%%= dom_id @<%= singular_name %>, :<%= attribute.column_name %> %>"
+    >
+      <% if attribute.attachment? -%>
+        <div class="col-sm-3">
+          <h4><%= attribute.human_name %>:</h4>
+        </div>
+        <div class="col-sm-9">
+          <%%= link_to @<%= singular_name %>
+          .
+          <%= attribute.column_name %>
+          .filename, @
+          <%= singular_name %>
+          .
+          <%= attribute.column_name %>
+          if @
+          <%= singular_name %>
+          .
+          <%= attribute.column_name %>
+          .attached? %>
+        </div>
+      <% elsif attribute.attachments? -%>
+        <div class="col-sm-3">
+          <h4><%= attribute.human_name %>:</h4>
+        </div>
+        <div class="col-sm-9">
+          <%% @<%= singular_name %>
+          .
+          <%= attribute.column_name %>
+          .each_with_index do |
+          <%= attribute.singular_name %>
+          , idx| %>
+          <%% if idx > 0 %>
+          |
+          <%% end %>
+          <%%= link_to <%= attribute.singular_name %>
+          .filename,
+          <%= attribute.singular_name %>
+          %>
+          <%% end %>
+        </div>
+      <% elsif attribute.column_name == 'updated_at' -%>
+        <div class="col-sm-3">
+          <h4>Last updated:</h4>
+        </div>
+        <div class="col-sm-9">
+          <%%= @<%= singular_name %>.updated_at&.strftime('%r %x') %>
+        </div>
+      <% elsif attribute.column_name.ends_with? '_at' -%>
+        <div class="col-sm-3">
+          <h4><%= attribute.human_name.chomp(' at') %>:</h4>
+        </div>
+        <div class="col-sm-9">
+          <%%= @<%= singular_name %>.<%= attribute.column_name %>&.strftime('%r %x') %>
+        </div>
+      <% elsif attribute.column_name == 'user_id' -%>
+        <div class="col-sm-3">
+          <h4>Belongs to User:</h4>
+        </div>
+        <div class="col-sm-9"><%%= @<%= singular_name %>.user&.email %></div>
+      <% elsif attribute.column_name.ends_with? '_id' -%>
+        <div class="col-sm-3">
+          <h4><%= attribute.human_name %>:</h4>
+        </div>
+        <div class="col-sm-9">
+          <%%= @<%= singular_name %>.<%= attribute.column_name.chomp('_id') %>.to_s %>
+        </div>
+      <% elsif attribute.column_name == 'id' -%>
+        <%# skip %>
+      <% else -%>
+        <div class="col-sm-3">
+          <h4><%= attribute.human_name %>:</h4>
+        </div>
+        <div class="col-sm-9">
+          <%%= @<%= singular_name %>.<%= attribute.column_name %> %>
+        </div>
+      <% end -%>
+    </div>
   <% end -%>
-  </div>
-<% end -%>
-<%# TODO figure out how to capture has_many, has_one, and enums %>
+
+  <%# TODO figure out how to capture has_many, has_one, and enums %>
 
   <h3 class="row mt-2">Preview</h3>
 
   <div class="row mb-3">
-	<%%= render "<%= plural_table_name %>/<%= singular_name %>", <%= singular_name %>: @<%= singular_name %> %>
+    <%%= render "<%= plural_table_name %>/<%= singular_name %>", <%= singular_name %>: @<%= singular_name %> %>
   </div>
-
 </div>

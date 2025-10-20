@@ -1,15 +1,16 @@
 <%# patients/index.html.erb %>
+
 <div class="container-fluid">
   <div class="row justify-content-between p-3">
-	  <h1 class="col">Patients</h1>
-	  <div class="col text-end">
-	    <%= link_to "New Patient", main_app.new_patient_path, class: "btn btn-lg btn-outline-primary rounded", role: "link" %>
-	  </div>
+    <h1 class="col">Patients</h1>
+    <div class="col text-end">
+      <%= link_to "New Patient", main_app.new_patient_path, class: "btn btn-lg btn-outline-primary rounded", role: "link" %>
+    </div>
   </div>
 
   <div class="row row-cols-4" id="patients">
     <% @patient_records.each do |patient_record| %>
-	    <%= render "patient_records/patient_record", patient: patient_record %>
+      <%= render "patient_records/patient_record", patient: patient_record %>
     <% end %>
   </div>
 </div>

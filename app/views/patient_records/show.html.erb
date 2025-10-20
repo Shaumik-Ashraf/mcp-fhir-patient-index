@@ -1,80 +1,134 @@
 <div class="container">
   <div class="row justify-content-between my-lg-5 my-sm-3 my-2">
-	  <div class="col-md-6 text-start">
+    <div class="col-md-6 text-start">
       <h1>Patient Record <%= @patient_record.uuid %></h1>
-	  </div>
+    </div>
 
     <div class="col-md-6 btn-toolbar d-flex justify-content-end">
-	    <div class="btn-group mx-lg-3 mx-md-1" role="group" aria-label="action-buttons">
-		    <div><%= link_to 'Back', :back, class: "btn btn-outline btn-outline-tertiary" %></div>
-			  <div><%= link_to 'Edit', main_app.edit_patient_path(@patient_record), class: "btn btn-outline btn-outline-primary mx-2" %></div>
-			  <%= button_to 'Delete',
+      <div
+        class="btn-group mx-lg-3 mx-md-1"
+        role="group"
+        aria-label="action-buttons"
+      >
+        <div>
+          <%= link_to 'Back', :back, class: "btn btn-outline btn-outline-tertiary" %>
+        </div>
+
+        <div>
+          <%= link_to 'Edit', main_app.edit_patient_path(@patient_record), class: "btn btn-outline btn-outline-primary mx-2" %>
+        </div>
+
+        <%= button_to 'Delete',
 											main_app.patient_path(@patient_record),
 											method: :delete,
 											class: "btn btn-outline btn-outline-danger",
-											data: { confirm: "Delete patient record ##{@patient_record.id}?" }
-				%>
-			</div>		
-		</div>
+											data: { confirm: "Delete patient record ##{@patient_record.id}?" } %>
+      </div>
+    </div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :uuid %>">
-    <div class="col-sm-3"><h4>Uuid:</h4></div>
+    <div class="col-sm-3">
+      <h4>Uuid:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.uuid %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :first_name %>">
-    <div class="col-sm-3"><h4>First name:</h4></div>
-		<div class="col-sm-9"><%= @patient_record.first_name %></div>
+    <div class="col-sm-3">
+      <h4>First name:</h4>
+    </div>
+    <div class="col-sm-9"><%= @patient_record.first_name %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :last_name %>">
-    <div class="col-sm-3"><h4>Last name:</h4></div>
+    <div class="col-sm-3">
+      <h4>Last name:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.last_name %></div>
   </div>
-	<div class="row" id="<%= dom_id @patient_record, :administrative_gender %>">
-    <div class="col-sm-3"><h4>Administrative gender:</h4></div>
+
+  <div class="row" id="<%= dom_id @patient_record, :administrative_gender %>">
+    <div class="col-sm-3">
+      <h4>Administrative gender:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.administrative_gender %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :birth_date %>">
-    <div class="col-sm-3"><h4>Birth date:</h4></div>
+    <div class="col-sm-3">
+      <h4>Birth date:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.birth_date %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :email %>">
-    <div class="col-sm-3"><h4>Email:</h4></div>
+    <div class="col-sm-3">
+      <h4>Email:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.email %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :phone_number %>">
-    <div class="col-sm-3"><h4>Phone number:</h4></div>
+    <div class="col-sm-3">
+      <h4>Phone number:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.phone_number %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :address_line1 %>">
-    <div class="col-sm-3"><h4>Address line1:</h4></div>
+    <div class="col-sm-3">
+      <h4>Address line1:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.address_line1 %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :address_line2 %>">
-    <div class="col-sm-3"><h4>Address line2:</h4></div>
+    <div class="col-sm-3">
+      <h4>Address line2:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.address_line2 %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :address_city %>">
-    <div class="col-sm-3"><h4>Address city:</h4></div>
+    <div class="col-sm-3">
+      <h4>Address city:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.address_city %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :address_state %>">
-    <div class="col-sm-3"><h4>Address state:</h4></div>
+    <div class="col-sm-3">
+      <h4>Address state:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.address_state %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :address_zip_code %>">
-    <div class="col-sm-3"><h4>Address zip code:</h4></div>
+    <div class="col-sm-3">
+      <h4>Address zip code:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.address_zip_code %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :social_security_number %>">
-    <div class="col-sm-3"><h4>Social security number:</h4></div>
+    <div class="col-sm-3">
+      <h4>Social security number:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.social_security_number %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :passport_number %>">
-    <div class="col-sm-3"><h4>Passport number:</h4></div>
+    <div class="col-sm-3">
+      <h4>Passport number:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.passport_number %></div>
   </div>
+
   <div class="row" id="<%= dom_id @patient_record, :drivers_license_number %>">
-    <div class="col-sm-3"><h4>Drivers license number:</h4></div>
+    <div class="col-sm-3">
+      <h4>Drivers license number:</h4>
+    </div>
     <div class="col-sm-9"><%= @patient_record.drivers_license_number %></div>
   </div>
 </div>

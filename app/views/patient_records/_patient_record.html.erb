@@ -1,69 +1,125 @@
 <div id="<%= dom_id patient %>" class="col mb-2">
-	<div class="card">
-	  <h3 class="card-header">Patient#<%= patient.id %></h3>
-	  <div class="card-body">
-		  <div class="list-group list-group-flush">
-  		  <div class="list-group-item" id="<%= dom_id patient, :uuid %>">
-    	    <b>Uuid:</b> <%= patient.uuid %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :first_name %>">
-    	    <b>First name:</b> <%= patient.first_name %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :last_name %>">
-    	    <b>Last name:</b> <%= patient.last_name %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :administrative_gender %>">
-    	    <b>Administrative gender:</b> <%= patient.administrative_gender %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :birth_date %>">
-    	    <b>Birth date:</b> <%= patient.birth_date %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :email %>">
-    	    <b>Email:</b> <%= patient.email %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :phone_number %>">
-    	    <b>Phone number:</b> <%= patient.phone_number %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :address_line1 %>">
-    	    <b>Address line1:</b> <%= patient.address_line1 %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :address_line2 %>">
-    	    <b>Address line2:</b> <%= patient.address_line2 %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :address_city %>">
-    	    <b>Address city:</b> <%= patient.address_city %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :address_state %>">
-    	    <b>Address state:</b> <%= patient.address_state %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :address_zip_code %>">
-    	    <b>Address zip code:</b> <%= patient.address_zip_code %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :social_security_number %>">
-    	    <b>Social security number:</b> <%= patient.social_security_number %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :passport_number %>">
-    	    <b>Passport number:</b> <%= patient.passport_number %>
-  		  </div>
-  		  <div class="list-group-item" id="<%= dom_id patient, :drivers_license_number %>">
-    	    <b>Drivers license number:</b> <%= patient.drivers_license_number %>
-  		  </div>
-			</div>
-			<div class="list-group list-group-horizontal flex-fill"
-					 id="<%= dom_id patient, 'actions' %>">
-					<div>
-							<%= link_to 'Open', main_app.patient_path(patient), class: "text-success mx-1", style: "line-height:1;vertical-align:middle;" %>
-					</div>
-					<div>
-							<%= link_to 'Edit', main_app.edit_patient_path(patient), class: "text-primary mx-1", style: "line-height:1;vertical-align:middle;" %>
-					</div>
-					<%= button_to 'Delete', main_app.patient_path(patient),
+  <div class="card">
+    <h3 class="card-header">Patient#<%= patient.id %></h3>
+
+    <div class="card-body">
+      <div class="list-group list-group-flush">
+        <div class="list-group-item" id="<%= dom_id patient, :uuid %>">
+          <b>Uuid:</b>
+          <%= patient.uuid %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :first_name %>">
+          <b>First name:</b>
+          <%= patient.first_name %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :last_name %>">
+          <b>Last name:</b>
+          <%= patient.last_name %>
+        </div>
+
+        <div
+          class="list-group-item"
+          id="<%= dom_id patient, :administrative_gender %>"
+        >
+          <b>Administrative gender:</b>
+          <%= patient.administrative_gender %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :birth_date %>">
+          <b>Birth date:</b>
+          <%= patient.birth_date %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :email %>">
+          <b>Email:</b>
+          <%= patient.email %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :phone_number %>">
+          <b>Phone number:</b>
+          <%= patient.phone_number %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :address_line1 %>">
+          <b>Address line1:</b>
+          <%= patient.address_line1 %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :address_line2 %>">
+          <b>Address line2:</b>
+          <%= patient.address_line2 %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :address_city %>">
+          <b>Address city:</b>
+          <%= patient.address_city %>
+        </div>
+
+        <div class="list-group-item" id="<%= dom_id patient, :address_state %>">
+          <b>Address state:</b>
+          <%= patient.address_state %>
+        </div>
+
+        <div
+          class="list-group-item"
+          id="<%= dom_id patient, :address_zip_code %>"
+        >
+          <b>Address zip code:</b>
+          <%= patient.address_zip_code %>
+        </div>
+
+        <div
+          class="list-group-item"
+          id="<%= dom_id patient, :social_security_number %>"
+        >
+          <b>Social security number:</b>
+          <%= patient.social_security_number %>
+        </div>
+
+        <div
+          class="list-group-item"
+          id="<%= dom_id patient, :passport_number %>"
+        >
+          <b>Passport number:</b>
+          <%= patient.passport_number %>
+        </div>
+
+        <div
+          class="list-group-item"
+          id="<%= dom_id patient, :drivers_license_number %>"
+        >
+          <b>Drivers license number:</b>
+          <%= patient.drivers_license_number %>
+        </div>
+      </div>
+
+      <div
+        class="list-group list-group-horizontal flex-fill"
+        id="<%= dom_id patient, 'actions' %>"
+      >
+        <div>
+          <%= link_to 'Open', main_app.patient_path(patient), class: "text-success mx-1", style: "line-height:1;vertical-align:middle;" %>
+        </div>
+
+        <div>
+          <%= link_to 'Edit', main_app.edit_patient_path(patient), class: "text-primary mx-1", style: "line-height:1;vertical-align:middle;" %>
+        </div>
+
+        <%= button_to 'Delete', main_app.patient_path(patient),
 			 	        				method: :delete,
 												class: "btn btn-link text-danger p-0",
 												form_class: "d-inline mx-1",
-			 									data: {confirm: "Delete patient record #{patient.uuid}?"}
-					%>
-			</div><!-- /.list-group -->
-	  </div><!-- /.card-body -->
-	</div><!-- /.card -->
-</div><!-- /.col -->
+			 									data: {confirm: "Delete patient record #{patient.uuid}?"} %>
+      </div>
+
+      <!-- /.list-group -->
+    </div>
+
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+
+<!-- /.col -->

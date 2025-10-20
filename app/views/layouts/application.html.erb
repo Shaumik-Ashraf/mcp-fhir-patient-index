@@ -1,59 +1,64 @@
 <!doctype html>
+
 <html>
   <head>
     <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title><%= @title %> | Master Patient Index</title>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-		<%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
     <% @metas&.each do |meta| %>
-    <meta <%= tag.attributes meta %>>
+      <meta <%= tag.attributes meta %>>
     <% end %>
   </head>
   <body class="wrapper">
-		<div id="top" class="content">
-      <!-------------------------------------------------------->
-      <!--                  NAVIGATION BAR                    -->
-      <!-------------------------------------------------------->
+    <div id="top" class="content">
+      <!-- ---------------------------------------------------- -->
+      <!-- NAVIGATION BAR -->
+      <!-- ---------------------------------------------------- -->
       <%= render "shared/navbar" %>
-  
-      <!-------------------------------------------------------->
-      <!--                  NOTIFICATIONS                     -->
-      <!-------------------------------------------------------->
+
+      <!-- ---------------------------------------------------- -->
+      <!-- NOTIFICATIONS -->
+      <!-- ---------------------------------------------------- -->
       <div id="alerts">
         <% if alert %>
           <%= render "shared/alert", title: "Error:", body: alert, color: 'danger' %>
         <% end %>
+
         <% if notice %>
           <%= render "shared/alert", title: "Notice:", body: notice, color: 'success' %>
         <% end %>
+
         <% if flash[:info] %>
           <%= render "shared/alert", title: "Info:", body: flash[:info], color: 'info' %>
         <% end %>
+
         <% if flash[:debug] %>
           <%= render "shared/alert", title: "Debug:", body: flash[:debug], color: 'warning' %>
         <% end %>
+
         <noscript>
           <%= render "shared/alert", title: "Warning:", body: "JavaScript could not be detected on your web browser, some website functionality may be broken.", color: 'warning' %>
         </noscript>
       </div>
-  
-      <!-------------------------------------------------------->
-      <!--                       MAIN                         -->
-      <!-------------------------------------------------------->
-      <main class="pt-md-4 pt-2 px-md-2 px-1">
-        <%= yield %>
-      </main>
+
+      <!-- ---------------------------------------------------- -->
+      <!-- MAIN -->
+      <!-- ---------------------------------------------------- -->
+      <main class="pt-md-4 pt-2 px-md-2 px-1"><%= yield %></main>
     </div>
 
-    <!-------------------------------------------------------->
-    <!--                      FOOTER                        -->
-    <!-------------------------------------------------------->
+    <!-- ---------------------------------------------------- -->
+    <!-- FOOTER -->
+    <!-- ---------------------------------------------------- -->
     <%= render 'shared/footer' %>
   </body>
 </html>
