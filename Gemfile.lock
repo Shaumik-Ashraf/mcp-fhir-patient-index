@@ -150,7 +150,7 @@ GEM
       addressable (~> 2.8)
       bigdecimal (~> 3.1)
     json_rpc_handler (0.1.1)
-    kamal (2.7.0)
+    kamal (2.8.1)
       activesupport (>= 7.0)
       base64 (~> 0.2)
       bcrypt_pbkdf (~> 1.0)
