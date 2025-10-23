@@ -1,5 +1,6 @@
 class PatientRecord < ApplicationRecord
   include ActiveSnapshot
+  extend Util
 
   has_many :patient_joins, dependent: :destroy, inverse_of: :from_patient_record
   has_many :patients, through: :patient_joins, source: :to_patient_record
@@ -21,17 +22,32 @@ class PatientRecord < ApplicationRecord
     self.uuid = SecureRandom.uuid
   end
 
+  # TODO: move this method into some Corruption Factory class and merge it with Util
   # Takes a patient record and creates other duplicate records
   # but modifies random attributes with typos.
   #
   # @param [PatientRecord] patient_record - original truth
   # @option [Integer] records_to_generate - number of corrupted records to make
   # @option [Float] randomness - value from 0 to 1; 0 for minimal corruption 1 for maximum
-  # @return [Array<PatientRecord>] - array of corrupted duplicates
-  def self.simulate_corruption(patient_record, records_to_generate: 1, randomness: 0.2)
-    raise StandardError, "TODO"
+  # @option [Integer] seed
+  # @return [Array<PatientRecord>] - array of saved corrupted duplicates
+  def self.simulate_corruption(patient_record, records_to_generate: 1, randomness: 0.2, seed: Random.new_seed)
+    ret = []
+    random = Random.new(seed)
+    corruptable_attributes = %i[first_name last_name address_line1 address_line2]
+
+    records_to_generate.times do
+      corrupt_record = patient_record.dup # ONLY COPIES ATTRIBUTES NOT ASSOCIATIONS (SHALLOW)
+      corruptable_attributes.each do |attribute|
+        corrupt_record.send("#{attribute}=", typo(corrupt_record.send(attribute)))
+      end
+      corrupt_record.save
+      ret << corrupt_record
+    end
+
+    ret
   end
-  
+
   # @param [Hash] attributes - specify certain patient attributes
   # @return [PatientRecord] unsaved instance
   def self.build_random(**attributes)
