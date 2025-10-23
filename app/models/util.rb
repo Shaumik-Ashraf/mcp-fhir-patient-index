@@ -41,8 +41,8 @@ module Util
     else
       keyboard_col = QWERTY[keyboard_row].index(char)
 
-      keyboard_row + [-1, 0, 1].sample(random:)
-      keyboard_col + [-1, 0, 1].sample(random:)
+      keyboard_row + [ -1, 0, 1 ].sample(random:)
+      keyboard_col + [ -1, 0, 1 ].sample(random:)
 
       keyboard_row = fit(keyboard_row, 0, QWERTY.length-1)
       keyboard_col = fit(keyboard_col, 0, QWERTY[keyboard_row].length-1)
