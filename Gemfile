@@ -71,7 +71,7 @@ end
 
 gem "faker", "~> 3.5.2"
 
-gem "simple_form", "~> 5.3"
+gem "simple_form", "~> 5.4"
 
 gem "fhir_models", "~> 5.0"
 
