@@ -29,9 +29,11 @@ Developer log and backlog of tasks.
   + anonymous mode: hide ssns and other sensitive information
   + matching threshold
 - [ ] Explain HIPAA vs SOC-II
-- [ ] Make realistically messy patient identity data generator
+- [x] Make realistically messy patient identity data generator
+- [ ] Factorize "messy data generator" so its easily modable - would increase this app's value prop as an identity matching lab
 - [ ] Implement patient data grid
-- [ ] Implement patient linking
+- [~] Implement patient linking
+  + patient join model is done, need to add ui **TODO**
 - [ ] Make patient diff page for comparing records and manual stewardship
 - [ ] Implement patient matching engine that automates matches
 - [ ] Implement FHIR `$match`
