@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_17_230332) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_30_160357) do
   create_table "patient_joins", force: :cascade do |t|
     t.integer "from_patient_record_id", null: false
     t.integer "to_patient_record_id", null: false
@@ -41,6 +41,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_230332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["uuid"], name: "index_patient_records_on_uuid", unique: true
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string "key", null: false
+    t.text "description"
+    t.json "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_settings_on_key", unique: true
   end
 
   create_table "snapshot_items", force: :cascade do |t|
