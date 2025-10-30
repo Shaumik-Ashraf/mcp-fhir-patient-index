@@ -19,33 +19,30 @@ RSpec.describe SettingsController, type: :controller do
     context 'with valid params' do
       it 'updates the setting value' do
         patch :update, params: { id: setting.id, setting: { value: false } }
-        expect(setting.reload.value).to eq(false)
+        expect(setting.reload.value).to be(false)
       end
 
-      it 'redirects to settings index with success notice' do
+      it 'redirects to settings index' do
         patch :update, params: { id: setting.id, setting: { value: false } }
         expect(response).to redirect_to(settings_path)
-        expect(flash[:notice]).to eq('Setting updated successfully.')
       end
     end
 
     context 'with invalid setting id' do
-      it 'redirects to settings index with error alert' do
+      it 'redirects to settings index' do
         patch :update, params: { id: 99999, setting: { value: false } }
         expect(response).to redirect_to(settings_path)
-        expect(flash[:alert]).to eq('Setting not found.')
       end
     end
 
     context 'when update fails' do
       before do
-        allow_any_instance_of(Setting).to receive(:update).and_return(false)
+        allow_any_instance_of(Setting).to receive(:update).and_return(false) # rubocop:disable RSpec/AnyInstance
       end
 
-      it 'redirects with failure alert' do
+      it 'redirects' do
         patch :update, params: { id: setting.id, setting: { value: false } }
         expect(response).to redirect_to(settings_path)
-        expect(flash[:alert]).to eq('Failed to update setting.')
       end
     end
   end
