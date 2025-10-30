@@ -8,6 +8,12 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# Create settings
+Setting.find_or_create_by!(key: "last_four_ssn") do |setting|
+  setting.description = "Only display the last four digits of an SSN"
+  setting.value = true
+end
+
 # Seed 10 random patients with full data
 10.times do
   PatientRecord.create_random!
