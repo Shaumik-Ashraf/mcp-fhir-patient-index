@@ -14,7 +14,8 @@ Setting.find_or_create_by!(key: "last_four_ssn") do |setting|
   setting.value = true
 end
 
-# Seed 10 random patients with full data
-10.times do
-  PatientRecord.create_random!
+# Seed 3 random "real" patients, each with 2 corrupted duplicate records
+3.times do
+  patient = PatientRecord.create_random!
+  PatientRecord.simulate_corruption(patient, records_to_generate: 2, randomness: 0.5)
 end
