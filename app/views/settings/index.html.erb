@@ -16,7 +16,7 @@
       <% @settings.each do |setting| %>
         <div class="card mb-3">
           <div class="card-header">
-            <h4 class="mb-0"><%= setting.key.humanize %></h4>
+            <h4 class="mb-0"><%= display_key(setting) %></h4>
           </div>
           <div class="card-body">
             <% if setting.description.present? %>
@@ -30,7 +30,7 @@
                     role: "switch",
                     checked: setting.value,
                     onchange: "this.form.submit()" %>
-                <%= f.label :value, "Enable #{setting.key.humanize.downcase}", class: "form-check-label" %>
+                <%= f.label :value, setting.value ? "Enabled" : "Disabled", class: "form-check-label" %>
               </div>
             <% end %>
           </div>

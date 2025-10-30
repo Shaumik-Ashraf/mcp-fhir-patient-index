@@ -1,4 +1,6 @@
 class SettingsController < ApplicationController
+  before_action :settings_title
+
   def index
     @settings = Setting.all.order(:key)
   end
@@ -16,6 +18,10 @@ class SettingsController < ApplicationController
   end
 
   private
+
+  def settings_title
+    set_title "Settings"
+  end
 
   def setting_params
     permitted = params.require(:setting).permit(:value)
