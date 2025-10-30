@@ -75,7 +75,7 @@
           id="<%= dom_id patient, :social_security_number %>"
         >
           <b>Social security number:</b>
-          <%= patient.social_security_number %>
+          <%= format_ssn(patient.social_security_number) %>
         </div>
 
         <div

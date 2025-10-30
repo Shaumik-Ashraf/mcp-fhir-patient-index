@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get "setting/index"
+  resources :settings, only: [ :index, :update ]
+
   namespace :mcp do
     namespace :v20250618 do
       get "/", { controller: :application, action: :index }

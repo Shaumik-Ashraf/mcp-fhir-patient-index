@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row justify-content-between my-lg-5 my-sm-3 my-2">
+    <div class="col-md-6 text-start">
+      <h1>Settings</h1>
+    </div>
+
+    <div class="col-md-6 btn-toolbar d-flex justify-content-end">
+      <div class="btn-group" role="group" aria-label="action-buttons">
+        <%= link_to 'Back', :back, class: "btn btn-outline btn-outline-tertiary" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <% @settings.each do |setting| %>
+        <div class="card mb-3">
+          <div class="card-header">
+            <h4 class="mb-0"><%= setting.key.humanize %></h4>
+          </div>
+          <div class="card-body">
+            <% if setting.description.present? %>
+              <p class="text-muted"><%= setting.description %></p>
+            <% end %>
+
+            <%= form_with model: setting, url: setting_path(setting), method: :patch, local: true do |f| %>
+              <div class="form-check form-switch">
+                <%= f.check_box :value, 
+                    class: "form-check-input", 
+                    role: "switch",
+                    checked: setting.value,
+                    onchange: "this.form.submit()" %>
+                <%= f.label :value, "Enable #{setting.key.humanize.downcase}", class: "form-check-label" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
