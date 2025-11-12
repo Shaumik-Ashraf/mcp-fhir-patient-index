@@ -38,7 +38,7 @@ Developer log and backlog of tasks.
 - [ ] Implement patient matching engine that automates matches
 - [ ] Implement FHIR `$match`
 - [ ] Implement MCP patient match tool
-- [ ] Create docker compose for cleaner docker setup
+- [ ] Implement rubyless devcontainer + docker setup
 - [ ] Better RSpec
 - [ ] e2e tests (Selenium or otherwise)
 
