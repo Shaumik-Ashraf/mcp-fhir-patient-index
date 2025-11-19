@@ -30,24 +30,6 @@ and do a secure deployment with SOC-II compliance.**
 
 - [Yarn](https://classic.yarnpkg.com/en/docs) 1.x
 - [Ruby](https://www.ruby-lang.org/en/) 3.3
-- [Docker](https://www.docker.com/) (optional)
-
-## Quick Start
-
-1. Ensure you have Docker running
-2. If it's your first time, create a master key with `bin/rails credentials:edit`. Exit the editor
-without any edits and the master key will be automatically created.
-3. Build image:
-
-```
-docker build -t mcp_fhir_patient_index .
-```
-
-4. Run container:
-
-```
-docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name mcp_fhir_patient_index mcp_fhir_patient_index
-```
 
 ## Developer Start
 
