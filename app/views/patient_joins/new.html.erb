@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row my-5">
+    <div class="col">
+      <h1>Link Patient Records</h1>
+      <p class="lead">Select two patient records to compare and link if they belong to the same patient identity.</p>
+    </div>
+  </div>
+
+  <%= form_with url: compare_patient_joins_path, method: :get, local: true do |f| %>
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">First Patient Record</h4>
+          </div>
+          <div class="card-body">
+            <%= f.label :patient_1_uuid, "Select Patient Record:", class: "form-label" %>
+            <%= f.select :patient_1_uuid, 
+                options_for_select(
+                  @patient_records.map { |p| ["#{p.first_name} #{p.last_name} (#{p.uuid[0..7]}...)", p.uuid] }
+                ),
+                { include_blank: "-- Select a patient record --" },
+                { class: "form-select", required: true } %>
+            <div class="form-text">Choose the first patient record to compare</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Second Patient Record</h4>
+          </div>
+          <div class="card-body">
+            <%= f.label :patient_2_uuid, "Select Patient Record:", class: "form-label" %>
+            <%= f.select :patient_2_uuid,
+                options_for_select(
+                  @patient_records.map { |p| ["#{p.first_name} #{p.last_name} (#{p.uuid[0..7]}...)", p.uuid] }
+                ),
+                { include_blank: "-- Select a patient record --" },
+                { class: "form-select", required: true } %>
+            <div class="form-text">Choose the second patient record to compare</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col text-center">
+        <%= f.submit "Compare Patient Records", class: "btn btn-lg btn-primary" %>
+        <%= link_to "Cancel", patients_path, class: "btn btn-lg btn-outline-secondary ms-2" %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,64 @@
+<table class="table table-sm table-hover">
+  <tbody>
+    <tr>
+      <th scope="row" class="w-50">UUID:</th>
+      <td><code><%= patient_record.uuid %></code></td>
+    </tr>
+    <tr>
+      <th scope="row">First Name:</th>
+      <td><%= display_or_blank(patient_record.first_name) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Last Name:</th>
+      <td><%= display_or_blank(patient_record.last_name) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Gender:</th>
+      <td><%= display_or_blank(patient_record.administrative_gender&.humanize) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Birth Date:</th>
+      <td><%= display_or_blank(patient_record.birth_date) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Email:</th>
+      <td><%= display_or_blank(patient_record.email) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Phone:</th>
+      <td><%= display_or_blank(patient_record.phone_number) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Address Line 1:</th>
+      <td><%= display_or_blank(patient_record.address_line1) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Address Line 2:</th>
+      <td><%= display_or_blank(patient_record.address_line2) %></td>
+    </tr>
+    <tr>
+      <th scope="row">City:</th>
+      <td><%= display_or_blank(patient_record.address_city) %></td>
+    </tr>
+    <tr>
+      <th scope="row">State:</th>
+      <td><%= display_or_blank(patient_record.address_state) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Zip Code:</th>
+      <td><%= display_or_blank(patient_record.address_zip_code) %></td>
+    </tr>
+    <tr>
+      <th scope="row">SSN:</th>
+      <td><%= display_or_blank(format_ssn(patient_record.social_security_number)) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Passport:</th>
+      <td><%= display_or_blank(patient_record.passport_number) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Driver's License:</th>
+      <td><%= display_or_blank(patient_record.drivers_license_number) %></td>
+    </tr>
+  </tbody>
+</table>

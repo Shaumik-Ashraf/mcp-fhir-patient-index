@@ -1,0 +1,63 @@
+<div class="container-fluid">
+  <div class="row my-4">
+    <div class="col">
+      <h1>Compare Patient Records</h1>
+      <p class="lead">Review the patient information below and link them if they belong to the same patient identity.</p>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card border-primary">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Patient Record 1: <%= @patient_record_1.uuid[0..7] %>...</h4>
+        </div>
+        <div class="card-body">
+          <%= render 'patient_record_details', patient_record: @patient_record_1 %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card border-secondary">
+        <div class="card-header bg-secondary text-white">
+          <h4 class="mb-0">Patient Record 2: <%= @patient_record_2.uuid[0..7] %>...</h4>
+        </div>
+        <div class="card-body">
+          <%= render 'patient_record_details', patient_record: @patient_record_2 %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= form_with model: @patient_join, url: patient_joins_path, local: true do |f| %>
+    <%= f.hidden_field :from_patient_record_id, value: @patient_record_1.id %>
+    <%= f.hidden_field :to_patient_record_id, value: @patient_record_2.id %>
+    <%= f.hidden_field :qualifier, value: :has_same_identity_as %>
+
+    <div class="row mb-4">
+      <div class="col-md-8 offset-md-2">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Link Details</h5>
+          </div>
+          <div class="card-body">
+            <%= f.label :notes, "Notes (optional):", class: "form-label" %>
+            <%= f.text_area :notes, 
+                class: "form-control", 
+                rows: 3, 
+                placeholder: "Add any notes about why these records are being linked..." %>
+            <div class="form-text">Optional notes about this link for future reference</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col text-center">
+        <%= f.submit "Link These Patient Records", class: "btn btn-lg btn-success", data: { confirm: "Are you sure these records belong to the same patient?" } %>
+        <%= link_to "Cancel", new_patient_join_path, class: "btn btn-lg btn-outline-secondary ms-2" %>
+      </div>
+    </div>
+  <% end %>
+</div>

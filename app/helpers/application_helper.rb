@@ -16,4 +16,12 @@ module ApplicationHelper
       ssn
     end
   end
+
+  # Displays value or "Not provided" message if blank
+  # @param value [String, nil]
+  # @param message [String] Custom message to display when value is blank
+  # @return [String, ActiveSupport::SafeBuffer] Value or italicized muted message
+  def display_or_blank(value, message = "Not provided")
+    value.present? ? value : content_tag(:em, message, class: "text-muted")
+  end
 end

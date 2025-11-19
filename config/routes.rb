@@ -23,6 +23,12 @@ Rails.application.routes.draw do
   resources :patients, controller: "patient_records"
   resources :patient_records
 
+  resources :patient_joins, only: [ :new, :create, :destroy ] do
+    collection do
+      get :compare
+    end
+  end
+
   get "pages/index"
   root to: "pages#index"
 

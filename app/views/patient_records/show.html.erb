@@ -18,6 +18,10 @@
           <%= link_to 'Edit', main_app.edit_patient_path(@patient_record), class: "btn btn-outline btn-outline-primary mx-2" %>
         </div>
 
+        <div>
+          <%= link_to 'Link to Another Patient', new_patient_join_path(patient_1_uuid: @patient_record.uuid), class: "btn btn-outline btn-outline-info mx-2" %>
+        </div>
+
         <%= button_to 'Delete',
 											main_app.patient_path(@patient_record),
 											method: :delete,
@@ -131,4 +135,44 @@
     </div>
     <div class="col-sm-9"><%= @patient_record.drivers_license_number %></div>
   </div>
+
+  <% if @patient_record.patient_joins.any? %>
+    <div class="row mt-5">
+      <div class="col">
+        <h3>Linked Patient Records</h3>
+        <p class="text-muted">This patient record is linked to the following records:</p>
+      </div>
+    </div>
+
+    <% @patient_record.patient_joins.each do |patient_join| %>
+      <div class="row mb-3">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 class="card-title">
+                    <%= link_to patient_join.to_patient_record.uuid, patient_record_path(patient_join.to_patient_record) %>
+                  </h5>
+                  <p class="card-text">
+                    <strong>Name:</strong> <%= patient_join.to_patient_record.first_name %> <%= patient_join.to_patient_record.last_name %><br>
+                    <strong>Relationship:</strong> <%= patient_join.qualifier.to_s.humanize %><br>
+                    <% if patient_join.notes.present? %>
+                      <strong>Notes:</strong> <%= patient_join.notes %>
+                    <% end %>
+                  </p>
+                </div>
+                <div>
+                  <%= button_to 'Unlink', patient_join_path(patient_join),
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger",
+                      data: { confirm: "Are you sure you want to unlink this patient record?" } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 </div>
