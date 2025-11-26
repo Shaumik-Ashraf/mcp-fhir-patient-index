@@ -15,3 +15,7 @@ RSpec/ExampleLength:
   Enabled: false
 RSpec/IncludeExamples:
   Enabled: true
+RSpec/IndexedLet:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
