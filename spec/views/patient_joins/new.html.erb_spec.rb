@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "patient_joins/new", type: :view do
-  before do
-    @patient_records = [
+  let(:patient_records) do
+    [
       create(:patient, first_name: "John", last_name: "Doe"),
       create(:patient, first_name: "Jane", last_name: "Smith")
     ]
-    assign(:patient_records, @patient_records)
+  end
+
+  before do
+    assign(:patient_records, patient_records)
   end
 
   it "renders new patient join selection form" do
@@ -22,7 +25,7 @@ RSpec.describe "patient_joins/new", type: :view do
   it "displays all patient records in the dropdowns" do
     render
 
-    @patient_records.each do |patient|
+    patient_records.each do |patient|
       assert_select "select#patient_1_uuid option", text: /#{patient.first_name} #{patient.last_name}/
       assert_select "select#patient_2_uuid option", text: /#{patient.first_name} #{patient.last_name}/
     end
