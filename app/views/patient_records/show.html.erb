@@ -144,7 +144,7 @@
       </div>
     </div>
 
-    <% @patient_record.patient_joins.each do |patient_join| %>
+    <% @patient_record.each_linked_record do |linked_record, patient_join| %>
       <div class="row mb-3">
         <div class="col">
           <div class="card">
@@ -152,10 +152,10 @@
               <div class="d-flex justify-content-between align-items-start">
                 <div>
                   <h5 class="card-title">
-                    <%= link_to patient_join.to_patient_record.uuid, patient_record_path(patient_join.to_patient_record) %>
+                    <%= link_to linked_record.uuid, patient_record_path(linked_record) %>
                   </h5>
                   <p class="card-text">
-                    <strong>Name:</strong> <%= patient_join.to_patient_record.first_name %> <%= patient_join.to_patient_record.last_name %><br>
+                    <strong>Name:</strong> <%= linked_record.first_name %> <%= linked_record.last_name %><br>
                     <strong>Relationship:</strong> <%= patient_join.qualifier.to_s.humanize %><br>
                     <% if patient_join.notes.present? %>
                       <strong>Notes:</strong> <%= patient_join.notes %>

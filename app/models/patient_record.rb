@@ -3,7 +3,8 @@ class PatientRecord < ApplicationRecord
   extend Util
 
   has_many :patient_joins, dependent: :destroy, inverse_of: :from_patient_record
-  has_many :patients, through: :patient_joins, source: :to_patient_record
+  has_many :reverse_patient_joins, class_name: "PatientJoin", dependent: :destroy, inverse_of: :to_patient_record
+  # has_many :patients, through: :patient_joins, source: :to_patient_record # TODO delete
 
   has_snapshot_children do
     # Executed in the context of the instance / self
@@ -20,6 +21,32 @@ class PatientRecord < ApplicationRecord
 
   before_create do
     self.uuid = SecureRandom.uuid
+  end
+  
+  # TODO: this query needs to do BFS/DFS
+  # TODO: since this method returns joins and not patients, rename of modify!!!
+  # While the patient join model is directional, joins with 'has_same_identity_as' should
+  # be treated as bidirectional. Thus `has_many` cannot be used.
+  #
+  # @return [ActiveRecord::Relation<PatientJoin>] - patient records linked via 'has_same_identity_as'
+  def linked_patient_records
+    patient_joins.where(qualifier: :has_same_identity_as).or(reverse_patient_joins.where(qualifier: :has_same_identity_as))
+  end
+
+  # @example
+  #   PatientRecord.first.each_linked_record do |linked_record, join|
+  #     ...
+  #   end
+  # @yield [PatientRecord]
+  # @yield [PatientJoin]
+  def each_linked_record
+    linked_patient_records.find_each do |patient_join|
+      if patient_join.from_patient_record_id == self.id
+        yield(patient_join.to_patient_record, patient_join)
+      elsif patient_join.to_patient_record_id == self.id
+        yield(patient_join.from_patient_record, patient_join)
+      end
+    end
   end
 
   # TODO: move this method into some Corruption Factory class and merge it with Util
