@@ -35,9 +35,16 @@ and do a secure deployment with SOC-II compliance.**
 
 1. `yarn install`
 2. `bundle`
-3. `rails db:migrate`
-4. `rails assets:precompile`
-5. `rails server`
+3. Acquire credentials key or make your own:
+```
+EDITOR=<editor> bin/rails credentials:edit --environment <environment> # create
+bin/rails db:encryption:init # copy output
+EDITOR=<editor> bin/rails credentials:edit --environment <environment> # paste
+```
+4. `rails db:migrate`
+5. `rails assets:precompile`
+6. `rails server`
+7. Optional: `rails db:seed`
 
 ## Documentation
 
