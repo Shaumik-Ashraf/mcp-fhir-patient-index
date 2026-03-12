@@ -30,10 +30,11 @@ Developer log and backlog of tasks.
   + matching threshold
 - [ ] Explain HIPAA vs SOC-II
 - [x] Make realistically messy patient identity data generator
-- [ ] Factorize "messy data generator" so its easily modable - would increase this app's value prop as an identity matching lab
+- [ ] Factorize "messy data generator" so its easily modable
 - [ ] Implement patient data grid
 - [~] Implement patient linking
-  + patient join model is done, need to add ui **TODO**
+  + **BUG**: the patient linking is currently unidirectional. It actually needs to be a graph/network
+	creation with BFS/DFS, because linking two patients should link all records already linked to those patients
 - [ ] Make patient diff page for comparing records and manual stewardship
 - [ ] Implement patient matching engine that automates matches
 - [ ] Implement FHIR `$match`
