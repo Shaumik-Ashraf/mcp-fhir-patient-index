@@ -22,7 +22,7 @@ class PatientRecord < ApplicationRecord
   before_create do
     self.uuid = SecureRandom.uuid
   end
-  
+
   # TODO: this query needs to do BFS/DFS
   # TODO: since this method returns joins and not patients, rename of modify!!!
   # While the patient join model is directional, joins with 'has_same_identity_as' should
