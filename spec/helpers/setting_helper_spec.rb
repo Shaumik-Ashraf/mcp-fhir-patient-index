@@ -11,5 +11,10 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe SettingHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:setting) { Setting.find_or_create_by!(key: 'last_four_ssn') }
+  describe "#display_key" do
+    it "humanizes setting name from key" do
+      expect(helper.display_key(setting)).to eq("Last Four SSN")
+    end
+  end
 end
