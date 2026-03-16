@@ -3,20 +3,24 @@ class PatientRecordsController < ApplicationController
 
   # GET /patients
   def index
+    set_title "Patients"
     @patient_records = PatientRecord.all
   end
 
   # GET /patients/1
   def show
+    set_title "Patient #{@patient_record.uuid}"
   end
 
   # GET /patients/new
   def new
+    set_title "Add Patient"
     @patient_record = PatientRecord.new
   end
 
   # GET /patients/1/edit
   def edit
+    set_title "Edit Patient #{@patient_record.uuid}"
   end
 
   # POST /patients

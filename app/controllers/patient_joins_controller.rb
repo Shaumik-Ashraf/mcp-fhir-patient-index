@@ -4,11 +4,14 @@ class PatientJoinsController < ApplicationController
 
   # GET /patient_joins/new
   def new
+    set_title "Link Patients"
     @patient_records = PatientRecord.all
   end
 
   # GET /patient_joins/compare
   def compare
+    set_title "Compare Patients"
+    
     if @patient_record_1.nil? || @patient_record_2.nil?
       redirect_to new_patient_join_path, alert: "Please select two valid patient records to compare."
       return
