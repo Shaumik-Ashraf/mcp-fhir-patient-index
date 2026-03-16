@@ -26,8 +26,8 @@ class PatientRecord < ApplicationRecord
   # While the patient join model is directional, joins with 'has_same_identity_as' should
   # be treated as bidirectional. Thus `has_many` cannot be used.
   #
-  # @return [ActiveRecord::Relation<PatientJoin>] - direct patient joins for this record
-  def linked_patient_records
+  # @return [ActiveRecord::Relation<PatientJoin>] - direct patient joins for this record (both directions)
+  def bidirectional_patient_joins
     patient_joins.where(qualifier: :has_same_identity_as).or(reverse_patient_joins.where(qualifier: :has_same_identity_as))
   end
 
@@ -44,7 +44,7 @@ class PatientRecord < ApplicationRecord
     visited_ids = Set.new([ id ])
     queue = []
 
-    linked_patient_records.each do |patient_join|
+    bidirectional_patient_joins.each do |patient_join|
       neighbor = patient_join.from_patient_record_id == id ?
                  patient_join.to_patient_record :
                  patient_join.from_patient_record
@@ -56,7 +56,7 @@ class PatientRecord < ApplicationRecord
 
     until queue.empty?
       current = queue.shift
-      current.linked_patient_records.each do |patient_join|
+      current.bidirectional_patient_joins.each do |patient_join|
         neighbor = patient_join.from_patient_record_id == current.id ?
                    patient_join.to_patient_record :
                    patient_join.from_patient_record
@@ -66,6 +66,15 @@ class PatientRecord < ApplicationRecord
         yield(neighbor, nil)
       end
     end
+  end
+
+  # Returns all transitively-reachable patient records as an array.
+  #
+  # @return [Array<PatientRecord>]
+  def linked_records
+    records = []
+    each_linked_record { |record, _| records << record }
+    records
   end
 
   # TODO: move this method into some Corruption Factory class and merge it with Util

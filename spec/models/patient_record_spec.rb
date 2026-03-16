@@ -113,6 +113,33 @@ RSpec.describe PatientRecord, type: :model do
     end
   end
 
+  describe "#linked_records" do
+    it "returns direct neighbors" do
+      a = create(:patient)
+      b = create(:patient)
+      create(:patient_join, from: a, to: b)
+      expect(a.linked_records).to contain_exactly(b)
+    end
+
+    it "returns transitively linked records (A→B, B→C: A sees C)" do
+      a = create(:patient)
+      b = create(:patient)
+      c = create(:patient)
+      create(:patient_join, from: a, to: b)
+      create(:patient_join, from: b, to: c)
+      expect(a.linked_records).to include(c)
+    end
+
+    it "does not include self or loop infinitely in a cycle" do
+      a = create(:patient)
+      b = create(:patient)
+      create(:patient_join, from: a, to: b)
+      create(:patient_join, from: b, to: a)
+      expect(a.linked_records).not_to include(a)
+      expect(a.linked_records.length).to eq(1)
+    end
+  end
+
   describe "#to_text" do
     it "returns String" do
       expect(patient.to_text).to be_instance_of String

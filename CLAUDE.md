@@ -80,7 +80,7 @@ npx @modelcontextprotocol/inspector
 - `/settings/` — Application settings
 
 ### Key Models
-- **PatientRecord** (`app/models/patient_record.rb`) — Core model. Has `to_fhir()` for FHIR conversion, `to_text()` for LLM-friendly representation, `simulate_corruption()` for testing identity matching, and `linked_patient_records()` / `each_linked_record()` for bidirectional join traversal. Uses `active_snapshot` gem for versioning.
+- **PatientRecord** (`app/models/patient_record.rb`) — Core model. Has `to_fhir()` for FHIR conversion, `to_text()` for LLM-friendly representation, `simulate_corruption()` for testing identity matching, and `bidirectional_patient_joins()` for the direct bidirectional AR join relation, `linked_records()` for the full transitive graph of linked PatientRecord objects, and `each_linked_record()` for the underlying BFS iterator. Uses `active_snapshot` gem for versioning.
 - **PatientJoin** (`app/models/patient_join.rb`) — Self-join table linking patient records. Qualifier `has_same_identity_as` is treated as bidirectional. Stored as directional but queried bidirectionally.
 - **Setting** (`app/models/setting.rb`) — Key-value store. Access via `Setting[:key]` / `Setting[:key] = value`.
 

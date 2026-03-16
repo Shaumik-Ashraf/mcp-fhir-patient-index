@@ -136,7 +136,7 @@
     <div class="col-sm-9"><%= @patient_record.drivers_license_number %></div>
   </div>
 
-  <% if @patient_record.linked_patient_records.any? %>
+  <% if @patient_record.linked_records.any? %>
     <div class="row mt-5">
       <div class="col">
         <h3>Linked Patient Records</h3>

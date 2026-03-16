@@ -11,6 +11,6 @@ RSpec.describe PatientJoin, type: :model do
 
   it "linked records are accessible from either side" do
     link = create(:patient_join, from: from_patient, to: to_patient)
-    expect(to_patient.linked_patient_records).to include(link)
+    expect(to_patient.bidirectional_patient_joins).to include(link)
   end
 end
