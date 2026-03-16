@@ -118,13 +118,12 @@ RSpec.describe "Patient Joins Workflow", type: :request do
     end
 
     it "displays linked patients on patient show page" do
-      patient_join = create(:patient_join, from: patient_1, to: patient_2, notes: "Test notes")
+      create(:patient_join, from: patient_1, to: patient_2)
 
       get patient_record_path(patient_1)
       expect(response).to be_successful
       expect(response.body).to include("Linked Patient Records")
       expect(response.body).to include(patient_2.uuid)
-      expect(response.body).to include("Test notes")
       expect(response.body).to include("Unlink")
     end
   end

@@ -80,6 +80,39 @@ RSpec.describe PatientRecord, type: :model do
     end
   end
 
+  describe "#each_linked_record" do
+    it "yields direct neighbors" do
+      a = create(:patient)
+      b = create(:patient)
+      create(:patient_join, from: a, to: b)
+      seen = []
+      a.each_linked_record { |rec, _| seen << rec }
+      expect(seen).to contain_exactly(b)
+    end
+
+    it "yields transitively linked records (A→B, B→C: A sees C)" do
+      a = create(:patient)
+      b = create(:patient)
+      c = create(:patient)
+      create(:patient_join, from: a, to: b)
+      create(:patient_join, from: b, to: c)
+      seen = []
+      a.each_linked_record { |rec, _| seen << rec }
+      expect(seen).to include(c)
+    end
+
+    it "does not loop infinitely or yield self in a cycle" do
+      a = create(:patient)
+      b = create(:patient)
+      create(:patient_join, from: a, to: b)
+      create(:patient_join, from: b, to: a)
+      seen = []
+      a.each_linked_record { |rec, _| seen << rec }
+      expect(seen).not_to include(a)
+      expect(seen.length).to eq(1)
+    end
+  end
+
   describe "#to_text" do
     it "returns String" do
       expect(patient.to_text).to be_instance_of String

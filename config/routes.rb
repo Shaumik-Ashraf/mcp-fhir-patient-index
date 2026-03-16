@@ -21,7 +21,11 @@ Rails.application.routes.draw do
 
   # Alias patients resource to patient_records
   resources :patients, controller: "patient_records"
-  resources :patient_records
+  resources :patient_records do
+    member do
+      delete :unlink
+    end
+  end
 
   resources :patient_joins, only: [ :new, :create, :destroy ] do
     collection do

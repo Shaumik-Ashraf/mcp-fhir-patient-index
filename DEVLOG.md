@@ -32,9 +32,7 @@ Developer log and backlog of tasks.
 - [x] Make realistically messy patient identity data generator
 - [ ] Factorize "messy data generator" so its easily modable
 - [ ] Implement patient data grid
-- [~] Implement patient linking
-  + **BUG**: the patient linking is currently unidirectional. It actually needs to be a graph/network
-	creation with BFS/DFS, because linking two patients should link all records already linked to those patients
+- [x] Implement patient linking
 - [ ] Make patient diff page for comparing records and manual stewardship
 - [ ] Implement patient matching engine that automates matches
 - [ ] Implement FHIR `$match`

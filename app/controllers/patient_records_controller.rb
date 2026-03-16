@@ -1,5 +1,5 @@
 class PatientRecordsController < ApplicationController
-  before_action :set_patient_record, only: %i[ show edit update destroy ]
+  before_action :set_patient_record, only: %i[ show edit update destroy unlink ]
 
   # GET /patients
   def index
@@ -47,6 +47,16 @@ class PatientRecordsController < ApplicationController
       snapshot.destroy!
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  # DELETE /patients/1/unlink
+  def unlink
+    PatientJoin.where(from_patient_record: @patient_record)
+               .or(PatientJoin.where(to_patient_record: @patient_record))
+               .destroy_all
+    redirect_back fallback_location: patient_records_path,
+                  notice: "Patient record removed from network.",
+                  status: :see_other
   end
 
   # DELETE /patients/1

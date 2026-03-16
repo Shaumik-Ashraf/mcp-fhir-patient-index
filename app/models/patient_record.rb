@@ -23,28 +23,47 @@ class PatientRecord < ApplicationRecord
     self.uuid = SecureRandom.uuid
   end
 
-  # TODO: this query needs to do BFS/DFS
-  # TODO: since this method returns joins and not patients, rename of modify!!!
   # While the patient join model is directional, joins with 'has_same_identity_as' should
   # be treated as bidirectional. Thus `has_many` cannot be used.
   #
-  # @return [ActiveRecord::Relation<PatientJoin>] - patient records linked via 'has_same_identity_as'
+  # @return [ActiveRecord::Relation<PatientJoin>] - direct patient joins for this record
   def linked_patient_records
     patient_joins.where(qualifier: :has_same_identity_as).or(reverse_patient_joins.where(qualifier: :has_same_identity_as))
   end
 
+  # Traverses the full connected graph component via BFS, yielding every reachable
+  # patient record along with the PatientJoin edge (nil for transitively-reached nodes).
+  #
   # @example
   #   PatientRecord.first.each_linked_record do |linked_record, join|
   #     ...
   #   end
   # @yield [PatientRecord]
-  # @yield [PatientJoin]
+  # @yield [PatientJoin, nil]
   def each_linked_record
-    linked_patient_records.find_each do |patient_join|
-      if patient_join.from_patient_record_id == self.id
-        yield(patient_join.to_patient_record, patient_join)
-      elsif patient_join.to_patient_record_id == self.id
-        yield(patient_join.from_patient_record, patient_join)
+    visited_ids = Set.new([ id ])
+    queue = []
+
+    linked_patient_records.each do |patient_join|
+      neighbor = patient_join.from_patient_record_id == id ?
+                 patient_join.to_patient_record :
+                 patient_join.from_patient_record
+      next if visited_ids.include?(neighbor.id)
+      visited_ids.add(neighbor.id)
+      queue << neighbor
+      yield(neighbor, patient_join)
+    end
+
+    until queue.empty?
+      current = queue.shift
+      current.linked_patient_records.each do |patient_join|
+        neighbor = patient_join.from_patient_record_id == current.id ?
+                   patient_join.to_patient_record :
+                   patient_join.from_patient_record
+        next if visited_ids.include?(neighbor.id)
+        visited_ids.add(neighbor.id)
+        queue << neighbor
+        yield(neighbor, nil)
       end
     end
   end
