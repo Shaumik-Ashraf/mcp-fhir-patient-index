@@ -25,20 +25,16 @@ Developer log and backlog of tasks.
 - [ ] Implement FHIR Log that showcases fhir queries
 - [ ] Implement MCP Log with showcases llm integration
 - [ ] Implement some client-side LLM or test w/ some MCP client
-- [ ] Implement settings to customize UI
-  + anonymous mode: hide ssns and other sensitive information
-  + matching threshold
-- [ ] Explain HIPAA vs SOC-II
+- [x] Implement settings to customize UI
 - [x] Make realistically messy patient identity data generator
 - [ ] Factorize "messy data generator" so its easily modable
 - [ ] Implement patient data grid
 - [x] Implement patient linking
-- [ ] Make patient diff page for comparing records and manual stewardship
+- [x] Make patient diff page for comparing records and manual stewardship
 - [ ] Implement patient matching engine that automates matches
 - [ ] Implement FHIR `$match`
 - [ ] Implement MCP patient match tool
 - [ ] Implement rubyless devcontainer + docker setup
-- [ ] Better RSpec
 - [ ] e2e tests (Selenium or otherwise)
 
 
