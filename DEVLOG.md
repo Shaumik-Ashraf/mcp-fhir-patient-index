@@ -7,8 +7,7 @@ Developer log and backlog of tasks.
 - [x] Draft initial Patient schema
 - [x] Implement Patient index view and read
 - [x] Implement Patient create
-- [~] Implement Patient edit and update
-  + improve ui
+- [x] Implement Patient edit and update
 - [~] Implement Patient snapshots and versioning
   + snapshots and versioning implemented
   + needs undo/version recovery
@@ -34,7 +33,6 @@ Developer log and backlog of tasks.
 - [ ] Implement patient matching engine that automates matches
 - [ ] Implement FHIR `$match`
 - [ ] Implement MCP patient match tool
-- [ ] Implement rubyless devcontainer + docker setup
 - [ ] e2e tests (Selenium or otherwise)
 
 
