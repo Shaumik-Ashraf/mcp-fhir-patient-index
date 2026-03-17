@@ -1,5 +1,8 @@
 // application.bootstrap.scss - custom
 
+// gridjs mermaid theme (@use must precede all @import rules)
+@use "gridjs/dist/theme/mermaid.min.css";
+
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "bootstrap/scss/functions";
 

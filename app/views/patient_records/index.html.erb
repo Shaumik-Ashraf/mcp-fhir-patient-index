@@ -8,9 +8,5 @@
     </div>
   </div>
 
-  <div class="row row-cols-4" id="patients">
-    <% @patient_records.each do |patient_record| %>
-      <%= render "patient_records/patient_record", patient: patient_record %>
-    <% end %>
-  </div>
+  <div id="patient-grid"></div>
 </div>

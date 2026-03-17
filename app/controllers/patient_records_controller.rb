@@ -5,6 +5,35 @@ class PatientRecordsController < ApplicationController
   def index
     set_title "Patients"
     @patient_records = PatientRecord.all
+
+    respond_to do |format|
+      format.html
+      format.json do
+        scope = @patient_records
+
+        if params[:search].present?
+          term = "%#{params[:search]}%"
+          scope = scope.where("first_name LIKE ? OR last_name LIKE ?", term, term)
+        end
+
+        allowed_columns = %w[first_name last_name birth_date]
+        sort_col = allowed_columns.include?(params[:sort_column]) ? params[:sort_column] : "last_name"
+        sort_dir = params[:sort_direction] == "desc" ? "desc" : "asc"
+        scope = scope.order("#{sort_col} #{sort_dir}")
+
+        total = scope.count
+        page = [ params[:page].to_i, 1 ].max
+        per_page = (params[:per_page] || 25).to_i.clamp(1, 100)
+        records = scope.offset((page - 1) * per_page).limit(per_page)
+
+        render json: {
+          data: records.map { |r|
+            { first_name: r.first_name, last_name: r.last_name, birth_date: r.birth_date, linked_records_count: r.linked_records.count, uuid: r.uuid }
+          },
+          total: total
+        }
+      end
+    end
   end
 
   # GET /patients/1
