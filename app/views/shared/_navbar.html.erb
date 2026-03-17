@@ -40,18 +40,6 @@
           <%= link_to "Settings", main_app.settings_path, class: "nav-link fs-4" %>
         </li>
       </ul>
-
-      <%# form %>
-      <%= form_with url: "/search", method: :get, class: "d-flex me-2 ml-auto", role: "search" do |f| %>
-        <input
-          class="form-control mx-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          name="q"
-        />
-        <button class="btn btn-outline-primary" type="submit">Search</button>
-      <% end %>
     </div>
   </div>
 </nav>
