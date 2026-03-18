@@ -15,9 +15,10 @@
           </div>
           <div class="card-body">
             <%= f.label :patient_1_uuid, "Select Patient Record:", class: "form-label" %>
-            <%= f.select :patient_1_uuid, 
+            <%= f.select :patient_1_uuid,
                 options_for_select(
-                  @patient_records.map { |p| ["#{p.first_name} #{p.last_name} (#{p.uuid[0..7]}...)", p.uuid] }
+                  @patient_records.map { |p| ["#{p.first_name} #{p.last_name} (#{p.uuid[0..7]}...)", p.uuid] },
+                  @patient_record_1&.uuid
                 ),
                 { include_blank: "-- Select a patient record --" },
                 { class: "form-select", required: true } %>
@@ -35,7 +36,8 @@
             <%= f.label :patient_2_uuid, "Select Patient Record:", class: "form-label" %>
             <%= f.select :patient_2_uuid,
                 options_for_select(
-                  @patient_records.map { |p| ["#{p.first_name} #{p.last_name} (#{p.uuid[0..7]}...)", p.uuid] }
+                  @patient_records.map { |p| ["#{p.first_name} #{p.last_name} (#{p.uuid[0..7]}...)", p.uuid] },
+                  @patient_record_2&.uuid
                 ),
                 { include_blank: "-- Select a patient record --" },
                 { class: "form-select", required: true } %>

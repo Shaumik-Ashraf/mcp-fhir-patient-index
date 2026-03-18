@@ -1,5 +1,5 @@
 class PatientJoinsController < ApplicationController
-  before_action :set_patient_records, only: [ :compare ]
+  before_action :set_patient_records, only: [ :new, :compare ]
   before_action :set_patient_join, only: [ :destroy ]
 
   # GET /patient_joins/new
