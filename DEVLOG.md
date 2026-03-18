@@ -21,6 +21,7 @@ Developer log and backlog of tasks.
 - [x] Implement skeleton MCP server
 - [x] Implement MCP resource server
 - [ ] Implement MCP tools server
+  + MCP patient match tool
 - [ ] Implement FHIR Log that showcases fhir queries
 - [ ] Implement MCP Log with showcases llm integration
 - [ ] Implement some client-side LLM or test w/ some MCP client
@@ -32,7 +33,6 @@ Developer log and backlog of tasks.
 - [x] Make patient diff page for comparing records and manual stewardship
 - [ ] Implement patient matching engine that automates matches
 - [ ] Implement FHIR `$match`
-- [ ] Implement MCP patient match tool
 - [ ] e2e tests (Selenium or otherwise)
 
 
