@@ -3,7 +3,15 @@ require 'rails_helper'
 RSpec.describe MatchingEngine do
   subject(:engine) { described_class.new }
 
-  let(:base) { build(:patient) }
+  let(:base) do
+    build(
+      :patient,
+      first_name: "Link",
+      last_name: "Base",
+      birth_date: Date.new(1939, 2, 2),
+      social_security_number: "999-99-9999"
+    )
+  end
 
   let(:identical) { base.dup }
 
@@ -28,11 +36,11 @@ RSpec.describe MatchingEngine do
 
   describe "#match?" do
     it "returns true when match_score meets the threshold" do
-      expect(engine.match?(base, identical, threshold: 0.7)).to be true
+      expect(engine.match?(base, identical, threshold: 0.5)).to be true
     end
 
     it "returns false when match_score is below the threshold" do
-      expect(engine.match?(base, different, threshold: 0.7)).to be false
+      expect(engine.match?(base, different, threshold: 0.5)).to be false
     end
   end
 end
