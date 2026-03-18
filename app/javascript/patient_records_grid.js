@@ -44,6 +44,7 @@ document.addEventListener("turbo:load", () => {
           return html(`
             <a href="/patient_records/${uuid}" class="btn btn-sm btn-outline-secondary me-1">View</a>
             <a href="/patient_records/${uuid}/edit" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+            <a href="/patient_joins/new?patient_1_uuid=${uuid}" class="btn btn-sm btn-outline-info me-1">Link</a>
             <a href="/patient_records/${uuid}"
                data-turbo-method="delete"
                data-turbo-confirm="Permanently delete this patient?"
