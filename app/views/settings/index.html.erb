@@ -24,14 +24,29 @@
             <% end %>
 
             <%= form_with model: setting, url: setting_path(setting), method: :patch, local: true do |f| %>
-              <div class="form-check form-switch">
-                <%= f.check_box :value, 
-                    class: "form-check-input", 
-                    role: "switch",
-                    checked: setting.value,
-                    onchange: "this.form.submit()" %>
-                <%= f.label :value, setting.value ? "Enabled" : "Disabled", class: "form-check-label" %>
-              </div>
+              <% if setting.value.is_a?(TrueClass) || setting.value.is_a?(FalseClass) %>
+                <div class="form-check form-switch">
+                  <%= f.check_box :value,
+                      class: "form-check-input",
+                      role: "switch",
+                      checked: setting.value,
+                      onchange: "this.form.submit()" %>
+                  <%= f.label :value, setting.value ? "Enabled" : "Disabled", class: "form-check-label" %>
+                </div>
+              <% elsif setting.value.is_a?(Numeric) %>
+                <div class="input-group" style="max-width: 240px;">
+                  <%= f.number_field :value,
+                      value: setting.value,
+                      step: setting.value.is_a?(Integer) ? 1 : "any",
+                      class: "form-control" %>
+                  <%= f.submit "Save", class: "btn btn-outline-primary" %>
+                </div>
+              <% else %>
+                <div class="input-group" style="max-width: 480px;">
+                  <%= f.text_field :value, value: setting.value, class: "form-control" %>
+                  <%= f.submit "Save", class: "btn btn-outline-primary" %>
+                </div>
+              <% end %>
             <% end %>
           </div>
         </div>

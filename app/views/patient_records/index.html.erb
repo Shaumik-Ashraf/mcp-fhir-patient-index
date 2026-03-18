@@ -4,6 +4,11 @@
   <div class="row justify-content-between p-3">
     <h1 class="col">Patients</h1>
     <div class="col text-end">
+      <%= button_to "Auto Match", auto_match_patient_records_path,
+            method: :post,
+            class: "btn btn-lg btn-outline-success rounded me-2",
+            form: { class: "d-inline" },
+            data: { turbo_confirm: "Run auto-match on all patient records? Existing linkages will not be removed." } %>
       <%= link_to "New Patient", main_app.new_patient_path, class: "btn btn-lg btn-outline-primary rounded", role: "link" %>
     </div>
   </div>

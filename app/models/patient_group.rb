@@ -26,4 +26,17 @@ class PatientGroup
     end
     result
   end
+
+  # Returns true if both records belong to the same existing identity group.
+  # Records absent from group_map (i.e. unlinked) are never considered linked.
+  #
+  # @param [Integer] id_a
+  # @param [Integer] id_b
+  # @param [Hash<Integer, Integer>] group_map - as returned by index_by_patient_record_id
+  # @return [Boolean]
+  def self.already_linked?(id_a, id_b, group_map:)
+    group_a = group_map[id_a]
+    group_b = group_map[id_b]
+    group_a.present? && group_a == group_b
+  end
 end

@@ -38,6 +38,40 @@ class PatientRecordsController < ApplicationController
     end
   end
 
+  # POST /patient_records/auto_match
+  def auto_match
+    threshold = Setting[:auto_match_threshold].to_f
+    engine    = MatchingEngine.new
+    records   = PatientRecord.all.to_a
+    group_map = PatientGroup.index_by_patient_record_id
+
+    # Give unlinked records a unique sentinel group so already_linked? works uniformly.
+    # Negative IDs avoid collision with real (positive) group indices.
+    records.each { |r| group_map[r.id] ||= -r.id }
+
+    joins_created = 0
+    records.combination(2) do |r1, r2|
+      next if PatientGroup.already_linked?(r1.id, r2.id, group_map: group_map)
+      next unless engine.match?(r1, r2, threshold: threshold)
+
+      PatientJoin.create!(
+        from_patient_record: r1,
+        to_patient_record: r2,
+        qualifier: :has_same_identity_as
+      )
+      joins_created += 1
+
+      # Merge the two components in-memory so later pairs in the same run
+      # don't produce redundant links into the same growing component.
+      old_group = group_map[r2.id]
+      new_group = group_map[r1.id]
+      group_map.transform_values! { |g| g == old_group ? new_group : g }
+    end
+
+    redirect_to patient_records_path,
+      notice: "Auto-match complete: #{joins_created} new link(s) created."
+  end
+
   # GET /patients/1
   def show
     set_title "Patient #{@patient_record.uuid}"

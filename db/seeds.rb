@@ -14,6 +14,11 @@ Setting.find_or_create_by!(key: "last_four_ssn") do |setting|
   setting.value = true
 end
 
+Setting.find_or_create_by!(key: "auto_match_threshold") do |setting|
+  setting.description = "Minimum score (0.0–1.0) for the matching engine to consider two patient records the same identity"
+  setting.value = 0.7
+end
+
 # Seed 3 random "real" patients, each with 2 corrupted duplicate records
 3.times do
   patient = PatientRecord.create_random!

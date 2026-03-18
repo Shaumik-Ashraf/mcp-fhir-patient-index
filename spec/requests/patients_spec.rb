@@ -113,6 +113,56 @@ RSpec.describe "/patients", type: :request do
     end
   end
 
+  describe "POST /auto_match" do
+    before do
+      Setting.find_or_create_by!(key: "auto_match_threshold") do |s|
+        s.description = "Auto-match threshold"
+        s.value = 0.7
+      end
+    end
+
+    context "with no matchable records" do
+      it "creates no joins and redirects with notice" do
+        create_list(:patient, 3)
+
+        expect {
+          post auto_match_patient_records_path
+        }.not_to change(PatientJoin, :count)
+
+        expect(response).to redirect_to(patient_records_path)
+        expect(flash[:notice]).to match(/0 new link/)
+      end
+    end
+
+    context "with corrupted duplicate records" do
+      it "links each duplicate back to its original" do
+        original = PatientRecord.create_random!
+        PatientRecord.simulate_corruption(original, records_to_generate: 2, randomness: 0.3)
+
+        expect {
+          post auto_match_patient_records_path
+        }.to change(PatientJoin, :count).by(2)
+
+        expect(flash[:notice]).to match(/2 new link/)
+      end
+    end
+
+    context "when records are already linked" do
+      it "is idempotent — a second run creates no additional joins" do
+        original = PatientRecord.create_random!
+        PatientRecord.simulate_corruption(original, records_to_generate: 2, randomness: 0.3)
+
+        post auto_match_patient_records_path
+
+        expect {
+          post auto_match_patient_records_path
+        }.not_to change(PatientJoin, :count)
+
+        expect(flash[:notice]).to match(/0 new link/)
+      end
+    end
+  end
+
   describe "DELETE /destroy" do
     it "destroys the requested patient" do
       patient = PatientRecord.create! valid_attributes

@@ -22,9 +22,8 @@ Rails.application.routes.draw do
   # Alias patients resource to patient_records
   resources :patients, controller: "patient_records"
   resources :patient_records do
-    member do
-      delete :unlink
-    end
+    member { delete :unlink }
+    collection { post :auto_match }
   end
 
   resources :patient_joins, only: [ :new, :create, :destroy ] do
