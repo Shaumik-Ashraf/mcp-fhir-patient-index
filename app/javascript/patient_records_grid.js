@@ -59,6 +59,7 @@ document.addEventListener("turbo:load", () => {
       total: (data) => data.total
     },
     search: {
+			ignoreHiddenColumns: false,
       server: {
         url: (prev, keyword) => {
           const url = new URL(prev, window.location.href)
@@ -91,6 +92,11 @@ document.addEventListener("turbo:load", () => {
           return url.toString()
         }
       }
-    }
+    },
+		language: {
+			search: {
+				placeholder: "Search patients"
+			}
+		}
   }).render(container)
 })
