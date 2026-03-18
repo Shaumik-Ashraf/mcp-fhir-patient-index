@@ -27,7 +27,7 @@ Developer log and backlog of tasks.
 - [x] Implement settings to customize UI
 - [x] Make realistically messy patient identity data generator
 - [ ] Factorize "messy data generator" so its easily modable
-- [ ] Implement patient data grid
+- [x] Implement patient data grid
 - [x] Implement patient linking
 - [x] Make patient diff page for comparing records and manual stewardship
 - [ ] Implement patient matching engine that automates matches
