@@ -26,9 +26,11 @@ class PatientRecordsController < ApplicationController
         per_page = (params[:per_page] || 25).to_i.clamp(1, 100)
         records = scope.offset((page - 1) * per_page).limit(per_page)
 
+        group_map = PatientGroup.index_by_patient_record_id
+
         render json: {
           data: records.map { |r|
-            { first_name: r.first_name, last_name: r.last_name, birth_date: r.birth_date, linked_records_count: r.linked_records.count, uuid: r.uuid }
+            { first_name: r.first_name, last_name: r.last_name, birth_date: r.birth_date, linked_records_count: r.linked_records.count, group_index: group_map[r.id], uuid: r.uuid }
           },
           total: total
         }
