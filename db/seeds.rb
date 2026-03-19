@@ -19,8 +19,11 @@ Setting.find_or_create_by!(key: "auto_match_threshold") do |setting|
   setting.value = 0.7
 end
 
-# Seed 3 random "real" patients, each with 2 corrupted duplicate records
-3.times do
-  patient = PatientRecord.create_random!
-  PatientRecord.simulate_corruption(patient, records_to_generate: 2, randomness: 0.5)
+if ENV["MOCKUP_PATIENTS"]&.casecmp? "TRUE"
+  # Seed 3 random "real" patients, each with 2 corrupted duplicate records
+  3.times do
+    patient = PatientRecord.create_random!
+    PatientRecord.simulate_corruption(patient, records_to_generate: 2, randomness: 0.5)
+  end
+  puts "Seeded 3 mock patients with 2 corrupted records each"
 end

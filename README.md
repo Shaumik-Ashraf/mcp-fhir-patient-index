@@ -44,7 +44,8 @@ EDITOR=<editor> bin/rails credentials:edit --environment <environment> # paste
 4. `rails db:migrate`
 5. `rails assets:precompile`
 6. `rails server`
-7. Optional: `rails db:seed`
+7. `rails db:seed`
+8. Optional: `MOCKUP_PATIENTS=true rails db:seed`
 
 ## Documentation
 
