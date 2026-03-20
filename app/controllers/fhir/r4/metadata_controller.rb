@@ -1,7 +1,7 @@
 module FHIR
   module R4
     class MetadataController < ApplicationController
-      LAST_UPDATED = DateTime.new(2025, 10, 17) # TODO: autodetect fhir api chenges
+      LAST_UPDATED = DateTime.new(2026, 3, 20) # TODO: autodetect fhir api changes
 
       # TODO: XML support
       # GET /fhir/r4/metadata
@@ -23,7 +23,16 @@ module FHIR
                            {
                              type: "Patient",
                              interaction: [
-                               FHIR::BackboneElement.new({ code: "read" })
+                               FHIR::BackboneElement.new({ code: "read" }),
+                               FHIR::BackboneElement.new({ code: "search-type" })
+                             ],
+                             operation: [
+                               FHIR::BackboneElement.new(
+                                 {
+                                   name: "match",
+                                   definition: "http://hl7.org/fhir/OperationDefinition/Patient-match"
+                                 }
+                               )
                              ]
                            }
                          )

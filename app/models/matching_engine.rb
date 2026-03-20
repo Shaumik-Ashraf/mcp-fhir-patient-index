@@ -7,8 +7,8 @@ class MatchingEngine
   #   last_name (similarity)  0.15 — may be corrupted by typos
   #   first_name (similarity) 0.10 — may be corrupted by typos
   #
-  # @param [PatientRecord] a
-  # @param [PatientRecord] b
+  # @param [PatientMatchInput] a
+  # @param [PatientMatchInput] b
   # @return [Float]
   def match_score(a, b)
     score = 0.0
@@ -21,8 +21,8 @@ class MatchingEngine
 
   # Returns true if the match score for the two records meets or exceeds the threshold.
   #
-  # @param [PatientRecord] a
-  # @param [PatientRecord] b
+  # @param [PatientMatchInput] a
+  # @param [PatientMatchInput] b
   # @param [Float] threshold
   # @return [Boolean]
   def match?(a, b, threshold:)

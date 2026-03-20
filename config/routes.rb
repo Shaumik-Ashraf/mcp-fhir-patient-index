@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     namespace :r4 do
       get "metadata", { controller: :metadata, action: :index }
 
+      post "Patient/$match", to: "patients#match", as: :patient_match
       get "Patient/:uuid", to: "patients#show", as: :patient
       get "Patient", to: "patients#index", as: :patients
 

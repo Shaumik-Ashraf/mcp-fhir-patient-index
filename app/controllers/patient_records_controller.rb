@@ -52,7 +52,7 @@ class PatientRecordsController < ApplicationController
     joins_created = 0
     records.combination(2) do |r1, r2|
       next if PatientGroup.already_linked?(r1.id, r2.id, group_map: group_map)
-      next unless engine.match?(r1, r2, threshold: threshold)
+      next unless engine.match?(PatientMatchInput.from_patient_record(r1), PatientMatchInput.from_patient_record(r2), threshold: threshold)
 
       PatientJoin.create!(
         from_patient_record: r1,
