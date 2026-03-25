@@ -26,6 +26,22 @@ module ApplicationMCP
   @resources = [] # Array<ResourceWrapper>
   @resource_templates = [] # Array<ResourceTemplateWrapper>
 
+  # @param [String] name
+  # @param [String] description
+  # @param [Hash] input_schema - JSON Schema Draft 4 { properties: {}, required: [] }
+  # @param [MCP::Tool::Annotations, nil] annotations
+  # @param [Proc] &block - tool implementation block
+  def define_mcp_tool(name, description, input_schema, annotations = nil, &block)
+    @tools ||= []
+    @tools << MCP::Tool.define(
+      name: name,
+      description: description,
+      input_schema: input_schema,
+      annotations: annotations,
+      &block
+    )
+  end
+
   # @param [String] endpoint - the mcp base name from which url and name are derived
   # @param [String] mime_type
   # @param [String] title - this property is in DRAFT in the MCP v20250618 spec
@@ -164,6 +180,62 @@ module ApplicationMCP
 
     load_application_records_as_resource_templates(PatientRecord)
 
+    define_mcp_tool(
+      "create_patient",
+      "Create a new patient record in the master patient index. All fields are optional.",
+      {
+        properties: {
+          first_name:             { type: "string" },
+          last_name:              { type: "string" },
+          administrative_gender:  { type: "string", enum: %w[male female other unknown] },
+          birth_date:             { type: "string", description: "ISO 8601 date, e.g. 1990-01-15" },
+          email:                  { type: "string" },
+          phone_number:           { type: "string" },
+          address_line1:          { type: "string" },
+          address_line2:          { type: "string" },
+          address_city:           { type: "string" },
+          address_state:          { type: "string" },
+          address_zip_code:       { type: "string" },
+          social_security_number: { type: "string" },
+          passport_number:        { type: "string" },
+          drivers_license_number: { type: "string" }
+        },
+        required: []
+      },
+      { destructive_hint: true, idempotent_hint: false }
+    ) do |server_context: nil, **params|
+      patient = PatientRecord.new(params)
+      patient.save!
+      MCP::Tool::Response.new([ { type: "text", text: "Created patient #{patient.uuid}\n\n#{patient.to_text}" } ])
+    end
+
+    define_mcp_tool(
+      "link_patients",
+      "Link two patient records as having the same identity (has_same_identity_as). The link is bidirectional.",
+      {
+        properties: {
+          patient_uuid_1: { type: "string", description: "UUID of the first patient record" },
+          patient_uuid_2: { type: "string", description: "UUID of the second patient record" },
+          notes:          { type: "string", description: "Optional notes about why these records were linked" }
+        },
+        required: %w[patient_uuid_1 patient_uuid_2]
+      },
+      { destructive_hint: true, idempotent_hint: false }
+    ) do |patient_uuid_1:, patient_uuid_2:, notes: nil|
+      patient1 = PatientRecord.find_by!(uuid: patient_uuid_1)
+      patient2 = PatientRecord.find_by!(uuid: patient_uuid_2)
+      PatientJoin.create!(
+        from_patient_record: patient1,
+        to_patient_record: patient2,
+        qualifier: :has_same_identity_as,
+        notes: notes
+      )
+      MCP::Tool::Response.new([ {
+        type: "text",
+        text: "Linked patients:\n- #{patient_uuid_1} (#{patient1.to_text.lines.first.chomp})\n- #{patient_uuid_2} (#{patient2.to_text.lines.first.chomp})"
+      } ])
+    end
+
     configuration = MCP::Configuration.new(protocol_version: "2025-06-18")
     configuration.exception_reporter = ->(exception, server_context) do
       $stderr.puts "Exception Reported: #{exception}"
@@ -179,7 +251,7 @@ module ApplicationMCP
       title: TITLE,
       version: Rails.application.config.x.version,
       instructions: INSTRUCTIONS,
-      tools: [],
+      tools: @tools || [],
       prompts: [],
       resources: @resources.map(&:mcp_resource),
       resource_templates: @resource_templates.map(&:mcp_resource_template),
