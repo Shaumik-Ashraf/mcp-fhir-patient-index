@@ -19,23 +19,19 @@ module FHIR
                        mode: "server",
                        documentation: File.read(Rails.root.join("README.md")),
                        resource: [
-                         FHIR::BackboneElement.new(
-                           {
-                             type: "Patient",
-                             interaction: [
-                               FHIR::BackboneElement.new({ code: "read" }),
-                               FHIR::BackboneElement.new({ code: "search-type" })
-                             ],
-                             operation: [
-                               FHIR::BackboneElement.new(
-                                 {
-                                   name: "match",
-                                   definition: "http://hl7.org/fhir/OperationDefinition/Patient-match"
-                                 }
-                               )
-                             ]
-                           }
-                         )
+                         {
+                           type: "Patient",
+                           interaction: [
+                             { code: "read" },
+                             { code: "search-type" }
+                           ],
+                           operation: [
+                             {
+                               name: "match",
+                               definition: "http://hl7.org/fhir/OperationDefinition/Patient-match"
+                             }
+                           ]
+                         }
                        ]
                      }
                    ]
