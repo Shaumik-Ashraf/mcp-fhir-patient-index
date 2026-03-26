@@ -95,10 +95,6 @@ module InfernoTests
       makes_request :patient_match
 
       run do
-        puts patient_for_match
-        puts patient_for_match.class
-        puts "-------"
-
         patient_param = FHIR.from_contents(patient_for_match)
 
         skip_if patient_param.nil? || patient_param.resourceType != 'Patient',
