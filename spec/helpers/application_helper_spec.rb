@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
   describe '#format_ssn' do
-    let!(:setting) { Setting.create!(key: 'last_four_ssn', value: true) }
+    let!(:setting) { Setting.find_or_create_by!(key: 'last_four_ssn', value: true) }
 
     context 'when last_four_ssn setting is enabled' do
       it 'masks SSN showing only last 4 digits' do

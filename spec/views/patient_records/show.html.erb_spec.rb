@@ -36,7 +36,7 @@ RSpec.describe "patient_records/show", type: :view do
     expect(rendered).to match(/New York/)
     expect(rendered).to match(/NY/)
     expect(rendered).to match(/55555/)
-    expect(rendered).to match(/000-00-0000/)
+    expect(rendered).to match(/[*0]{3}-[*0]{2}-0000/)
     expect(rendered).to match(/P88888888/)
     expect(rendered).to match(/D7777777/)
   end
