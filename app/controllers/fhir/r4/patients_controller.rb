@@ -1,6 +1,7 @@
 module FHIR
   module R4
     class PatientsController < ApplicationController
+      skip_forgery_protection
       # TODO: xml support
 
       # GET /fhir/r4/Patient/
@@ -31,6 +32,7 @@ module FHIR
       def match
         parameters = FHIR.from_contents(request.body.read)
 
+        # TODO: FHIR R4 spec allows sending Patient resource directly instead of wrapping it in Parameters
         unless parameters.is_a?(FHIR::Parameters)
           render json: fhir_operation_outcome("invalid", "Expected a Parameters resource"), status: :unprocessable_entity
           return
@@ -38,7 +40,7 @@ module FHIR
 
         resource_param = parameters.parameter.find { |p| p.name == "resource" }
         unless resource_param&.resource.is_a?(FHIR::Patient)
-          render json: fhir_operation_outcome("required", "Parameters.resource must be a Patient resource"), status: :unprocessable_entity
+          render json: fhir_operation_outcome("required", "Parameters.parameter.resource must be a Patient resource"), status: :unprocessable_entity
           return
         end
 

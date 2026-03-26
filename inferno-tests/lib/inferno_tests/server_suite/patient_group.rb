@@ -67,10 +67,61 @@ module InfernoTests
       # This test will use the response from the :patient request in the
       # previous test
       uses_request :patient
+      output :patient_for_match
 
       run do
+        output patient_for_match: resource.to_json
+
         assert_resource_type(:patient)
         assert_valid_resource
+      end
+    end
+
+    test do
+      title 'Server returns a bundle of Patients from the $match operation'
+      description %(
+        Verify FHIR R4 Core [$match operation](https://hl7.org/fhir/R4/operation-patient-match.html)
+        by submitting a $match request for the same patient returned from the patient read test.
+
+        Also see [FHIR operations specification](https://hl7.org/fhir/R4/operations.html#request).
+      )
+      input :patient_for_match,
+            title: "Patient for $match test",
+            description: %(
+                   Override the resource parameter in $match test request body; otherwise the test
+                   uses the same patient retrieved from the read test.
+            ),
+            optional: true
+      makes_request :patient_match
+
+      run do
+        puts patient_for_match
+        puts patient_for_match.class
+        puts "-------"
+
+        patient_param = FHIR.from_contents(patient_for_match)
+
+        skip_if patient_param.nil? || patient_param.resourceType != 'Patient',
+                '`patient_for_match` parameter was not parsed into a FHIR Patient resource.'
+
+        parameters = FHIR::Parameters.new(
+          {
+            parameter: [
+              {
+                name: "resource",
+                resource: patient_param
+              }
+            ]
+          }
+        )
+
+        fhir_operation('/Patient/$match', body: parameters, name: :patient_match)
+
+        assert_response_status(200)
+        assert_resource_type(FHIR::Bundle)
+        assert resource.entry.select { |entry| entry.resource.resourceType == 'Patient' }.count >= 1,
+               'Bundle response must contain at least 1 Patient resource'
+        assert_valid_bundle_entries(resource_types: ['Patient', 'OperationOutcome'])
       end
     end
   end
