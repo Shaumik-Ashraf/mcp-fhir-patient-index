@@ -10,13 +10,13 @@ RSpec.describe "POST /fhir/r4/Patient/$match", type: :request do
     { "resourceType" => "Parameters", "parameter" => params }.to_json
   end
 
-  before(:all) do
+  before do
     Setting.find_or_create_by(key: "auto_match_threshold") do |s|
       s.value = 0.7
     end
   end
 
-  let!(:alice) do
+  let(:alice) do
     create(:patient,
       first_name: "Alice",
       last_name: "Smith",
@@ -25,7 +25,7 @@ RSpec.describe "POST /fhir/r4/Patient/$match", type: :request do
     )
   end
 
-  let!(:bob) do
+  let(:bob) do
     create(:patient,
       first_name: "Bob",
       last_name: "Jones",
