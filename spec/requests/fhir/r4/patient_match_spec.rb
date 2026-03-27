@@ -111,7 +111,7 @@ RSpec.describe "POST /fhir/r4/Patient/$match", type: :request do
   context "with an invalid body" do
     before do
       post fhir_r4_patient_match_url,
-           params: { "resourceType" => "Patient" }.to_json,
+           params: FHIR::Encounter.new.to_json,
            headers: { "Content-Type" => "application/json" }
     end
 

@@ -32,22 +32,25 @@ module FHIR
       def match
         parameters = FHIR.from_contents(request.body.read)
 
-        # TODO: FHIR R4 spec allows sending Patient resource directly instead of wrapping it in Parameters
-        unless parameters.is_a?(FHIR::Parameters)
-          render json: fhir_operation_outcome("invalid", "Expected a Parameters resource"), status: :unprocessable_entity
-          return
+        # FHIR operations spec allows sending Parameters or Patient directly
+        if parameters.is_a?(FHIR::Parameters)
+          resource = parameters.parameter.find { |p| p.name == "resource" }&.resource
+          unless resource&.is_a?(FHIR::Patient)
+            render json: fhir_operation_outcome("required", "Parameters.parameter.resource must be a Patient resource"),
+                   status: :unprocessable_entity
+            return
+          end
+          only_certain = parameters.parameter.find { |p| p.name == "onlyCertainMatches" }&.value == true
+          count_param  = parameters.parameter.find { |p| p.name == "count" }&.value&.to_i
+        elsif parameters.is_a?(FHIR::Patient)
+          resource = parameters
+        else
+          render json: fhir_operation_outcome("invalid", "Expected a Parameters or Patient resource"),
+                 status: :unprocessable_entity
+          return         
         end
 
-        resource_param = parameters.parameter.find { |p| p.name == "resource" }
-        unless resource_param&.resource.is_a?(FHIR::Patient)
-          render json: fhir_operation_outcome("required", "Parameters.parameter.resource must be a Patient resource"), status: :unprocessable_entity
-          return
-        end
-
-        only_certain = parameters.parameter.find { |p| p.name == "onlyCertainMatches" }&.value == true
-        count_param  = parameters.parameter.find { |p| p.name == "count" }&.value&.to_i
-
-        query     = PatientMatchInput.from_fhir(resource_param.resource)
+        query     = PatientMatchInput.from_fhir(resource)
         threshold = Setting[:auto_match_threshold].to_f
         engine    = MatchingEngine.new
 
