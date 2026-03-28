@@ -47,7 +47,7 @@ module FHIR
         else
           render json: fhir_operation_outcome("invalid", "Expected a Parameters or Patient resource"),
                  status: :unprocessable_entity
-          return         
+          return
         end
 
         query     = PatientMatchInput.from_fhir(resource)
