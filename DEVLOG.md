@@ -32,7 +32,7 @@ Developer log and backlog of tasks.
 - [x] Implement patient linking
 - [x] Make patient diff page for comparing records and manual stewardship
 - [x] Implement patient matching engine that automates matches
-- [ ] Implement FHIR `$match`
+- [x] Implement FHIR `$match`
 - [ ] e2e tests (Selenium or otherwise)
 
 
