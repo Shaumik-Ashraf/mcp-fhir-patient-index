@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_30_160357) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_203143) do
+  create_table "audit_logs", force: :cascade do |t|
+    t.text "description"
+    t.json "tags"
+    t.json "encrypted_request"
+    t.json "encrypted_response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "patient_joins", force: :cascade do |t|
     t.integer "from_patient_record_id", null: false
     t.integer "to_patient_record_id", null: false
