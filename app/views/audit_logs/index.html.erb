@@ -1,0 +1,58 @@
+<%# audit_logs/index.html.erb %>
+
+<div class="container-fluid">
+  <div class="row justify-content-between p-3">
+    <h1 class="col">Audit Log</h1>
+  </div>
+
+  <%# Filters %>
+  <%= form_with url: audit_logs_path, method: :get, class: "row g-3 px-3 pb-3", data: { turbo: false } do |f| %>
+    <div class="col-auto">
+      <%= f.select :interface,
+            options_for_select(
+              AuditLog::Interface.constants.map { |c| [AuditLog::Interface.const_get(c), AuditLog::Interface.const_get(c)] },
+              params[:interface]
+            ),
+            { include_blank: "All Interfaces" },
+            { class: "form-select" } %>
+    </div>
+    <div class="col-auto">
+      <%= f.select :event,
+            options_for_select(
+              AuditLog::Event.constants.map { |c| [AuditLog::Event.const_get(c), AuditLog::Event.const_get(c)] },
+              params[:event]
+            ),
+            { include_blank: "All Events" },
+            { class: "form-select" } %>
+    </div>
+    <div class="col-auto">
+      <%= f.submit "Filter", class: "btn btn-outline-primary" %>
+      <%= link_to "Clear", audit_logs_path, class: "btn btn-outline-secondary ms-1" %>
+    </div>
+  <% end %>
+
+  <table class="table table-hover table-striped px-3">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>Interface</th>
+        <th>Event</th>
+        <th>Created At</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @audit_logs.each do |log| %>
+        <tr>
+          <td><%= log.id %></td>
+          <td><%= log.description %></td>
+          <td><%= log.tags[AuditLog::Tag::INTERFACE] %></td>
+          <td><%= log.tags[AuditLog::Tag::EVENT] %></td>
+          <td><%= log.created_at.strftime("%Y-%m-%d %H:%M:%S UTC") %></td>
+          <td><%= link_to "View", audit_log_path(log), class: "btn btn-sm btn-outline-secondary" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

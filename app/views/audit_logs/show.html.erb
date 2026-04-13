@@ -1,0 +1,45 @@
+<%# audit_logs/show.html.erb %>
+
+<div class="container">
+  <div class="row justify-content-between my-lg-5 my-sm-3 my-2">
+    <div class="col-md-6 text-start">
+      <h1>Audit Log #<%= @audit_log.id %></h1>
+      <p class="text-muted"><%= @audit_log.created_at.strftime("%Y-%m-%d %H:%M:%S UTC") %></p>
+    </div>
+    <div class="col-md-6 d-flex justify-content-end align-items-start">
+      <%= link_to "Back", audit_logs_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-sm-3"><h4>Description:</h4></div>
+    <div class="col-sm-9"><%= @audit_log.description %></div>
+  </div>
+
+  <% @audit_log.tags.each do |key, value| %>
+    <div class="row mb-3">
+      <div class="col-sm-3"><h4><%= key.capitalize %>:</h4></div>
+      <div class="col-sm-9"><%= value %></div>
+    </div>
+  <% end %>
+
+  <div class="row mt-4">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3>Request</h3>
+        <%= link_to "Download", download_request_audit_log_path(@audit_log), class: "btn btn-sm btn-outline-primary" %>
+      </div>
+      <pre class="bg-light border rounded p-3"><%= JSON.pretty_generate(@audit_log.encrypted_request) %></pre>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3>Response</h3>
+        <%= link_to "Download", download_response_audit_log_path(@audit_log), class: "btn btn-sm btn-outline-primary" %>
+      </div>
+      <pre class="bg-light border rounded p-3"><%= JSON.pretty_generate(@audit_log.encrypted_response) %></pre>
+    </div>
+  </div>
+</div>

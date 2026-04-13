@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
   resources :settings, only: [ :index, :update ]
 
+  resources :audit_logs, only: [ :index, :show ] do
+    member do
+      get :download_request
+      get :download_response
+    end
+  end
+
   namespace :mcp do
     namespace :v20250618 do
       get "/", { controller: :application, action: :index }

@@ -1,6 +1,11 @@
 class PatientJoinsController < ApplicationController
+  include Auditable
+
   before_action :set_patient_records, only: [ :new, :compare ]
   before_action :set_patient_join, only: [ :destroy ]
+
+  after_action :audit_join_create, only: [ :create ]
+  after_action :audit_join_destroy, only: [ :destroy ]
 
   # GET /patient_joins/new
   def new
@@ -71,6 +76,10 @@ class PatientJoinsController < ApplicationController
   end
 
   private
+
+  def audit_interface
+    AuditLog::Interface::WEB
+  end
 
   def set_patient_records
     @patient_record_1 = PatientRecord.find_by_uuid(params[:patient_1_uuid]) if params[:patient_1_uuid].present?

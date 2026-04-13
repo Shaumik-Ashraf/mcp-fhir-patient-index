@@ -1,8 +1,14 @@
 module FHIR
   module R4
     class PatientsController < ApplicationController
+      include Auditable
+
       skip_forgery_protection
       # TODO: xml support
+
+      after_action :audit_fhir_bundle, only: [ :index ]
+      after_action :audit_fhir_patient_read, only: [ :show ]
+      after_action :audit_fhir_match, only: [ :match ]
 
       # GET /fhir/r4/Patient/
       def index
@@ -85,6 +91,18 @@ module FHIR
       end
 
       private
+
+      def audit_interface
+        AuditLog::Interface::FHIR
+      end
+
+      def audit_request_data
+        { body: request.body&.string }
+      end
+
+      def audit_response_data
+        { status: response.status, body: response.body }
+      end
 
       def fhir_operation_outcome(code, message)
         FHIR::OperationOutcome.new(

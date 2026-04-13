@@ -61,20 +61,23 @@ class AuditLog < ApplicationRecord
       return
     end
 
+    valid_tag_keys = Tag.constants.map { |c| Tag.const_get(c) }
     tags.keys.each do |k|
-      unless Tag.constants.include? k.to_sym
+      unless valid_tag_keys.include?(k)
         errors.add(:tags, "The tag #{k} must be defined in AuditLog::Tag")
       end
     end
 
     if tags.key? Tag::EVENT
-      unless Event.constants.include? tags[Tag::EVENT]
+      valid_events = Event.constants.map { |c| Event.const_get(c) }
+      unless valid_events.include?(tags[Tag::EVENT])
         errors.add(:tags, "The #{Tag::EVENT} tag must be defined in AuditLog::Event")
       end
     end
 
     if tags.key? Tag::INTERFACE
-      unless Interface.constants.include? tags[Tag::INTERFACE]
+      valid_interfaces = Interface.constants.map { |c| Interface.const_get(c) }
+      unless valid_interfaces.include?(tags[Tag::INTERFACE])
         errors.add(:tags, "The #{Tag::INTERFACE} tag must be defined in AuditLog::Interface")
       end
     end

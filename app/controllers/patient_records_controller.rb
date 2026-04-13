@@ -1,5 +1,23 @@
 class PatientRecordsController < ApplicationController
+  include Auditable
+
   before_action :set_patient_record, only: %i[ show edit update destroy unlink ]
+
+  after_action :audit_patient_index, only: [ :index ]
+  after_action :audit_patient_show, only: [ :show ]
+  after_action :audit_patient_create, only: [ :create ]
+  after_action :audit_patient_update, only: [ :update ]
+  after_action :audit_patient_destroy, only: [ :destroy ]
+  after_action :audit_auto_match, only: [ :auto_match ]
+  after_action :audit_unlink, only: [ :unlink ]
+
+  after_action :audit_patient_index, only: [ :index ]
+  after_action :audit_patient_show, only: [ :show ]
+  after_action :audit_patient_create, only: [ :create ]
+  after_action :audit_patient_update, only: [ :update ]
+  after_action :audit_patient_destroy, only: [ :destroy ]
+  after_action :audit_auto_match, only: [ :auto_match ]
+  after_action :audit_unlink, only: [ :unlink ]
 
   # GET /patients
   def index
@@ -143,12 +161,15 @@ class PatientRecordsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    def audit_interface
+      AuditLog::Interface::WEB
+    end
+
     def set_patient_record
       @patient_record = PatientRecord.find_by_uuid(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
     def patient_record_params
       params.expect(patient_record: [ :first_name, :last_name, :administrative_gender, :birth_date, :email, :phone_number, :social_security_number, :address_line1, :address_line2, :address_city, :address_state, :address_zip_code, :social_security_number, :passport_number, :drivers_license_number ])
     end

@@ -175,7 +175,14 @@ module ApplicationMCP
     end)
 
     define_resource "all", "text/plain", "Retrieve all Patient Records", "...", (lambda do
-      PatientRecord.all.map(&:to_text).join("\n")
+      text = PatientRecord.all.map(&:to_text).join("\n")
+      AuditLog.create!(
+        description: "LLM read all patient records",
+        tags: { AuditLog::Tag::EVENT => AuditLog::Event::MCP_READ_ALL_PATIENTS, AuditLog::Tag::INTERFACE => AuditLog::Interface::MCP },
+        encrypted_request: {},
+        encrypted_response: { record_count: PatientRecord.count }
+      )
+      text
     end)
 
     load_application_records_as_resource_templates(PatientRecord)
@@ -206,7 +213,14 @@ module ApplicationMCP
     ) do |server_context: nil, **params|
       patient = PatientRecord.new(params)
       patient.save!
-      MCP::Tool::Response.new([ { type: "text", text: "Created patient #{patient.uuid}\n\n#{patient.to_text}" } ])
+      result_text = "Created patient #{patient.uuid}\n\n#{patient.to_text}"
+      AuditLog.create!(
+        description: "LLM created patient record",
+        tags: { AuditLog::Tag::EVENT => AuditLog::Event::MCP_CREATE_PATIENT, AuditLog::Tag::INTERFACE => AuditLog::Interface::MCP },
+        encrypted_request: params.to_h,
+        encrypted_response: { uuid: patient.uuid }
+      )
+      MCP::Tool::Response.new([ { type: "text", text: result_text } ])
     end
 
     define_mcp_tool(
@@ -230,10 +244,14 @@ module ApplicationMCP
         qualifier: :has_same_identity_as,
         notes: notes
       )
-      MCP::Tool::Response.new([ {
-        type: "text",
-        text: "Linked patients:\n- #{patient_uuid_1} (#{patient1.to_text.lines.first.chomp})\n- #{patient_uuid_2} (#{patient2.to_text.lines.first.chomp})"
-      } ])
+      result_text = "Linked patients:\n- #{patient_uuid_1} (#{patient1.to_text.lines.first.chomp})\n- #{patient_uuid_2} (#{patient2.to_text.lines.first.chomp})"
+      AuditLog.create!(
+        description: "LLM linked patient records",
+        tags: { AuditLog::Tag::EVENT => AuditLog::Event::MCP_LINK_PATIENT, AuditLog::Tag::INTERFACE => AuditLog::Interface::MCP },
+        encrypted_request: { patient_uuid_1: patient_uuid_1, patient_uuid_2: patient_uuid_2, notes: notes },
+        encrypted_response: { patient_uuid_1: patient_uuid_1, patient_uuid_2: patient_uuid_2 }
+      )
+      MCP::Tool::Response.new([ { type: "text", text: result_text } ])
     end
 
     configuration = MCP::Configuration.new(protocol_version: "2025-06-18")
