@@ -109,5 +109,4 @@ RSpec.describe AuditLog, type: :model do
       expect(AuditLog::Interface::WEB).to eq("Web-UI")
     end
   end
-
 end

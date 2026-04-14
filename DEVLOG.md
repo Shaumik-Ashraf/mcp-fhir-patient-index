@@ -22,8 +22,8 @@ Developer log and backlog of tasks.
 - [x] Implement MCP resource server
 - [ ] Implement MCP tools server
   + MCP patient match tool
-- [ ] Implement FHIR Log that showcases fhir queries
-- [ ] Implement MCP Log with showcases llm integration
+- [x] Implement FHIR Log that showcases fhir queries
+- [x] Implement MCP Log with showcases llm integration
 - [ ] Implement some client-side LLM or test w/ some MCP client
 - [x] Implement settings to customize UI
 - [x] Make realistically messy patient identity data generator

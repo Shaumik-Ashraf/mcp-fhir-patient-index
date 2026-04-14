@@ -3,9 +3,9 @@ require "rails_helper"
 # Tests the Auditable concern via anonymous controllers as shown in
 # the documented @example blocks on the concern itself.
 RSpec.describe Auditable, type: :controller do
-  context "minimal usage — include Auditable and define #audit_interface" do
+  context "with minimal usage — include Auditable and define #audit_interface" do
     controller(ApplicationController) do
-      include Auditable
+      include Auditable # rubocop:disable RSpec/DescribedClass - `described_class` doesn't work in nested blocks
 
       after_action :audit_patient_show, only: [ :show ]
 
@@ -44,9 +44,9 @@ RSpec.describe Auditable, type: :controller do
     end
   end
 
-  context "customized capture — override #audit_request_data and #audit_response_data" do
+  context "with customized capture — override #audit_request_data and #audit_response_data" do
     controller(ApplicationController) do
-      include Auditable
+      include Auditable # rubocop:disable RSpec/DescribedClass
 
       after_action :audit_fhir_bundle, only: [ :index ]
 
@@ -91,9 +91,9 @@ RSpec.describe Auditable, type: :controller do
     end
   end
 
-  context "missing #audit_interface" do
+  context "without #audit_interface" do
     controller(ApplicationController) do
-      include Auditable
+      include Auditable # rubocop:disable RSpec/DescribedClass
 
       after_action :audit_patient_show, only: [ :show ]
 
