@@ -294,13 +294,13 @@ module ApplicationMCP
     srv
   end
 
-  # @return [MCP::Server] for HTTP Streamable transport
+  # @return [MCP::Server] for HTTP Streamable transport initialized ONCE on first call
   def mcp_streamable_http
-    server
+    @mcp_streamable_http ||= server
   end
 
-  # @return [MCP::Server::Transports::StdioTransport] server for stdio transport
+  # @return [MCP::Server::Transports::StdioTransport] server for stdio transport initialized ONCE on first call
   def mcp_stdio
-    MCP::Server::Transports::StdioTransport.new(server)
+    @mcp_stdio ||= MCP::Server::Transports::StdioTransport.new(server)
   end
 end
