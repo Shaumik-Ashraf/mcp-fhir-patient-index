@@ -179,7 +179,7 @@ module ApplicationMCP
       AuditLog.create!(
         description: "LLM read all patient records",
         tags: { AuditLog::Tag::EVENT => AuditLog::Event::MCP_READ_ALL_PATIENTS, AuditLog::Tag::INTERFACE => AuditLog::Interface::MCP },
-        encrypted_request: {},
+        encrypted_request: { uri: "#{SCHEME}://all" },
         encrypted_response: { record_count: PatientRecord.count }
       )
       text
