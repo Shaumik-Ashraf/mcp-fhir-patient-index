@@ -7,7 +7,7 @@ module MCP # NOTE: namespace collision with MCP gem
       before_action :validate_mcp_protocol_version
 
       def index
-        return head :method_not_allowed if request.get?
+        return head :method_not_allowed if request.get? || request.head?
 
         render json: mcp_streamable_http.handle_json(request.body.read)
       end
