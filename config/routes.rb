@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "chat", to: "chat#index"
+
   get "pages/index"
   root to: "pages#index"
 

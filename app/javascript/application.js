@@ -3,3 +3,5 @@ import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
 import "./patient_records_grid"
+import { marked } from "marked"
+window.marked = marked
