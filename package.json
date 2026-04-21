@@ -17,7 +17,6 @@
     "herb:lint": "herb-lint"
   },
   "dependencies": {
-    "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.16",
     "@popperjs/core": "^2.11.8",
     "autoprefixer": "^10.4.21",

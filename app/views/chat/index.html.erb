@@ -1,108 +1,97 @@
 <%# chat/index.html.erb %>
 
-<div data-controller="chat">
+<%# ---------------------------------------------------- %>
+<%# CONFIGURATION PANEL %>
+<%# ---------------------------------------------------- %>
+<div id="chat-config-panel">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card mt-4">
+        <div class="card-header">
+          <h5 class="mb-0">Connect to an LLM</h5>
+        </div>
+        <div class="card-body">
+          <p class="text-muted small mb-3">
+            Your API key is used directly in your browser and is never sent to this server.
+          </p>
 
-  <%# ---------------------------------------------------- %>
-  <%# CONFIGURATION PANEL %>
-  <%# ---------------------------------------------------- %>
-  <div data-chat-target="configPanel">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-8 col-lg-6">
-        <div class="card mt-4">
-          <div class="card-header">
-            <h5 class="mb-0">Connect to an LLM</h5>
-          </div>
-          <div class="card-body">
-            <p class="text-muted small mb-3">
-              Your API key is used directly in your browser and is never sent to this server.
-            </p>
-
-            <%# Provider selector %>
-            <div class="mb-3">
-              <label class="form-label fw-semibold">Provider</label>
-              <div class="d-flex gap-3">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="provider" id="providerAnthropic"
-                    value="anthropic" checked
-                    data-action="change->chat#onProviderChange"
-                    data-chat-target="providerRadio">
-                  <label class="form-check-label" for="providerAnthropic">Anthropic</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="provider" id="providerOpenai"
-                    value="openai"
-                    data-action="change->chat#onProviderChange"
-                    data-chat-target="providerRadio">
-                  <label class="form-check-label" for="providerOpenai">OpenAI-compatible</label>
-                </div>
+          <%# Provider selector %>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Provider</label>
+            <div class="d-flex gap-3 flex-wrap">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="chat-provider" id="providerAnthropic"
+                  value="anthropic" checked>
+                <label class="form-check-label" for="providerAnthropic">Anthropic</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="chat-provider" id="providerOpenai"
+                  value="openai">
+                <label class="form-check-label" for="providerOpenai">OpenAI-compatible</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="chat-provider" id="providerLmstudio"
+                  value="lmstudio">
+                <label class="form-check-label" for="providerLmstudio">LM Studio</label>
               </div>
             </div>
-
-            <%# Base URL (OpenAI-compatible only) %>
-            <div class="mb-3" data-chat-target="baseUrlRow" style="display:none">
-              <label for="chatBaseUrl" class="form-label fw-semibold">Base URL</label>
-              <input type="url" class="form-control" id="chatBaseUrl"
-                placeholder="https://api.openai.com/v1"
-                data-chat-target="baseUrlInput">
-              <div class="form-text">Any OpenAI-compatible endpoint (OpenAI, DeepSeek, Groq, Ollama, etc.)</div>
-            </div>
-
-            <%# API Key %>
-            <div class="mb-3">
-              <label for="chatApiKey" class="form-label fw-semibold">API Key</label>
-              <input type="password" class="form-control" id="chatApiKey"
-                placeholder="Enter your API key"
-                data-chat-target="apiKeyInput"
-                data-action="keydown->chat#onConfigKeydown">
-            </div>
-
-            <%# Model %>
-            <div class="mb-3">
-              <label for="chatModel" class="form-label fw-semibold">Model</label>
-              <input type="text" class="form-control" id="chatModel"
-                placeholder="claude-sonnet-4-6"
-                data-chat-target="modelInput"
-                data-action="keydown->chat#onConfigKeydown">
-              <div class="form-text">Leave blank to use the placeholder default.</div>
-            </div>
-
-            <button class="btn btn-primary w-100" data-action="click->chat#save">
-              Connect
-            </button>
           </div>
+
+          <%# Base URL (OpenAI-compatible and LM Studio) %>
+          <div class="mb-3" id="chat-base-url-row" style="display:none">
+            <label for="chat-base-url" class="form-label fw-semibold">Base URL</label>
+            <input type="url" class="form-control" id="chat-base-url"
+              placeholder="http://localhost:1234/v1">
+            <div class="form-text">Any OpenAI-compatible endpoint (OpenAI, DeepSeek, Groq, Ollama, LM Studio, etc.)</div>
+          </div>
+
+          <%# API Key (hidden for LM Studio) %>
+          <div class="mb-3" id="chat-api-key-row">
+            <label for="chat-api-key" class="form-label fw-semibold">API Key</label>
+            <input type="password" class="form-control" id="chat-api-key"
+              placeholder="Enter your API key">
+          </div>
+
+          <%# Model %>
+          <div class="mb-3">
+            <label for="chat-model" class="form-label fw-semibold">Model</label>
+            <input type="text" class="form-control" id="chat-model"
+              placeholder="claude-sonnet-4-6">
+            <div class="form-text">Leave blank to use the placeholder default.</div>
+          </div>
+
+          <button class="btn btn-primary w-100" id="chat-connect-btn">
+            Connect
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <%# ---------------------------------------------------- %>
-  <%# CHAT PANEL %>
-  <%# ---------------------------------------------------- %>
-  <div data-chat-target="chatPanel" style="display:none">
-    <div class="d-flex justify-content-between align-items-center mb-2 mt-3">
-      <span class="text-muted small" data-chat-target="connectionLabel"></span>
-      <button class="btn btn-sm btn-outline-secondary" data-action="click->chat#resetProvider">
-        Disconnect
-      </button>
-    </div>
-
-    <%# Message history %>
-    <div class="border rounded bg-light p-3 mb-3 overflow-auto"
-         style="height: 55vh; min-height: 300px;"
-         data-chat-target="messageList">
-    </div>
-
-    <%# Input area %>
-    <div class="input-group">
-      <textarea class="form-control" rows="3"
-        placeholder="Type a message…"
-        data-chat-target="messageInput"
-        data-action="keydown->chat#onMessageKeydown"></textarea>
-      <button class="btn btn-primary" data-action="click->chat#send" data-chat-target="sendButton">
-        Send
-      </button>
-    </div>
-    <div class="form-text text-end">Shift+Enter for new line, Enter to send</div>
+<%# ---------------------------------------------------- %>
+<%# CHAT PANEL %>
+<%# ---------------------------------------------------- %>
+<div id="chat-panel" style="display:none">
+  <div class="d-flex justify-content-between align-items-center mb-2 mt-3">
+    <span class="text-muted small" id="chat-connection-label"></span>
+    <button class="btn btn-sm btn-outline-secondary" id="chat-disconnect-btn">
+      Disconnect
+    </button>
   </div>
 
+  <%# Message history %>
+  <div class="border rounded bg-light p-3 mb-3 overflow-auto"
+       style="height: 55vh; min-height: 300px;"
+       id="chat-message-list">
+  </div>
+
+  <%# Input area %>
+  <div class="input-group">
+    <textarea class="form-control" rows="3"
+      placeholder="Type a message…"
+      id="chat-message-input"></textarea>
+    <button class="btn btn-primary" id="chat-send-btn">Send</button>
+  </div>
+  <div class="form-text text-end">Shift+Enter for new line, Enter to send</div>
 </div>
