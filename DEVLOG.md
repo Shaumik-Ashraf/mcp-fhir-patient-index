@@ -20,11 +20,18 @@ Developer log and backlog of tasks.
 - [x] Add Inferno end-to-end tests
 - [x] Implement skeleton MCP server
 - [x] Implement MCP resource server
-- [ ] Implement MCP tools server
-  + MCP patient match tool
+  + discovery resource/endpoint that lists MCP capabilities & authentication requirements
+  + improve the info endpoint
+  + remove or refactor the all endpoint
+- [~] Implement MCP tools server
+  + Patient list/index tool with sorting and limiting
+  + Patient read tool (required because LLM seems very tool-use inclined, as opposed to resource)
+  + Patient update information tool
+  + Patient unlink tool
+  + Patient trigger automatch tool
 - [x] Implement FHIR Log that showcases fhir queries
 - [x] Implement MCP Log with showcases llm integration
-- [ ] Implement some client-side LLM or test w/ some MCP client
+- [x] Implement some client-side LLM or test w/ some MCP client (Use LM Studio)
 - [x] Implement settings to customize UI
 - [x] Make realistically messy patient identity data generator
 - [ ] Factorize "messy data generator" so its easily modable
@@ -34,8 +41,9 @@ Developer log and backlog of tasks.
 - [x] Implement patient matching engine that automates matches
 - [x] Implement FHIR `$match`
 - [ ] e2e tests (Selenium or otherwise)
-
+- [ ] Rename the MCP server to `mpi:`
+- [ ] OAuth 2.0
 
 ## Notes
 
-- `~` means partially complete
+- `~` means partially complete.
