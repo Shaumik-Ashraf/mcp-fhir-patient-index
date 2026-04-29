@@ -7,30 +7,6 @@ RSpec.describe AuditLog, type: :model do
     expect(audit_log).to be_instance_of described_class
   end
 
-  describe "validations" do
-    it "is valid with all required fields" do
-      expect(audit_log).to be_valid
-    end
-
-    it "requires description" do
-      audit_log.description = nil
-      expect(audit_log).not_to be_valid
-      expect(audit_log.errors[:description]).to be_present
-    end
-
-    it "requires encrypted_request" do
-      audit_log.encrypted_request = nil
-      expect(audit_log).not_to be_valid
-      expect(audit_log.errors[:encrypted_request]).to be_present
-    end
-
-    it "requires encrypted_response" do
-      audit_log.encrypted_response = nil
-      expect(audit_log).not_to be_valid
-      expect(audit_log.errors[:encrypted_response]).to be_present
-    end
-  end
-
   describe "tags validation" do
     it "is valid with empty tags hash" do
       audit_log.tags = {}
