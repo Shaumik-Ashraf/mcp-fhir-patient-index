@@ -2,7 +2,8 @@ require "readline"
 
 namespace :mcp do
   task load: [ :environment ] do
-    include ApplicationMCP
+    # include ApplicationMCP # migrating out
+    include ApplicationMCPv2 # migrating in
   end
 
   desc "Run MCP Server in STDIO mode"
@@ -125,6 +126,7 @@ namespace :mcp do
     Shell.new.run
   end
 
+  # TODO: use MCP STDIO transport as intended instead
   desc "List all MCP resources and resource templates"
   task list_resources: :load do
     srv = mcp_streamable_http
@@ -164,6 +166,7 @@ namespace :mcp do
     end
   end
 
+  # TODO: use MCP STDIO transport as intended instead
   desc "List all MCP tools with parameters"
   task list_tools: :load do
     param_desc = lambda do |spec|

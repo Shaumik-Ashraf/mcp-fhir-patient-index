@@ -149,7 +149,6 @@ GEM
     json-schema (6.0.0)
       addressable (~> 2.8)
       bigdecimal (~> 3.1)
-    json_rpc_handler (0.1.1)
     kamal (2.7.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -174,9 +173,8 @@ GEM
       net-smtp
     marcel (1.1.0)
     matrix (0.4.3)
-    mcp (0.3.0)
+    mcp (0.14.0)
       json-schema (>= 4.1)
-      json_rpc_handler (~> 0.1)
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
@@ -441,7 +439,7 @@ DEPENDENCIES
   fhir_models (~> 5.0)
   jsbundling-rails
   kamal
-  mcp (~> 0.3.0)
+  mcp (~> 0.14.0)
   nokogiri
   propshaft
   puma (>= 5.0)

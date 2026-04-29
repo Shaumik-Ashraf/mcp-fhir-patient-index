@@ -2,7 +2,7 @@ class AuditLog < ApplicationRecord
   encrypts :encrypted_request
   encrypts :encrypted_response
   validates :encrypted_request, presence: true
-  validates :encrypted_response, presence: true
+  validates :encrypted_response # May be omitted if action crashed
   validates :description, presence: true
   validate :tags_json_map
 

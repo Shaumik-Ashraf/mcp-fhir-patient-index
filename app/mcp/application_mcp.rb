@@ -1,3 +1,4 @@
+# @depreciated !!!
 # @example
 #   class MyController < ApplicationController
 #     include ApplicationMCP
