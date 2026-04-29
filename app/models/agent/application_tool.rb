@@ -1,5 +1,5 @@
 # @abstract
-module ApplicationMCPv2
+module Agent
   class ApplicationTool < MCP::Tool
   end
 end

@@ -35,7 +35,8 @@ module McpFhirPatientIndex
     #
     config.time_zone = "UTC" # Explicitly use UTC
     # config.time_zone = "Central Time (US & Canada)"
-    config.eager_load_paths << Rails.root.join("app", "mcp")
+    # Note: Eager loading only occurs in production
+    config.eager_load_paths << Rails.root.join("app", "mcp") # TODO: rm
 
     config.generators do |g|
       g.factory_bot dir: Rails.root.join("factories") if g.respond_to? :factory_bot

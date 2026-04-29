@@ -1,4 +1,4 @@
-module ApplicationMCPv2
+module Agent
   # @private
   def mcp_server(context)
     MCP::Server.new(
@@ -8,7 +8,7 @@ module ApplicationMCPv2
       instructions: "Use these tools and resources to interact with the master patient index.",
       tools: ApplicationTool.descendants,
       prompts: ApplicationPrompt.descendants,
-      resources: ApplicationResources.descendants,
+      resources: ApplicationResource.descendants,
       server_context: {}.merge(context)
     )
   end

@@ -1,29 +1,19 @@
-require_relative "../../../mcp/mcp_server.rb"
-
 module MCP # NOTE: namespace collision with MCP gem
-  module V20250618
+  module V20250618 # TODO: update to V20251125
     class ApplicationController < ::ActionController::Base
       skip_forgery_protection
       # include ApplicationMCP # migrating out
-      include ::ApplicationMCPv2 # migrating in
-
-      before_action :validate_mcp_protocol_version
+      include ::Agent          # migrating in
 
       def index
-        return head :method_not_allowed if request.get? || request.head?
+        head(:method_not_allowed) and return if request.get? || request.head?
+        # head(:bad_request) and return if request.headers.fetch("MCP-Protocol-Version", "2025-06-08") != "2025-06-8"
+        # Omit because MCP inspector is now using version 2025-11-25
+        # Assume correct version is sent by the robustness principle
 
-        transport = mcp_http_server
+        transport = mcp_http_server()
         status, headers, body = transport.handle_request(request)
         render(json: body.first, status:, headers:)
-      end
-
-      private
-
-      def validate_mcp_protocol_version
-        version = request.headers["MCP-Protocol-Version"]
-        return if version.nil?
-
-        head :bad_request unless version == "2025-06-18"
       end
     end
   end

@@ -1,5 +1,5 @@
 # @abstract
-module ApplicationMCPv2
+module Agent
   class ApplicationResource < MCP::Resource
   end
 end
