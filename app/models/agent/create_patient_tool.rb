@@ -1,5 +1,6 @@
 module Agent
   class CreatePatientTool < ApplicationTool
+    tool_name "create_patient"
     description "Create a new patient record in the Master Patient Index."
     input_schema(
       properties: {
@@ -25,16 +26,16 @@ module Agent
       destructive_hint: false
     )
 
-    def self.call(message:, server_context:)
+    def self.call(server_context:, **params)
       log = AuditLog.create!(
         description: "LLM created patient record",
         tags: {
           AuditLog::Tag::EVENT => AuditLog::Event::MCP_CREATE_PATIENT,
           AuditLog::Tag::INTERFACE => AuditLog::Interface::MCP
         },
-        encrypted_request: params.to_h
+        encrypted_request: params
       )
-      patient = PatientRecord.new(message)
+      patient = PatientRecord.new(params)
       if patient.save
         result_text = "Created patient #{patient.uuid}:\n\n#{patient.to_text}"
       else

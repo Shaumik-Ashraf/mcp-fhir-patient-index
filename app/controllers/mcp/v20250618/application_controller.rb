@@ -5,11 +5,12 @@ module MCP # NOTE: namespace collision with MCP gem
       # include ApplicationMCP # migrating out
       include ::Agent          # migrating in
 
+      SUPPORTED_PROTOCOL_VERSIONS = %w[2025-06-18 2025-11-25].freeze
+
       def index
         head(:method_not_allowed) and return if request.get? || request.head?
-        # head(:bad_request) and return if request.headers.fetch("MCP-Protocol-Version", "2025-06-08") != "2025-06-8"
-        # Omit because MCP inspector is now using version 2025-11-25
-        # Assume correct version is sent by the robustness principle
+        version = request.headers["MCP-Protocol-Version"]
+        head(:bad_request) and return if version.present? && !SUPPORTED_PROTOCOL_VERSIONS.include?(version)
 
         transport = mcp_http_server()
         status, headers, body = transport.handle_request(request)
