@@ -24,11 +24,7 @@ Developer log and backlog of tasks.
   + improve the info endpoint
   + remove or refactor the all endpoint
 - [~] Implement MCP tools server
-  + Patient list/index tool with sorting and limiting
-  + Patient read tool (required because LLM seems very tool-use inclined, as opposed to resource)
-  + Patient update information tool
-  + Patient unlink tool
-  + Patient trigger automatch tool
+  + TODO: test all tools
 - [x] Implement FHIR Log that showcases fhir queries
 - [x] Implement MCP Log with showcases llm integration
 - [x] Implement some client-side LLM or test w/ some MCP client (Use LM Studio)

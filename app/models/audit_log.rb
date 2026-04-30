@@ -28,9 +28,13 @@ class AuditLog < ApplicationRecord
     FHIR_PATIENT_READ = "FHIR Read Patient"
     FHIR_DOLLAR_MATCH = "FHIR $match Operation"
     MCP_READ_ALL_PATIENTS = "LLM Read All Patients"
+    MCP_LIST_PATIENTS = "LLM List Patient Records"
+    MCP_READ_PATIENT = "LLM Read Patient Record"
     MCP_CREATE_PATIENT = "LLM Create Patient Record"
+    MCP_UPDATE_PATIENT = "LLM Update Patient Record"
     MCP_LINK_PATIENT = "LLM Link Patient Records"
     MCP_DELINK_PATIENT = "LLM Unlink Patient Records"
+    MCP_AUTOMATCH = "LLM Run Patient Record Auto-Matching"
     UNKNOWN = "Unknown (See Description)"
   end
 
