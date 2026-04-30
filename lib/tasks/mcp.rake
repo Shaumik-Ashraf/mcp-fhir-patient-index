@@ -62,8 +62,8 @@ namespace :mcp do
 
           Syntaxes:
             mcp-shell> initialize
-            mcp-shell> resources/read {"uri": "master-patient-index://info"}
-            mcp-shell> resources/read, uri:master-patient-index://info
+            mcp-shell> resources/read {"uri": "mpi://info"}
+            mcp-shell> resources/read, uri:mpi://info
 
           Type 'help' for a list of MCP methods.
           Type 'exit' or 'quit' to leave.
@@ -79,15 +79,16 @@ namespace :mcp do
 
       def dispatch(line)
         method_name, params = parse_input(line)
-        request = { jsonrpc: "2.0", id: id, method: method_name, params: params }.to_json
+        req_id  = id
+        request = { jsonrpc: "2.0", id: req_id, method: method_name, params: params }.to_json
 
         puts "\n── request ────────────────────────────────────"
         puts JSON.pretty_generate(JSON.parse(request))
 
-        _status, _headers, response = mcp_http_server.handle_request(request)
+        result = stdio_request(req_id, method_name, params)
 
         puts "\n── response ───────────────────────────────────"
-        puts JSON.pretty_generate(JSON.parse(response))
+        puts JSON.pretty_generate(result)
         puts "───────────────────────────────────────────────\n"
       rescue JSON::ParserError => e
         puts "JSON parse error: #{e.message}"
@@ -125,13 +126,9 @@ namespace :mcp do
     Shell.new.run
   end
 
-  # TODO: use MCP STDIO transport as intended instead
   desc "List all MCP resources and resource templates"
   task list_resources: :load do
-    srv = mcp_http_server
-
-    _status, _headers, raw = srv.handle_request({ jsonrpc: "2.0", id: 1, method: "resources/list", params: {} }.to_json)
-    resources = JSON.parse(raw).dig("result", "resources") || []
+    resources = stdio_request(1, "resources/list").dig("result", "resources") || []
 
     puts "\n=== Resources (#{resources.size}) ==="
     if resources.empty?
@@ -147,8 +144,7 @@ namespace :mcp do
       end
     end
 
-    _status, _headers, raw2 = srv.handle_request({ jsonrpc: "2.0", id: 2, method: "resources/templates/list", params: {} }.to_json)
-    templates = JSON.parse(raw2).dig("result", "resourceTemplates") || []
+    templates = stdio_request(2, "resources/templates/list").dig("result", "resourceTemplates") || []
 
     puts "=== Resource Templates (#{templates.size}) ==="
     if templates.empty?
@@ -165,7 +161,6 @@ namespace :mcp do
     end
   end
 
-  # TODO: use MCP STDIO transport as intended instead
   desc "List all MCP tools with parameters"
   task list_tools: :load do
     param_desc = lambda do |spec|
@@ -176,10 +171,7 @@ namespace :mcp do
       parts.empty? ? "" : " (#{parts.join('; ')})"
     end
 
-    srv = mcp_http_server
-
-    _status, _headers, raw = srv.handle_request({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} }.to_json)
-    tools = JSON.parse(raw).dig("result", "tools") || []
+    tools = stdio_request(1, "tools/list").dig("result", "tools") || []
 
     puts "\n=== Tools (#{tools.size}) ==="
 
@@ -214,5 +206,22 @@ namespace :mcp do
         puts
       end
     end
+  end
+
+  # Sends a single JSON-RPC request through the stdio transport by temporarily
+  # redirecting $stdin/$stdout to StringIO buffers, then restoring via STDIN/STDOUT.
+  # @param id [Integer] JSON-RPC request ID
+  # @param method [String] MCP method name (e.g. "resources/list")
+  # @param params [Hash] method parameters
+  # @return [Hash] parsed JSON response
+  def stdio_request(id, method, params = {})
+    request_json = { jsonrpc: "2.0", id:, method:, params: }.to_json
+    $stdin  = StringIO.new(request_json + "\n")
+    $stdout = StringIO.new
+    mcp_stdio.open
+    JSON.parse($stdout.string.strip)
+  ensure
+    $stdin  = STDIN
+    $stdout = STDOUT
   end
 end
