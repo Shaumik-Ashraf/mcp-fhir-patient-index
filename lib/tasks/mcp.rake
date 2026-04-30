@@ -2,8 +2,7 @@ require "readline"
 
 namespace :mcp do
   task load: [ :environment ] do
-    # include ApplicationMCP # migrating out
-    include ApplicationMCPv2 # migrating in
+    include Agent
   end
 
   desc "Run MCP Server in STDIO mode"
@@ -85,7 +84,7 @@ namespace :mcp do
         puts "\n── request ────────────────────────────────────"
         puts JSON.pretty_generate(JSON.parse(request))
 
-        response = mcp_streamable_http.handle_json(request)
+        _status, _headers, response = mcp_http_server.handle_request(request)
 
         puts "\n── response ───────────────────────────────────"
         puts JSON.pretty_generate(JSON.parse(response))
@@ -129,9 +128,9 @@ namespace :mcp do
   # TODO: use MCP STDIO transport as intended instead
   desc "List all MCP resources and resource templates"
   task list_resources: :load do
-    srv = mcp_streamable_http
+    srv = mcp_http_server
 
-    raw = srv.handle_json({ jsonrpc: "2.0", id: 1, method: "resources/list", params: {} }.to_json)
+    _status, _headers, raw = srv.handle_request({ jsonrpc: "2.0", id: 1, method: "resources/list", params: {} }.to_json)
     resources = JSON.parse(raw).dig("result", "resources") || []
 
     puts "\n=== Resources (#{resources.size}) ==="
@@ -148,7 +147,7 @@ namespace :mcp do
       end
     end
 
-    raw2 = srv.handle_json({ jsonrpc: "2.0", id: 2, method: "resources/templates/list", params: {} }.to_json)
+    _status, _headers, raw2 = srv.handle_request({ jsonrpc: "2.0", id: 2, method: "resources/templates/list", params: {} }.to_json)
     templates = JSON.parse(raw2).dig("result", "resourceTemplates") || []
 
     puts "=== Resource Templates (#{templates.size}) ==="
@@ -177,9 +176,9 @@ namespace :mcp do
       parts.empty? ? "" : " (#{parts.join('; ')})"
     end
 
-    srv = mcp_streamable_http
+    srv = mcp_http_server
 
-    raw = srv.handle_json({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} }.to_json)
+    _status, _headers, raw = srv.handle_request({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} }.to_json)
     tools = JSON.parse(raw).dig("result", "tools") || []
 
     puts "\n=== Tools (#{tools.size}) ==="
