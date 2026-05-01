@@ -65,5 +65,4 @@ module Agent
   end
 
   private
-
 end
