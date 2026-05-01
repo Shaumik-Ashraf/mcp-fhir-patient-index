@@ -20,9 +20,9 @@ Developer log and backlog of tasks.
 - [x] Add Inferno end-to-end tests
 - [x] Implement skeleton MCP server
 - [x] Implement MCP resource server
-  + discovery resource/endpoint that lists MCP capabilities & authentication requirements
   + improve the info endpoint
-  + remove or refactor the all endpoint
+  + refactor patient record resource template
+  + TODO: test resources
 - [~] Implement MCP tools server
   + TODO: test all tools
 - [x] Implement FHIR Log that showcases fhir queries
