@@ -37,7 +37,7 @@ Developer log and backlog of tasks.
 - [x] Implement patient matching engine that automates matches
 - [x] Implement FHIR `$match`
 - [ ] e2e tests (Selenium or otherwise)
-- [ ] Rename the MCP server to `mpi:`
+- [x] Rename the MCP server to `mpi:`
 - [ ] OAuth 2.0
 
 ## Notes
