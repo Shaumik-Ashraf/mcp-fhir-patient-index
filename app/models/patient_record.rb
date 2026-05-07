@@ -265,6 +265,7 @@ class PatientRecord < ApplicationRecord
         sentences << "Patient #{key.to_s.humanize(capitalize: false)} is #{value.to_s.humanize(capitalize: false)}"
       end
     end
+    sentences << "Patient UUID: #{self.uuid}"
 
     sentences.join(". ") + "."
   end
