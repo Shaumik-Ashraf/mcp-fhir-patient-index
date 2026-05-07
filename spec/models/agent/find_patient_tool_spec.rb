@@ -5,7 +5,11 @@ RSpec.describe Agent::FindPatientTool do
 
   describe ".call" do
     context "when a matching patient exists" do
-      let!(:patient) { create(:patient, last_name: "Uniqueson") }
+      let(:patient) { create(:patient, last_name: "Uniqueson") }
+
+      before do
+        patient
+      end
 
       it "returns the patient's text representation" do
         response = described_class.call(last_name: "Uniqueson", server_context:)
